@@ -5,70 +5,68 @@ type: concept
 sources:
   - raw-sources/COMPREHENSIVE_MINING_REPORT.md
   - raw-sources/STRATEGY_MINING_REPORT.md
+  - ~/Documents/trading-system/results/BOS_FVG_FAILURE_CONSOLIDATED.md
+  - ~/Documents/trading-system/results/BOS_FVG_10PT_AUDIT.md
 related:
   - wiki/concepts/mtf-alignment.md
   - wiki/concepts/be-trail-mechanism.md
   - wiki/concepts/v10i-look-ahead-bug.md
+  - wiki/concepts/bar-sim-trailing-bug.md
+  - wiki/summaries/bos-fvg-failure-consolidated.md
   - wiki/summaries/comprehensive-mining-report-v2.md
   - wiki/summaries/strategy-mining-report-312d.md
-tags: [trading, signal, nq, core-signal]
+tags: [trading, signal, nq, dead-strategy, suspect-results]
 ---
 
 # BOS_FVG (Break of Structure + Fair Value Gap)
 
-BOS_FVG is the **core signal** of the [[tempo-trading-system|Tempo NQ system]]. Across mining iterations and cleanups, it has consistently been the strongest single signal by total R and walk-forward stability.
+> **STATUS: DEAD.** BOS_FVG is not a validated signal and does not have tradeable edge. Every prior "validated" number was a bar-level simulation artifact. Harrison has confirmed this multiple times in `~/Documents/trading-system/CLAUDE.md`. On 2026-04-10, a fresh tick-level replay reproduced the failure on the same 60-day sample. See [[bos-fvg-failure-consolidated]].
 
-## What it is
+## Why this is tagged suspect
+
+Every performance number that appeared in earlier versions of this page — 63.5% WR, +15,368 total R, +1.354 R/T, +13.37 R/day, Calmar 151/237/263.6 — came from simulators that trailed stops on 1-minute bar OHLC. A paired bar-vs-tick replay on 2026-04-10 showed:
+
+| Simulation | n | avgR | WR | R/day |
+|---|---|---|---|---|
+| Bar-level (`clean_backtest.py` logic) | 875 | **+0.3590** | 41.0% | +5.24 |
+| **Tick-level (ground truth)** | **842** | **+0.0010** | **66.9%** | **+0.01** |
+
+The bar simulator inflates BOS_FVG trailing results by **+0.29 R per trade**, and without the inflation the signal is indistinguishable from zero. This is consistent with the tick-level 10+pt static audit (`BOS_FVG_10PT_AUDIT.md`), which reported a +0.015 avgR baseline and no filter surviving multiple-comparison correction. See [[bar-sim-trailing-bug]] for the mechanism.
+
+## What it is (signal definition — still accurate)
 
 A compound signal combining:
-- **Break of structure (BOS)** — price breaking the most recent swing high/low in the trading direction, confirming a change in short-term directional bias
-- **Fair value gap (FVG)** — a three-bar pattern where the middle bar's range leaves a gap between bar 1's extreme and bar 3's extreme in the direction of the break
+- **Break of structure (BOS)** — the closing price of a bar breaks the most recent confirmed swing high/low in the trading direction by at least 2.0 points of displacement, and the previous bar's close did not
+- **Fair value gap (FVG)** — a three-bar imbalance where `bar[i].low > bar[i-2].high` (bullish) or `bar[i-2].low > bar[i].high` (bearish), forming within 15 bars of the BOS in the same direction
+- **Entry** — limit at the far edge of the FVG (gap_high for longs, gap_low for shorts) with 0.25pt slippage
+- **Stop** — opposite edge of the FVG
+- **Exit** — pure trailing stop, 0.5R trigger, 0.1R buffer
 
-Entry is taken on a retest of the FVG in the direction of the BOS.
+The signal generator itself is fine. It fires where and when you'd expect. The problem is that the exit mechanism (the trailing stop) cannot be accurately simulated on bar data, and when you replay it against ticks the edge collapses.
 
-## Performance (V2-corrected numbers)
+## What the invalidation affects
 
-From [[comprehensive-mining-report-v2|COMPREHENSIVE_MINING_REPORT V2]] (34,323 trades, 258 days, look-ahead fixed, slippage added, 1.5pt min risk):
+- **V1-era 97.9% / 98.8% / 90.6% WR tiers** from the 312-day mining report. Already flagged suspect for [[v10i-look-ahead-bug|V10i alignment look-ahead]]. Now also invalidated for bar-sim path reconstruction.
+- **V2-corrected "honest" numbers**: 63.5% WR, +1.354 R/T, +15,368 total R from [[comprehensive-mining-report-v2]]. The V2 rerun fixed alignment look-ahead but still ran on 1-minute bar OHLC. It did not identify the path-reconstruction problem.
+- **`clean_backtest.py` / `clean_backtest.py` output CSVs** in `~/Documents/trading-system/results/` (`bos_disp_*.csv`, `fvg_fill*_bos*.csv`, `full_year_all_trades.csv`). All bar-level trailing sims. Suspect until re-run with tick replay.
+- **V10y/V10z 15S trailing results** (+1.141 avgR, Calmar 263.6) from the auto-memory. 15-second bars compress less path than 1-minute bars, but the same structural bug applies. CLAUDE.md has explicitly rejected these numbers since March 2026.
+- **The "mega portfolio" composites** that include BOS_FVG as a leg — the composite R/day figures inherit the BOS_FVG inflation proportional to the leg's weight.
 
-- n = 11,348 trades
-- **63.5% WR** with [[be-trail-mechanism|BE+Trail]] exit
-- **+15,368R** total
-- **R/T +1.354**
-- Walk-forward: IS 63.6% → OOS 63.4% — stable
-- Static targets negative through 1.5R; profitable at 2.0R+
-- **Fat-tail distribution:** 29.5% of trades are 2R+ runners generating +17,461R. The other 70.5% combined for -2,094R.
+## What is NOT affected
 
-Best signal in the dataset by total R and WF stability.
+- The **NinjaTrader engine-native implementations** (`SweepBreakv17.cs`, v24 IFVG MTF cascade). These run on the platform's tick-level execution, not on bar OHLC. If the v24 cascade demonstrates edge on forward sim, that's a real signal.
+- **Fixed-R-target backtests** (static T3R, T5R, etc.) on bar data. Fixed targets are robust to intra-bar path ordering. The 10+pt static T3R audit's finding of +0.015 avgR is a tick-level result anyway, and it's the honest number for that variant.
+- The **signal definition itself**. It is still a sensible way to identify a particular market structure. It is the trade-management layer that fails.
 
-## Performance (V1-era — SUSPECT)
+## Correlation and portfolio implications
 
-From [[strategy-mining-report-312d|STRATEGY_MINING_REPORT]] (312d, 8,358 trades):
+If and when BOS_FVG is re-tested at tick resolution, its correlation with sweep-family signals and IFVG should be re-measured too. The pre-audit claim that BOS_FVG correlates near-zero with those signals remains plausible — but "near-zero correlation with something that also has no edge" is not portfolio value. Correlation arguments only help when every leg is individually positive, and in the current picture the only leg that has survived any tick-level scrutiny is the NinjaTrader engine-native live sim.
 
-- BOS_FVG + mtf_5m + body confirms: **97.9% WR**, n=140
-- BOS_FVG + mtf_5m + body break + close near extreme: **98.8% WR**, n=82
-- BOS_FVG + mtf_5m + failed auction: **90.6% WR**, n=127
+## See also
 
-These numbers are almost certainly inflated by the [[v10i-look-ahead-bug]]. Cross-check against V2 (63.5% WR).
-
-## What makes the edge real
-
-The edge is entirely in the [[be-trail-mechanism|BE+Trail exit]]: convert losers to near-zero breakevens, let winners run. Don't cap R targets — fat-tail runners drive all profit. At R=1.0 fixed target, BOS_FVG is -0.260 R/T (loser). With BE+Trail it's +1.354 R/T.
-
-## Required filters
-
-- **[[mtf-alignment|MTF alignment]]** — highest single filter for WR. Monotonic improvement from 40.8% (0 TFs aligned) to 81.0% (6 aligned). V1 research also showed MTF_5M gate alone flips the system from losing to winning.
-- **Body confirmation on the entry candle** (V1-era claim; suspect magnitude, direction probably real).
-
-## What DOESN'T help
-
-- Static R targets below 2R — negative
-- `strong_body > 70%` filter on entries — paradoxically hurts WR (36.8%)
-- Capping R — kills fat-tail runners that drive edge
-
-## Correlation with other signals
-
-BOS_FVG correlates 0.324 with `fvg_exit_fvg_stop` (same FVG family). Near-zero correlation with sweep-family signals (sweep_wick, sweep_close_through, swing_failure) — so the two books are genuinely diversifying in a portfolio.
-
-## Known contamination history
-
-The V1-era research used alignment logic that (via [[v10i-look-ahead-bug|V10i]]) consulted unclosed higher-TF bars, pulling in their future close values. When the V2 rerun fixed the bug (completed-bar alignment only), the 90%+ WR configurations collapsed — but **BOS_FVG as a signal survived** and remains the top performer at honest 63.5% WR. The signal is real; only the WR magnitude changed.
+- [[bos-fvg-failure-consolidated]] — full failure report with paired bar-vs-tick comparison and reproducer scripts
+- [[bar-sim-trailing-bug]] — structural explanation of why trailing stops can't be simulated on bar OHLC
+- [[v10i-look-ahead-bug]] — the earlier contamination source that the V2 rerun partially fixed
+- [[be-trail-mechanism]] — the exit mechanism whose apparent edge was the illusion
+- [[mtf-alignment]] — the filter the V1-era tiers relied on before the look-ahead was found
+- `~/Documents/trading-system/CLAUDE.md` — "Critical Corrections" section, the canonical ground truth on what is and isn't validated

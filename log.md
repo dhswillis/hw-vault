@@ -19,3 +19,7 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-10 17:12] ingest | Tempo_Quick_Start_Guide.docx → wiki/summaries/tempo-quick-start-guide.md; entity tempo-trading-system, quantconnect, databento
 
 ## [2026-04-10 17:12] synthesis | mining-reports-v1-v2-reconciliation.md — cross-source audit reconciling V1 97.9% WR vs V2 63.5% WR on BOS_FVG; three bias corrections documented
+
+## [2026-04-10 19:30] audit | BOS_FVG paired bar-vs-tick trailing replay on 60-day Databento sample — bar +0.359 avgR, tick +0.001 avgR, delta +0.29 R/trade; confirms CLAUDE.md position that BOS_FVG DOES NOT WORK
+
+## [2026-04-10 19:30] ingest | ~/Documents/trading-system/results/BOS_FVG_FAILURE_CONSOLIDATED.md → wiki/summaries/bos-fvg-failure-consolidated.md; concept bar-sim-trailing-bug created; bos-fvg.md rewritten as dead-strategy
