@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>NQ Fib 0.786 Retracement Strategy — Deep Analysis</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #e0e0e0; padding: 20px; max-width: 1200px; margin: 0 auto; }
+h1 { color: #00d4aa; font-size: 28px; margin: 30px 0 10px; border-bottom: 2px solid #00d4aa33; padding-bottom: 10px; }
+h2 { color: #00aaff; font-size: 22px; margin: 25px 0 10px; }
+h3 { color: #ffaa00; font-size: 18px; margin: 20px 0 8px; }
+p { line-height: 1.6; margin: 8px 0; color: #b0b0b0; }
+.highlight { color: #00d4aa; font-weight: bold; }
+.warn { color: #ff6b6b; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 15px 0; }
+.stat-card { background: #151520; border: 1px solid #252535; border-radius: 8px; padding: 15px; text-align: center; }
+.stat-card .value { font-size: 26px; font-weight: bold; color: #00d4aa; }
+.stat-card .label { font-size: 12px; color: #888; margin-top: 4px; }
+.stat-card.negative .value { color: #ff6b6b; }
+table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 14px; }
+th { background: #151520; color: #00aaff; padding: 10px 8px; text-align: left; border-bottom: 2px solid #252535; }
+td { padding: 8px; border-bottom: 1px solid #1a1a25; }
+tr:hover { background: #151520; }
+.positive { color: #00d4aa; }
+.negative { color: #ff6b6b; }
+.chart-container { background: #0f0f18; border: 1px solid #252535; border-radius: 8px; padding: 20px; margin: 15px 0; }
+canvas { max-height: 350px; }
+.setup-box { background: #0f1a15; border: 1px solid #00d4aa33; border-radius: 8px; padding: 20px; margin: 15px 0; }
+.warning-box { background: #1a0f0f; border: 1px solid #ff6b6b33; border-radius: 8px; padding: 15px; margin: 15px 0; }
+.insight-box { background: #0f0f1a; border: 1px solid #00aaff33; border-radius: 8px; padding: 20px; margin: 15px 0; }
+.section { margin: 30px 0; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<h1>NQ Futures — Fib 0.786 Body Retracement Strategy</h1>
+<p>Entry at 0.786 retracement of 5M candle body | Stop at body 1.0 | NY Session Only</p>
+<p style="color:#666">Data: 239 trading days (202502–202602) | 813 clean trades | Tick-level simulation</p>
+
+<!-- ═══════════════════════════════ OVERVIEW ═══════════════════════════════ -->
+<div class="section">
+<h2>Strategy Overview</h2>
+<div class="setup-box">
+<h3>The Setup</h3>
+<p>1. Identify an impulse leg on the <span class="highlight">5-minute chart</span> — loose detection allows counter-candles within the leg; leg ends when price retraces &gt;50% of wick range from the extreme</p>
+<p>2. Draw fibonacci levels on the <span class="highlight">candle body</span> (open→close, not wick→wick)</p>
+<p>3. After the confirmation candle closes, check if price is at or below 0.786 of body</p>
+<p>4. Place a <span class="highlight">limit order at 0.786</span> — stop at body 1.0 — risk = 0.214 × body_size</p>
+<p>5. Target deeper retracement: 0.618, 0.500, 0.382, 0.236, or 0.000</p>
+</div>
+
+<div class="stat-grid">
+<div class="stat-card"><div class="value">813</div><div class="label">Clean Fills</div></div>
+<div class="stat-card"><div class="value">3.4</div><div class="label">Trades/Day</div></div>
+<div class="stat-card"><div class="value">6.9 pts</div><div class="label">Avg Risk</div></div>
+<div class="stat-card"><div class="value">$138</div><div class="label">Avg Risk ($)</div></div>
+<div class="stat-card"><div class="value">32 pts</div><div class="label">Avg Body</div></div>
+<div class="stat-card"><div class="value">100%</div><div class="label">Fill Rate</div></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════ CONFIRMATION CANDLE ═══════════════════════════ -->
+<div class="section">
+<h2>Confirmation Candle Mechanics — Critical Finding</h2>
+<div class="insight-box">
+<h3>Where does the confirmation candle close relative to 0.786?</h3>
+<p>The confirmation candle (the 5M candle that triggers the leg-end by retracing &gt;50% of wick) has two distinct behaviors:</p>
+<p style="margin-top:12px"><span class="highlight">78% of clean legs:</span> The conf candle dips to 0.786 mid-candle (in its wick) but <strong>closes back ABOVE 0.786</strong> near the body top. The limit order at 0.786 almost never fills in this group — only 5.9% fill rate. When it does fill (much later), there is <span class="warn">zero edge</span> (Z = -0.8, pure random walk).</p>
+<p style="margin-top:8px"><span class="highlight">22% of clean legs:</span> The conf candle closes <strong>BELOW 0.786 of body</strong>. The limit fills essentially immediately (99.6% fill rate). <strong>ALL of the edge comes from this group</strong> — 96.4% WR on first target, Z = +21.1.</p>
+<p style="margin-top:12px"><strong>Implication:</strong> The limit order isn't providing special adverse-selection filtering. It's a proxy for detecting deeply retracing confirmation candles. The real signal is: "the confirmation candle closed past 0.786 of body."</p>
+</div>
+
+<div class="chart-container"><canvas id="confCandleChart"></canvas></div>
+
+<table>
+<tr><th>Conf Candle Close</th><th>% of Legs</th><th>Fill Rate</th><th>WR (→0.618)</th><th>WR (→0.382)</th><th>WR (→0.000)</th><th>Z (→0.382)</th></tr>
+<tr>
+<td><span class="highlight">ABOVE 0.786</span></td>
+<td>78.0%</td>
+<td class="negative">5.9%</td>
+<td>52.8%</td>
+<td>33.1%</td>
+<td>19.7%</td>
+<td class="negative">-0.4</td>
+</tr>
+<tr>
+<td><span class="highlight">BELOW 0.786</span></td>
+<td>22.0%</td>
+<td class="positive">99.6%</td>
+<td class="positive">96.4%</td>
+<td class="positive">86.4%</td>
+<td class="positive">72.7%</td>
+<td class="positive">+28.2</td>
+</tr>
+</table>
+</div>
+
+<!-- ═══════════════════════════ TARGET COMPARISON ═══════════════════════════ -->
+<div class="section">
+<h2>Target Comparison — All Clean Fills</h2>
+<p>All targets show massive edge above random walk expectation. Deeper targets have lower WR but much higher R:R and total EV.</p>
+<table>
+<tr><th>Target</th><th>R:R</th><th>Win Rate</th><th>Random Walk</th><th>Edge</th><th>Avg R</th><th>R/Day</th><th>Pos Days</th><th>Z-Score</th></tr>
+<tr>
+<td>→0.618 (0.79R)</td>
+<td>0.79R</td>
+<td class="positive">88.8%</td>
+<td>56.0%</td>
+<td class="positive">+32.8pp</td>
+<td class="positive">+0.503R</td>
+<td>+1.71</td>
+<td>89%</td>
+<td class="positive">+18.8</td>
+</tr><tr>
+<td>→0.500 (1.34R)</td>
+<td>1.34R</td>
+<td class="positive">83.0%</td>
+<td>42.8%</td>
+<td class="positive">+40.2pp</td>
+<td class="positive">+0.858R</td>
+<td>+2.92</td>
+<td>95%</td>
+<td class="positive">+23.2</td>
+</tr><tr>
+<td>→0.382 (1.89R)</td>
+<td>1.89R</td>
+<td class="positive">77.1%</td>
+<td>34.6%</td>
+<td class="positive">+42.5pp</td>
+<td class="positive">+1.145R</td>
+<td>+3.90</td>
+<td>90%</td>
+<td class="positive">+25.5</td>
+</tr><tr>
+<td>→0.236 (2.57R)</td>
+<td>2.57R</td>
+<td class="positive">71.8%</td>
+<td>28.0%</td>
+<td class="positive">+43.8pp</td>
+<td class="positive">+1.483R</td>
+<td>+5.04</td>
+<td>92%</td>
+<td class="positive">+27.8</td>
+</tr><tr>
+<td>→0.000 (3.67R)</td>
+<td>3.67R</td>
+<td class="positive">63.5%</td>
+<td>21.4%</td>
+<td class="positive">+42.1pp</td>
+<td class="positive">+1.884R</td>
+<td>+6.41</td>
+<td>88%</td>
+<td class="positive">+29.2</td>
+</tr></table>
+<p>The <span class="highlight">→0.382 target (1.89R)</span> is the sweet spot: 77.1% WR, +1.15R avg, 90% positive days. The <span class="highlight">→0.000 full retrace (3.67R)</span> has highest EV at +1.88R avg with 63.5% WR.</p>
+</div>
+
+<!-- ═══════════════════════════ EQUITY CURVE ═══════════════════════════ -->
+<div class="section">
+<h2>Equity Curve</h2>
+<div class="chart-container"><canvas id="equityChart"></canvas></div>
+<div class="stat-grid">
+<div class="stat-card"><div class="value">+931R</div><div class="label">Total R (→0.382)</div></div>
+<div class="stat-card"><div class="value">+1532R</div><div class="label">Total R (→0.000)</div></div>
+<div class="stat-card negative"><div class="value">-4.0R</div><div class="label">Max DD (→0.382)</div></div>
+<div class="stat-card"><div class="value">3</div><div class="label">Max Loss Streak</div></div>
+</div>
+</div>
+
+<!-- ═══════════════════════════ MONTHLY ═══════════════════════════ -->
+<div class="section">
+<h2>Monthly Performance</h2>
+<div class="two-col">
+<div class="chart-container"><canvas id="monthlyChart382"></canvas></div>
+<div class="chart-container"><canvas id="monthlyChart000"></canvas></div>
+</div>
+<table>
+<tr><th>Month</th><th>Trades</th><th>WR (→382)</th><th>R (→382)</th><th>WR (→000)</th><th>R (→000)</th></tr>
+<tr><td>202502</td><td>47</td><td>78.7%</td><td class='positive'>+56.4R</td><td>63.8%</td><td class='positive'>+89.8R</td></tr><tr><td>202503</td><td>81</td><td>70.4%</td><td class='positive'>+79.3R</td><td>65.4%</td><td class='positive'>+162.3R</td></tr><tr><td>202504</td><td>78</td><td>71.8%</td><td class='positive'>+80.0R</td><td>50.0%</td><td class='positive'>+100.5R</td></tr><tr><td>202505</td><td>50</td><td>84.0%</td><td class='positive'>+67.1R</td><td>74.0%</td><td class='positive'>+118.7R</td></tr><tr><td>202506</td><td>55</td><td>81.8%</td><td class='positive'>+69.7R</td><td>56.4%</td><td class='positive'>+84.6R</td></tr><tr><td>202507</td><td>59</td><td>72.9%</td><td class='positive'>+58.2R</td><td>64.4%</td><td class='positive'>+111.6R</td></tr><tr><td>202508</td><td>73</td><td>72.6%</td><td class='positive'>+72.0R</td><td>57.5%</td><td class='positive'>+115.2R</td></tr><tr><td>202509</td><td>73</td><td>74.0%</td><td class='positive'>+75.2R</td><td>53.4%</td><td class='positive'>+101.5R</td></tr><tr><td>202510</td><td>68</td><td>83.8%</td><td class='positive'>+91.1R</td><td>67.6%</td><td class='positive'>+141.5R</td></tr><tr><td>202511</td><td>63</td><td>79.4%</td><td class='positive'>+77.1R</td><td>71.4%</td><td class='positive'>+143.0R</td></tr><tr><td>202512</td><td>75</td><td>77.3%</td><td class='positive'>+86.5R</td><td>69.3%</td><td class='positive'>+162.0R</td></tr><tr><td>202601</td><td>66</td><td>84.8%</td><td class='positive'>+90.5R</td><td>72.7%</td><td class='positive'>+153.0R</td></tr><tr><td>202602</td><td>25</td><td>76.0%</td><td class='positive'>+28.2R</td><td>64.0%</td><td class='positive'>+48.1R</td></tr></table>
+</div>
+
+<!-- ═══════════════════════════ FILTER ANALYSIS ═══════════════════════════ -->
+<div class="section">
+<h2>Filter Analysis — →0.382 Target (1.89R)</h2>
+<h3>By Time of Day (ET)</h3>
+<div class="chart-container"><canvas id="hourChart"></canvas></div>
+<table><tr><th>Filter</th><th>N</th><th>WR</th><th>Edge</th><th>Avg R</th><th>Z</th></tr>
+<tr><td>ET 9:00</td><td>79</td><td>77.2%</td><td class='positive'>+42.6pp</td><td class='positive'>+1.171R</td><td class='positive'>+8.0</td></tr>
+<tr><td>ET 10:00</td><td>145</td><td>82.1%</td><td class='positive'>+47.4pp</td><td class='positive'>+1.309R</td><td class='positive'>+12.0</td></tr>
+<tr><td>ET 11:00</td><td>156</td><td>73.1%</td><td class='positive'>+38.5pp</td><td class='positive'>+1.030R</td><td class='positive'>+10.1</td></tr>
+<tr><td>ET 12:00</td><td>165</td><td>78.8%</td><td class='positive'>+44.2pp</td><td class='positive'>+1.185R</td><td class='positive'>+11.9</td></tr>
+<tr><td>ET 13:00</td><td>138</td><td>75.4%</td><td class='positive'>+40.7pp</td><td class='positive'>+1.084R</td><td class='positive'>+10.1</td></tr>
+<tr><td>ET 14:00</td><td>130</td><td>76.2%</td><td class='positive'>+41.5pp</td><td class='positive'>+1.100R</td><td class='positive'>+10.0</td></tr>
+</table>
+<h3>By Day of Week</h3>
+<div class="chart-container"><canvas id="dowChart"></canvas></div>
+<table><tr><th>Filter</th><th>N</th><th>WR</th><th>Edge</th><th>Avg R</th><th>Z</th></tr>
+<tr><td>Mon</td><td>157</td><td>76.4%</td><td class='positive'>+41.8pp</td><td class='positive'>+1.112R</td><td class='positive'>+11.0</td></tr>
+<tr><td>Tue</td><td>175</td><td>77.1%</td><td class='positive'>+42.5pp</td><td class='positive'>+1.149R</td><td class='positive'>+11.8</td></tr>
+<tr><td>Wed</td><td>185</td><td>83.2%</td><td class='positive'>+48.6pp</td><td class='positive'>+1.321R</td><td class='positive'>+13.9</td></tr>
+<tr><td>Thu</td><td>138</td><td>73.9%</td><td class='positive'>+39.3pp</td><td class='positive'>+1.059R</td><td class='positive'>+9.7</td></tr>
+<tr><td>Fri</td><td>158</td><td>73.4%</td><td class='positive'>+38.8pp</td><td class='positive'>+1.044R</td><td class='positive'>+10.2</td></tr>
+</table>
+<h3>By Body Size (pts)</h3>
+<div class="chart-container"><canvas id="sizeChart"></canvas></div>
+<table><tr><th>Filter</th><th>N</th><th>WR</th><th>Edge</th><th>Avg R</th><th>Z</th></tr>
+<tr><td>5-10</td><td>86</td><td>80.2%</td><td class='positive'>+45.6pp</td><td class='positive'>+1.101R</td><td class='positive'>+8.9</td></tr>
+<tr><td>10-20</td><td>229</td><td>80.8%</td><td class='positive'>+46.2pp</td><td class='positive'>+1.222R</td><td class='positive'>+14.7</td></tr>
+<tr><td>20-40</td><td>291</td><td>78.4%</td><td class='positive'>+43.7pp</td><td class='positive'>+1.205R</td><td class='positive'>+15.7</td></tr>
+<tr><td>40-80</td><td>164</td><td>71.3%</td><td class='positive'>+36.7pp</td><td class='positive'>+1.030R</td><td class='positive'>+9.9</td></tr>
+</table>
+<h3>By Leg/ATR Ratio</h3>
+<div class="chart-container"><canvas id="atrChart"></canvas></div>
+<table><tr><th>Filter</th><th>N</th><th>WR</th><th>Edge</th><th>Avg R</th><th>Z</th></tr>
+<tr><td><1x</td><td>558</td><td>80.6%</td><td class='positive'>+46.0pp</td><td class='positive'>+1.229R</td><td class='positive'>+22.8</td></tr>
+<tr><td>1-2x</td><td>222</td><td>69.4%</td><td class='positive'>+34.7pp</td><td class='positive'>+0.958R</td><td class='positive'>+10.9</td></tr>
+<tr><td>2-3x</td><td>23</td><td>69.6%</td><td class='positive'>+34.9pp</td><td class='positive'>+0.981R</td><td class='positive'>+3.5</td></tr>
+</table>
+<h3>By Direction</h3>
+<div class="chart-container"><canvas id="dirChart"></canvas></div>
+<table><tr><th>Filter</th><th>N</th><th>WR</th><th>Edge</th><th>Avg R</th><th>Z</th></tr>
+<tr><td>Long</td><td>384</td><td>75.5%</td><td class='positive'>+40.9pp</td><td class='positive'>+1.103R</td><td class='positive'>+16.8</td></tr>
+<tr><td>Short</td><td>429</td><td>78.6%</td><td class='positive'>+43.9pp</td><td class='positive'>+1.183R</td><td class='positive'>+19.1</td></tr>
+</table>
+<h3>By 5M Candle Count</h3>
+<div class="chart-container"><canvas id="candleChart"></canvas></div>
+<table><tr><th>Filter</th><th>N</th><th>WR</th><th>Edge</th><th>Avg R</th><th>Z</th></tr>
+<tr><td>1 candle</td><td>728</td><td>76.8%</td><td class='positive'>+42.2pp</td><td class='positive'>+1.131R</td><td class='positive'>+23.9</td></tr>
+<tr><td>2 candles</td><td>54</td><td>79.6%</td><td class='positive'>+45.0pp</td><td class='positive'>+1.248R</td><td class='positive'>+7.0</td></tr>
+<tr><td>3+ candles</td><td>31</td><td>80.6%</td><td class='positive'>+46.0pp</td><td class='positive'>+1.301R</td><td class='positive'>+5.4</td></tr>
+</table>
+<h3>By Minutes to Fill</h3>
+<div class="chart-container"><canvas id="fillChart"></canvas></div>
+<table><tr><th>Filter</th><th>N</th><th>WR</th><th>Edge</th><th>Avg R</th><th>Z</th></tr>
+<tr><td>< 2 min</td><td>813</td><td>77.1%</td><td class='positive'>+42.5pp</td><td class='positive'>+1.145R</td><td class='positive'>+25.5</td></tr>
+</table>
+</div>
+<div class="section">
+<h2>Risk Analysis</h2>
+<div class="two-col">
+<div class="chart-container"><canvas id="riskDistChart"></canvas></div>
+<div class="chart-container"><canvas id="wrRollingChart"></canvas></div>
+</div>
+<div class="stat-grid">
+<div class="stat-card"><div class="value">6.9</div><div class="label">Mean Risk (pts)</div></div>
+<div class="stat-card"><div class="value">5.4</div><div class="label">Median Risk (pts)</div></div>
+<div class="stat-card"><div class="value">17.6</div><div class="label">P95 Risk (pts)</div></div>
+<div class="stat-card"><div class="value">1</div><div class="label">Avg Mins to Fill</div></div>
+<div class="stat-card"><div class="value">1</div><div class="label">Median Mins to Fill</div></div>
+</div>
+</div>
+
+<div class="section">
+<h2>Look-Ahead Bias Audit</h2>
+<div class="setup-box">
+<p><strong>Timeline verified clean:</strong></p>
+<p>1. 5M leg candles form (all historical data known at this point)</p>
+<p>2. Confirmation candle closes — we wait for the full 5-minute close before acting</p>
+<p>3. Calculate body fibs + place limit at 0.786 of body</p>
+<p>4. Watch ticks AFTER confirmation close for fill (trade-through of 1 tick required)</p>
+<p>5. Simulate from fill tick forward — stop at body 1.0, targets below</p>
+<p>6. Intra-leg retrace filter: if 0.786 was already hit within leg formation, trade excluded</p>
+<p style="margin-top:10px"><strong>No information from the future is used at any decision point.</strong></p>
+</div>
+</div>
+
+<div class="section">
+<h2>Concerns & Caveats</h2>
+<div class="warning-box">
+<p>1. <strong>Small risk per trade:</strong> Avg 6.9 pts ($138/contract). Spread, slippage, and execution costs are proportionally larger at this scale. A 1-tick slip can eat 5-15% of risk.</p>
+<p>2. <strong>1-candle 5M legs dominate:</strong> 90% of fills come from single 5M candle legs. These are 5-minute impulse moves, not extended multi-bar trends.</p>
+<p>3. <strong>Fill mechanics:</strong> The limit at 0.786 relies on price bouncing back to the level after the confirmation candle already passed through it. In fast markets, the bounce may not materialize or may gap past your level.</p>
+<p>4. <strong>Confirmation candle self-selection:</strong> Only 22% of clean legs actually produce fills. The 78% that don't fill (conf candle closes above 0.786) have ZERO edge. This means the strategy is inherently selective — it only trades the most extreme retracements.</p>
+<p>5. <strong>Wick/body ratio = 1.8x avg:</strong> These are candles with large wicks relative to bodies, which is where the fib divergence between body and wick measures comes from.</p>
+<p>6. <strong>Sample period:</strong> 239 days (202502–202602). Results need out-of-sample validation.</p>
+<p>7. <strong>Trade-through assumption:</strong> We require price to trade 1 tick through the 0.786 level for a fill. Real market orders may face additional slippage beyond this.</p>
+</div>
+</div>
+
+<script>
+Chart.defaults.color = '#888';
+Chart.defaults.borderColor = '#252535';
+const green = '#00d4aa';
+const red = '#ff6b6b';
+const blue = '#00aaff';
+const yellow = '#ffaa00';
+
+// Equity curve
+new Chart(document.getElementById('equityChart'), {
+  type: 'line',
+  data: {
+    labels: [20250212, 20250213, 20250214, 20250218, 20250219, 20250220, 20250221, 20250224, 20250225, 20250226, 20250227, 20250228, 20250303, 20250304, 20250305, 20250306, 20250307, 20250310, 20250311, 20250312, 20250313, 20250314, 20250317, 20250318, 20250319, 20250320, 20250321, 20250324, 20250325, 20250326, 20250327, 20250328, 20250331, 20250401, 20250402, 20250403, 20250404, 20250407, 20250408, 20250409, 20250410, 20250411, 20250414, 20250415, 20250416, 20250417, 20250421, 20250422, 20250423, 20250424, 20250425, 20250428, 20250429, 20250430, 20250501, 20250502, 20250505, 20250507, 20250509, 20250512, 20250513, 20250515, 20250516, 20250519, 20250520, 20250521, 20250522, 20250523, 20250526, 20250528, 20250529, 20250530, 20250602, 20250604, 20250605, 20250606, 20250609, 20250610, 20250611, 20250613, 20250616, 20250617, 20250618, 20250619, 20250620, 20250623, 20250624, 20250625, 20250626, 20250627, 20250630, 20250701, 20250702, 20250703, 20250704, 20250707, 20250708, 20250709, 20250710, 20250711, 20250714, 20250715, 20250716, 20250717, 20250718, 20250722, 20250723, 20250724, 20250725, 20250728, 20250729, 20250730, 20250731, 20250801, 20250804, 20250805, 20250806, 20250807, 20250808, 20250811, 20250812, 20250813, 20250814, 20250815, 20250818, 20250819, 20250820, 20250821, 20250822, 20250825, 20250826, 20250827, 20250828, 20250829, 20250902, 20250903, 20250904, 20250905, 20250908, 20250909, 20250910, 20250911, 20250915, 20250916, 20250917, 20250918, 20250922, 20250923, 20250924, 20250925, 20250926, 20250929, 20250930, 20251001, 20251002, 20251003, 20251007, 20251008, 20251009, 20251010, 20251013, 20251014, 20251016, 20251017, 20251020, 20251021, 20251022, 20251024, 20251027, 20251028, 20251029, 20251030, 20251031, 20251103, 20251104, 20251105, 20251106, 20251107, 20251110, 20251111, 20251112, 20251113, 20251114, 20251117, 20251118, 20251119, 20251120, 20251121, 20251124, 20251125, 20251126, 20251127, 20251128, 20251201, 20251203, 20251204, 20251205, 20251208, 20251209, 20251210, 20251211, 20251212, 20251215, 20251216, 20251217, 20251218, 20251219, 20251222, 20251224, 20251229, 20251230, 20251231, 20260102, 20260105, 20260106, 20260107, 20260108, 20260109, 20260112, 20260113, 20260114, 20260115, 20260116, 20260119, 20260120, 20260122, 20260123, 20260126, 20260127, 20260128, 20260129, 20260130, 20260202, 20260203, 20260204, 20260206, 20260209, 20260210, 20260211],
+    datasets: [
+      { label: '→0.382 (1.89R)', data: [7.88, 12.26, 19.4, 22.02, 24.48, 28.84, 35.77, 39.44, 40.16, 47.53, 50.07, 56.45, 59.13, 70.97, 77.27, 81.6, 86.05, 87.68, 91.21, 100.4, 99.13, 101.73, 100.56, 103.2, 109.34, 116.71, 118.55, 122.02, 126.29, 127.03, 126.78, 128.34, 135.72, 141.24, 146.52, 150.17, 158.44, 160.31, 164.85, 166.72, 165.71, 164.48, 167.99, 175.39, 181.59, 188.95, 189.73, 190.17, 203.03, 204.57, 203.55, 204.12, 214.89, 215.67, 221.12, 226.5, 228.22, 231.84, 240.73, 246.24, 249.83, 251.68, 254.2, 263.22, 267.4, 272.93, 274.75, 275.31, 274.14, 276.48, 280.88, 282.74, 291.78, 294.2, 294.99, 296.6, 300.19, 303.83, 310.06, 310.87, 310.43, 314.83, 318.29, 325.22, 332.45, 333.22, 337.42, 346.26, 349.91, 348.86, 352.42, 356.8, 357.37, 359.11, 361.53, 363.13, 363.5, 365.38, 367.18, 367.82, 373.17, 377.41, 379.29, 381.6, 385.17, 390.27, 390.95, 395.17, 396.19, 403.79, 409.26, 408.78, 410.62, 414.16, 413.71, 413.83, 416.41, 422.62, 424.31, 428.69, 432.35, 439.51, 440.22, 444.53, 448.56, 453.96, 455.79, 465.53, 470.4, 471.65, 474.04, 481.38, 479.09, 482.65, 489.68, 496.83, 498.3, 498.06, 503.06, 502.83, 504.21, 503.63, 509.45, 511.58, 520.55, 522.38, 526.49, 537.22, 542.54, 543.14, 544.66, 557.07, 557.84, 565.03, 569.28, 578.27, 577.99, 580.44, 582.23, 587.77, 591.36, 597.51, 604.85, 612.2, 616.55, 625.61, 632.76, 634.57, 636.86, 638.61, 646.33, 648.18, 648.98, 654.25, 659.4, 660.23, 659.17, 664.49, 673.48, 675.92, 677.72, 683.17, 683.96, 687.65, 691.37, 698.78, 699.64, 702.36, 703.08, 708.41, 719.12, 722.45, 726.07, 732.25, 741.24, 740.98, 745.11, 747.41, 756.44, 760.09, 765.39, 772.39, 779.64, 784.1, 788.51, 794.02, 799.18, 802.65, 801.59, 804.16, 809.43, 812.57, 816.93, 822.37, 822.99, 826.65, 837.55, 839.38, 841.76, 849.1, 854.47, 858.83, 862.05, 861.01, 869.02, 874.4, 879.85, 886.04, 884.98, 895.73, 899.37, 903.04, 908.03, 914.43, 929.99, 931.52, 930.46, 932.31, 931.29], borderColor: green, fill: false, pointRadius: 0, borderWidth: 2 },
+      { label: '→0.000 (3.67R)', data: [16.8, 26.54, 36.15, 37.66, 43.69, 53.41, 64.59, 67.15, 69.66, 79.5, 80.94, 89.78, 96.04, 115.7, 129.14, 140.61, 150.41, 155.61, 164.5, 182.61, 183.12, 189.29, 188.12, 194.34, 207.62, 217.45, 221.08, 228.12, 233.07, 235.59, 237.13, 242.26, 252.11, 258.31, 266.06, 268.6, 285.8, 289.45, 299.35, 298.33, 297.32, 297.88, 306.74, 311.93, 320.6, 325.76, 323.65, 322.99, 338.99, 339.43, 338.41, 337.87, 350.01, 352.58, 363.38, 374.11, 377.62, 384.81, 402.62, 404.15, 406.63, 410.27, 416.36, 434.3, 443.84, 450.05, 453.65, 457.78, 456.62, 462.52, 472.28, 471.25, 489.22, 490.53, 493.11, 491.83, 489.64, 496.85, 505.55, 508.15, 509.49, 514.57, 516.93, 531.0, 536.02, 538.58, 538.79, 547.21, 549.76, 548.7, 555.83, 560.9, 563.25, 566.77, 568.09, 571.47, 575.42, 579.08, 582.66, 585.09, 595.79, 605.39, 609.05, 614.94, 622.08, 627.86, 630.32, 639.9, 644.49, 656.34, 662.49, 663.8, 667.42, 674.53, 675.87, 679.56, 685.71, 699.06, 702.54, 702.92, 710.15, 719.78, 722.27, 731.94, 736.65, 742.73, 741.67, 762.12, 769.47, 764.94, 761.55, 777.82, 775.53, 782.66, 792.15, 797.09, 797.46, 799.01, 811.15, 812.7, 812.98, 809.51, 817.8, 823.5, 832.05, 830.99, 835.79, 852.55, 863.23, 860.93, 866.03, 881.58, 884.14, 898.47, 908.08, 921.32, 918.15, 919.49, 923.07, 929.29, 931.78, 945.07, 954.88, 969.37, 979.07, 997.06, 1003.79, 1007.38, 1008.57, 1012.1, 1024.08, 1023.04, 1025.62, 1031.58, 1039.19, 1041.8, 1040.74, 1048.54, 1066.45, 1072.46, 1076.04, 1086.85, 1089.42, 1096.69, 1099.3, 1113.85, 1116.5, 1122.78, 1125.29, 1137.76, 1154.51, 1161.41, 1168.6, 1181.92, 1195.16, 1196.68, 1206.17, 1213.82, 1227.1, 1234.33, 1246.76, 1262.69, 1272.41, 1282.23, 1287.32, 1298.18, 1304.03, 1311.06, 1310.01, 1316.14, 1322.1, 1330.59, 1335.64, 1346.43, 1344.16, 1346.71, 1363.65, 1367.27, 1373.21, 1387.7, 1398.42, 1408.14, 1416.71, 1415.67, 1427.94, 1429.32, 1440.13, 1453.45, 1452.4, 1469.19, 1476.4, 1483.64, 1493.98, 1498.18, 1529.8, 1534.9, 1533.84, 1532.8, 1531.78], borderColor: blue, fill: false, pointRadius: 0, borderWidth: 2 }
+    ]
+  },
+  options: { plugins: { title: { display: true, text: 'Cumulative R — Daily', color: '#ccc' } }, scales: { x: { display: false }, y: { title: { display: true, text: 'Cumulative R' } } } }
+});
+
+// Confirmation candle chart
+new Chart(document.getElementById('confCandleChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Conf ABOVE 0.786\n(78% of legs)', 'Conf BELOW 0.786\n(22% of legs)'],
+    datasets: [
+      { label: 'Fill Rate %', data: [5.9, 99.6], backgroundColor: [red+'88', green+'88'], borderColor: [red, green], borderWidth: 1 },
+      { label: 'WR →0.382 %', data: [33.1, 86.4], backgroundColor: ['#ff6b6b44', '#00d4aa44'], borderColor: [red, green], borderWidth: 1 }
+    ]
+  },
+  options: {
+    plugins: { title: { display: true, text: 'Confirmation Candle Close: Above vs Below 0.786', color: '#ccc' } },
+    scales: { y: { beginAtZero: true, max: 100, title: { display: true, text: '%' } } }
+  }
+});
+
+// Monthly bars
+
+new Chart(document.getElementById('monthlyChart382'), {
+  type: 'bar',
+  data: {
+    labels: ["202502", "202503", "202504", "202505", "202506", "202507", "202508", "202509", "202510", "202511", "202512", "202601", "202602"],
+    datasets: [{ label: 'Monthly R', data: [56.4, 79.3, 80.0, 67.1, 69.7, 58.2, 72.0, 75.2, 91.1, 77.1, 86.5, 90.5, 28.2],
+      backgroundColor: [56.4, 79.3, 80.0, 67.1, 69.7, 58.2, 72.0, 75.2, 91.1, 77.1, 86.5, 90.5, 28.2].map(v => v > 0 ? green : red) }]
+  },
+  options: { plugins: { title: { display: true, text: '→0.382 Monthly R', color: '#ccc' } } }
+});
+
+new Chart(document.getElementById('monthlyChart000'), {
+  type: 'bar',
+  data: {
+    labels: ["202502", "202503", "202504", "202505", "202506", "202507", "202508", "202509", "202510", "202511", "202512", "202601", "202602"],
+    datasets: [{ label: 'Monthly R', data: [89.8, 162.3, 100.5, 118.7, 84.6, 111.6, 115.2, 101.5, 141.5, 143.0, 162.0, 153.0, 48.1],
+      backgroundColor: [89.8, 162.3, 100.5, 118.7, 84.6, 111.6, 115.2, 101.5, 141.5, 143.0, 162.0, 153.0, 48.1].map(v => v > 0 ? green : red) }]
+  },
+  options: { plugins: { title: { display: true, text: '→0.000 Monthly R', color: '#ccc' } } }
+});
+
+new Chart(document.getElementById('hourChart'), {
+  type: 'bar',
+  data: {
+    labels: ["ET 9:00", "ET 10:00", "ET 11:00", "ET 12:00", "ET 13:00", "ET 14:00"],
+    datasets: [
+      { label: 'Win Rate %', data: [77.2, 82.1, 73.1, 78.8, 75.4, 76.2], backgroundColor: green+'88', borderColor: green, borderWidth: 1 },
+      { label: 'Avg R', data: [1.171, 1.309, 1.03, 1.185, 1.084, 1.1], backgroundColor: blue+'88', borderColor: blue, borderWidth: 1, yAxisID: 'y1' }
+    ]
+  },
+  options: {
+    plugins: { title: { display: true, text: 'By Time of Day (ET)', color: '#ccc' } },
+    scales: {
+      y: { beginAtZero: true, max: 100, title: { display: true, text: 'Win Rate %' } },
+      y1: { position: 'right', title: { display: true, text: 'Avg R' }, grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('dowChart'), {
+  type: 'bar',
+  data: {
+    labels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    datasets: [
+      { label: 'Win Rate %', data: [76.4, 77.1, 83.2, 73.9, 73.4], backgroundColor: green+'88', borderColor: green, borderWidth: 1 },
+      { label: 'Avg R', data: [1.112, 1.149, 1.321, 1.059, 1.044], backgroundColor: blue+'88', borderColor: blue, borderWidth: 1, yAxisID: 'y1' }
+    ]
+  },
+  options: {
+    plugins: { title: { display: true, text: 'By Day of Week', color: '#ccc' } },
+    scales: {
+      y: { beginAtZero: true, max: 100, title: { display: true, text: 'Win Rate %' } },
+      y1: { position: 'right', title: { display: true, text: 'Avg R' }, grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('sizeChart'), {
+  type: 'bar',
+  data: {
+    labels: ["5-10", "10-20", "20-40", "40-80"],
+    datasets: [
+      { label: 'Win Rate %', data: [80.2, 80.8, 78.4, 71.3], backgroundColor: green+'88', borderColor: green, borderWidth: 1 },
+      { label: 'Avg R', data: [1.101, 1.222, 1.205, 1.03], backgroundColor: blue+'88', borderColor: blue, borderWidth: 1, yAxisID: 'y1' }
+    ]
+  },
+  options: {
+    plugins: { title: { display: true, text: 'By Body Size (pts)', color: '#ccc' } },
+    scales: {
+      y: { beginAtZero: true, max: 100, title: { display: true, text: 'Win Rate %' } },
+      y1: { position: 'right', title: { display: true, text: 'Avg R' }, grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('atrChart'), {
+  type: 'bar',
+  data: {
+    labels: ["<1x", "1-2x", "2-3x"],
+    datasets: [
+      { label: 'Win Rate %', data: [80.6, 69.4, 69.6], backgroundColor: green+'88', borderColor: green, borderWidth: 1 },
+      { label: 'Avg R', data: [1.229, 0.958, 0.981], backgroundColor: blue+'88', borderColor: blue, borderWidth: 1, yAxisID: 'y1' }
+    ]
+  },
+  options: {
+    plugins: { title: { display: true, text: 'By Leg/ATR Ratio', color: '#ccc' } },
+    scales: {
+      y: { beginAtZero: true, max: 100, title: { display: true, text: 'Win Rate %' } },
+      y1: { position: 'right', title: { display: true, text: 'Avg R' }, grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('dirChart'), {
+  type: 'bar',
+  data: {
+    labels: ["Long", "Short"],
+    datasets: [
+      { label: 'Win Rate %', data: [75.5, 78.6], backgroundColor: green+'88', borderColor: green, borderWidth: 1 },
+      { label: 'Avg R', data: [1.103, 1.183], backgroundColor: blue+'88', borderColor: blue, borderWidth: 1, yAxisID: 'y1' }
+    ]
+  },
+  options: {
+    plugins: { title: { display: true, text: 'By Direction', color: '#ccc' } },
+    scales: {
+      y: { beginAtZero: true, max: 100, title: { display: true, text: 'Win Rate %' } },
+      y1: { position: 'right', title: { display: true, text: 'Avg R' }, grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('candleChart'), {
+  type: 'bar',
+  data: {
+    labels: ["1 candle", "2 candles", "3+ candles"],
+    datasets: [
+      { label: 'Win Rate %', data: [76.8, 79.6, 80.6], backgroundColor: green+'88', borderColor: green, borderWidth: 1 },
+      { label: 'Avg R', data: [1.131, 1.248, 1.301], backgroundColor: blue+'88', borderColor: blue, borderWidth: 1, yAxisID: 'y1' }
+    ]
+  },
+  options: {
+    plugins: { title: { display: true, text: 'By 5M Candle Count', color: '#ccc' } },
+    scales: {
+      y: { beginAtZero: true, max: 100, title: { display: true, text: 'Win Rate %' } },
+      y1: { position: 'right', title: { display: true, text: 'Avg R' }, grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('fillChart'), {
+  type: 'bar',
+  data: {
+    labels: ["< 2 min"],
+    datasets: [
+      { label: 'Win Rate %', data: [77.1], backgroundColor: green+'88', borderColor: green, borderWidth: 1 },
+      { label: 'Avg R', data: [1.145], backgroundColor: blue+'88', borderColor: blue, borderWidth: 1, yAxisID: 'y1' }
+    ]
+  },
+  options: {
+    plugins: { title: { display: true, text: 'By Minutes to Fill', color: '#ccc' } },
+    scales: {
+      y: { beginAtZero: true, max: 100, title: { display: true, text: 'Win Rate %' } },
+      y1: { position: 'right', title: { display: true, text: 'Avg R' }, grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('riskDistChart'), {
+  type: 'bar',
+  data: {
+    labels: ["0-3", "3-5", "5-7", "7-10", "10-15", "15-20", "20-30", "30-50", "50-80"],
+    datasets: [{ label: 'Trades', data: [174, 206, 136, 143, 96, 30, 20, 7, 1], backgroundColor: yellow+'88' }]
+  },
+  options: { plugins: { title: { display: true, text: 'Risk Distribution (pts)', color: '#ccc' } } }
+});
+
+new Chart(document.getElementById('wrRollingChart'), {
+  type: 'line',
+  data: {
+    labels: Array.from({length: 763}, (_, i) => i + 50),
+    datasets: [
+      { label: 'Rolling 50-trade WR (→382)', data: [78.0, 80.0, 80.0, 80.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 80.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 76.0, 76.0, 76.0, 76.0, 76.0, 78.0, 78.0, 76.0, 74.0, 74.0, 74.0, 72.0, 74.0, 74.0, 74.0, 74.0, 72.0, 72.0, 74.0, 74.0, 74.0, 74.0, 72.0, 74.0, 72.0, 70.0, 70.0, 70.0, 68.0, 68.0, 66.0, 66.0, 66.0, 68.0, 68.0, 66.0, 66.0, 68.0, 68.0, 68.0, 68.0, 68.0, 68.0, 68.0, 70.0, 68.0, 68.0, 68.0, 70.0, 68.0, 70.0, 70.0, 70.0, 68.0, 66.0, 66.0, 64.0, 66.0, 68.0, 68.0, 68.0, 70.0, 70.0, 72.0, 72.0, 72.0, 74.0, 72.0, 72.0, 70.0, 70.0, 70.0, 72.0, 72.0, 74.0, 76.0, 76.0, 74.0, 76.0, 78.0, 80.0, 80.0, 80.0, 78.0, 78.0, 78.0, 76.0, 76.0, 74.0, 72.0, 72.0, 70.0, 68.0, 68.0, 68.0, 70.0, 70.0, 70.0, 70.0, 72.0, 72.0, 70.0, 72.0, 74.0, 76.0, 76.0, 78.0, 78.0, 78.0, 76.0, 76.0, 74.0, 72.0, 70.0, 70.0, 70.0, 70.0, 72.0, 72.0, 74.0, 74.0, 74.0, 72.0, 70.0, 70.0, 70.0, 68.0, 70.0, 68.0, 68.0, 66.0, 64.0, 64.0, 66.0, 66.0, 68.0, 70.0, 70.0, 72.0, 72.0, 72.0, 74.0, 76.0, 76.0, 76.0, 76.0, 76.0, 76.0, 76.0, 76.0, 76.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 80.0, 80.0, 80.0, 82.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 82.0, 84.0, 86.0, 86.0, 86.0, 88.0, 86.0, 86.0, 84.0, 86.0, 86.0, 86.0, 86.0, 84.0, 84.0, 84.0, 84.0, 82.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 82.0, 82.0, 82.0, 82.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 78.0, 78.0, 78.0, 78.0, 76.0, 74.0, 74.0, 74.0, 74.0, 72.0, 72.0, 72.0, 72.0, 74.0, 74.0, 74.0, 74.0, 74.0, 74.0, 76.0, 78.0, 80.0, 78.0, 80.0, 80.0, 78.0, 80.0, 80.0, 80.0, 80.0, 82.0, 82.0, 82.0, 82.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 78.0, 78.0, 78.0, 78.0, 76.0, 74.0, 76.0, 76.0, 74.0, 76.0, 78.0, 78.0, 78.0, 78.0, 78.0, 80.0, 80.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 76.0, 76.0, 76.0, 76.0, 76.0, 78.0, 78.0, 76.0, 78.0, 76.0, 76.0, 76.0, 74.0, 74.0, 72.0, 72.0, 72.0, 74.0, 74.0, 74.0, 74.0, 74.0, 74.0, 74.0, 76.0, 76.0, 74.0, 74.0, 74.0, 74.0, 74.0, 76.0, 76.0, 74.0, 74.0, 74.0, 72.0, 70.0, 72.0, 72.0, 70.0, 70.0, 70.0, 68.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 72.0, 70.0, 72.0, 72.0, 72.0, 74.0, 72.0, 74.0, 74.0, 72.0, 72.0, 72.0, 72.0, 74.0, 74.0, 74.0, 74.0, 74.0, 72.0, 74.0, 76.0, 76.0, 76.0, 74.0, 72.0, 74.0, 76.0, 76.0, 76.0, 78.0, 78.0, 78.0, 78.0, 80.0, 78.0, 78.0, 80.0, 80.0, 80.0, 80.0, 78.0, 76.0, 74.0, 76.0, 76.0, 76.0, 76.0, 76.0, 76.0, 76.0, 76.0, 78.0, 78.0, 78.0, 76.0, 74.0, 76.0, 74.0, 72.0, 74.0, 72.0, 72.0, 70.0, 70.0, 70.0, 70.0, 70.0, 68.0, 68.0, 68.0, 66.0, 64.0, 64.0, 64.0, 66.0, 64.0, 64.0, 64.0, 66.0, 64.0, 66.0, 66.0, 66.0, 64.0, 66.0, 66.0, 66.0, 66.0, 66.0, 66.0, 68.0, 68.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 70.0, 72.0, 70.0, 70.0, 72.0, 72.0, 74.0, 74.0, 76.0, 76.0, 76.0, 76.0, 76.0, 76.0, 78.0, 78.0, 80.0, 82.0, 82.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 86.0, 86.0, 84.0, 84.0, 84.0, 84.0, 82.0, 82.0, 82.0, 82.0, 82.0, 82.0, 84.0, 84.0, 84.0, 84.0, 82.0, 82.0, 82.0, 82.0, 82.0, 82.0, 82.0, 82.0, 82.0, 84.0, 84.0, 86.0, 88.0, 88.0, 86.0, 86.0, 86.0, 86.0, 86.0, 86.0, 86.0, 84.0, 86.0, 86.0, 84.0, 84.0, 84.0, 84.0, 84.0, 82.0, 84.0, 84.0, 84.0, 84.0, 84.0, 82.0, 84.0, 84.0, 86.0, 84.0, 86.0, 86.0, 86.0, 86.0, 84.0, 84.0, 84.0, 84.0, 84.0, 82.0, 84.0, 82.0, 80.0, 78.0, 78.0, 78.0, 78.0, 78.0, 76.0, 76.0, 76.0, 76.0, 76.0, 76.0, 78.0, 76.0, 76.0, 76.0, 76.0, 76.0, 76.0, 78.0, 76.0, 76.0, 78.0, 78.0, 78.0, 78.0, 78.0, 80.0, 80.0, 78.0, 78.0, 78.0, 76.0, 78.0, 76.0, 76.0, 76.0, 78.0, 76.0, 76.0, 76.0, 74.0, 76.0, 76.0, 76.0, 76.0, 76.0, 78.0, 78.0, 80.0, 82.0, 84.0, 84.0, 84.0, 84.0, 82.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 82.0, 82.0, 82.0, 80.0, 80.0, 80.0, 80.0, 78.0, 80.0, 80.0, 78.0, 78.0, 76.0, 76.0, 76.0, 76.0, 76.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 80.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 78.0, 76.0, 76.0, 76.0, 76.0, 76.0, 78.0, 76.0, 76.0, 76.0, 76.0, 76.0, 76.0, 78.0, 80.0, 80.0, 80.0, 78.0, 78.0, 78.0, 80.0, 80.0, 80.0, 80.0, 80.0, 82.0, 82.0, 80.0, 78.0, 78.0, 78.0, 78.0, 78.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 80.0, 82.0, 82.0, 84.0, 84.0, 84.0, 84.0, 82.0, 82.0, 82.0, 82.0, 82.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 82.0, 82.0, 82.0, 82.0, 80.0, 78.0, 80.0, 82.0, 82.0, 82.0, 80.0, 80.0, 80.0, 82.0, 82.0, 82.0, 82.0, 84.0, 86.0, 86.0, 86.0, 84.0, 84.0, 82.0, 82.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 86.0, 86.0, 86.0, 86.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 84.0, 86.0, 86.0, 86.0, 88.0, 86.0, 84.0, 84.0, 86.0, 86.0, 84.0, 84.0], borderColor: green, fill: false, pointRadius: 0, borderWidth: 1.5 },
+      { label: 'Random Walk', data: Array(763).fill(34.6), borderColor: red, borderDash: [5,5], fill: false, pointRadius: 0, borderWidth: 1 }
+    ]
+  },
+  options: { plugins: { title: { display: true, text: 'Rolling 50-Trade Win Rate (→0.382)', color: '#ccc' } }, scales: { x: { display: false } } }
+});
+
+</script>
+</body>
+</html>

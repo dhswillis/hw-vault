@@ -61,3 +61,27 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-11 08:30] synthesis | tempo-three-layers.md — framework placing every Tempo claim into Layer 1 canonical / Layer 2 mining / Layer 3 implementation
 
 ## [2026-04-11 08:30] synthesis | research-arc-map.md — master map of five phases, five bug waves, three parallel tracks, Unified Brain pivot
+
+## [2026-04-11 14:30] vault-map | scanned home folder (336 docs); 166 unmapped copied to raw-sources/imports/2026-04-11/ with full wiki-link manifest; 2 content-mismatched duplicates flagged without overwrite
+
+## [2026-04-11 14:45] schema | CLAUDE.md upgraded — Obsidian best practices integrated: new operations /inbox /weekly /moc /capture; new folders wiki/maps/, weekly/, personal/legal/; reserved tags extended (dead-strategy, canonical, draft, in-flight, needs-reingest); authority hierarchy codified; plugin recommendations (Templater, Dataview, Periodic Notes, Tasks, Calendar, QuickAdd)
+
+## [2026-04-11 14:45] templates | added templates/weekly.md, templates/moc.md, templates/decision.md, templates/person.md
+
+## [2026-04-11 14:45] templates | added templates/prompts/ reusable prompt library — weekly-review.md, inbox-processing.md, ingest.md, moc.md
+
+## [2026-04-11 14:45] concepts | wiki/concepts/maps-of-content.md + wiki/concepts/inbox-processing.md created to back the new /moc and /inbox operations
+
+## [2026-04-11 14:45] ingest | audits cluster cataloged → wiki/summaries/audits-cluster.md (7-file contamination chronology view)
+
+## [2026-04-11 14:45] memory | saved user_role_haven_park.md from Claude data export — Harrison is Director of AM at Haven Park Communities (PE-backed MHC, 30k→60-80k units); institutional RE is primary context, trading is side project
+
+## [2026-04-11 14:45] memory | saved tempo_strategy_codified_rules.md — Harrison's own canonical Tempo entry rules (FVG on dynamic TF → close through → HTF DOL sweep → inverse entry)
+
+## [2026-04-11 14:45] memory | saved unified_brain_pivot.md — Nova + Sable AI researchers, BOS_FVG DEAD confirmed, v24 IFVG MTF cascade only sim strategy, 7 dead signals listed, anti-stupidity rules hard-coded
+
+## [2026-04-11 14:45] memory | saved bar_sim_trailing_bug_rule.md — DO NOT TRAIL ON BARS; use tick-level, fixed R, or close-through soft stops
+
+## [2026-04-11 14:45] memory | saved feedback_user_corrections_authoritative.md — user mid-session edits are ground truth; re-thread downstream rather than argue
+
+## [2026-04-11 14:45] privacy | extended .gitignore to exclude personal/legal/ and raw-sources/claude-data/ from git tracking

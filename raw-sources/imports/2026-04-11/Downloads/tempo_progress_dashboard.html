@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tempo Trading System — Progress Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #e6edf3; padding: 24px; line-height: 1.5; }
+  h1 { font-size: 28px; margin-bottom: 4px; color: #fff; }
+  .subtitle { color: #8b949e; margin-bottom: 32px; font-size: 14px; }
+
+  /* Overall progress bar */
+  .overall { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 24px; margin-bottom: 32px; }
+  .overall h2 { font-size: 18px; margin-bottom: 12px; }
+  .progress-bar { background: #21262d; border-radius: 8px; height: 32px; overflow: hidden; position: relative; }
+  .progress-fill { height: 100%; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; }
+  .progress-fill.green { background: linear-gradient(90deg, #238636, #2ea043); }
+  .progress-fill.yellow { background: linear-gradient(90deg, #9e6a03, #d29922); }
+  .progress-fill.red { background: linear-gradient(90deg, #da3633, #f85149); }
+  .overall-stats { display: flex; gap: 24px; margin-top: 16px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 28px; font-weight: 700; }
+  .stat-num.green { color: #3fb950; }
+  .stat-num.yellow { color: #d29922; }
+  .stat-num.red { color: #f85149; }
+  .stat-num.blue { color: #58a6ff; }
+  .stat-label { font-size: 12px; color: #8b949e; }
+
+  /* Stage progression */
+  .stages { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .stage-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 16px; position: relative; }
+  .stage-card.active { border-color: #58a6ff; box-shadow: 0 0 12px rgba(88,166,255,0.15); }
+  .stage-card.done { border-color: #238636; }
+  .stage-card.future { opacity: 0.5; }
+  .stage-num { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .stage-num.done { color: #3fb950; }
+  .stage-num.active { color: #58a6ff; }
+  .stage-num.future { color: #484f58; }
+  .stage-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .stage-timeline { font-size: 12px; color: #8b949e; }
+
+  /* Week-by-week grid */
+  .section-title { font-size: 22px; font-weight: 600; margin: 32px 0 16px; }
+
+  .week-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+  .week-row { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; }
+  .week-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .week-label { font-size: 14px; font-weight: 600; }
+  .week-focus { font-size: 14px; color: #8b949e; }
+  .status-badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge-done { background: rgba(35,134,54,0.2); color: #3fb950; }
+  .badge-partial { background: rgba(210,153,34,0.2); color: #d29922; }
+  .badge-blocked { background: rgba(218,54,51,0.2); color: #f85149; }
+  .badge-not-started { background: rgba(72,79,88,0.2); color: #8b949e; }
+
+  .tasks { margin-top: 8px; }
+  .task { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; font-size: 13px; }
+  .task-icon { flex-shrink: 0; width: 18px; text-align: center; }
+  .task-plan { color: #8b949e; flex: 1; }
+  .task-reality { flex: 1; }
+  .task-reality.good { color: #3fb950; }
+  .task-reality.warn { color: #d29922; }
+  .task-reality.bad { color: #f85149; }
+  .task-reality.neutral { color: #8b949e; }
+
+  .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+  .col-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #484f58; padding-bottom: 4px; border-bottom: 1px solid #21262d; margin-bottom: 4px; }
+
+  /* Key insights */
+  .insights { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 24px; margin-bottom: 32px; }
+  .insights h2 { font-size: 18px; margin-bottom: 16px; }
+  .insight { padding: 12px 0; border-bottom: 1px solid #21262d; }
+  .insight:last-child { border-bottom: none; }
+  .insight-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .insight-label.ahead { color: #3fb950; }
+  .insight-label.behind { color: #f85149; }
+  .insight-label.blocker { color: #d29922; }
+  .insight-text { font-size: 14px; }
+
+  /* Component status */
+  .components { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .comp-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; }
+  .comp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .comp-title { font-size: 16px; font-weight: 600; }
+  .comp-items { font-size: 13px; }
+  .comp-item { display: flex; gap: 8px; padding: 4px 0; }
+  .check { color: #3fb950; }
+  .cross { color: #f85149; }
+  .warn-icon { color: #d29922; }
+</style>
+</head>
+<body>
+
+<h1>Tempo Trading System — Progress vs. Plan</h1>
+<p class="subtitle">Option 4: Hybrid Full Stack &nbsp;|&nbsp; Last updated: February 11, 2026 &nbsp;|&nbsp; Plan start: ~Feb 2, 2026 (~1.5 weeks in)</p>
+
+<!-- Overall Progress -->
+<div class="overall">
+  <h2>Overall Stage 1 Progress</h2>
+  <div class="progress-bar">
+    <div class="progress-fill yellow" style="width: 30%">~30% of Stage 1</div>
+  </div>
+  <div class="overall-stats">
+    <div class="stat"><div class="stat-num green">281</div><div class="stat-label">Videos Transcribed (of 324)</div></div>
+    <div class="stat"><div class="stat-num green">257K</div><div class="stat-label">Words Extracted</div></div>
+    <div class="stat"><div class="stat-num yellow">2</div><div class="stat-label">Backtests Run (both flawed)</div></div>
+    <div class="stat"><div class="stat-num red">0</div><div class="stat-label">Production Components Live</div></div>
+    <div class="stat"><div class="stat-num blue">1.5</div><div class="stat-label">Weeks Elapsed (of 8)</div></div>
+  </div>
+</div>
+
+<!-- Stage Progression -->
+<h2 class="section-title">Stage Progression</h2>
+<div class="stages">
+  <div class="stage-card active">
+    <div class="stage-num active">Stage 1 — IN PROGRESS</div>
+    <div class="stage-title">Foundation + First Brain</div>
+    <div class="stage-timeline">Weeks 1–8 &nbsp;|&nbsp; Currently in Week ~2</div>
+  </div>
+  <div class="stage-card future">
+    <div class="stage-num future">Stage 2</div>
+    <div class="stage-title">Paper → Live</div>
+    <div class="stage-timeline">Weeks 8–16</div>
+  </div>
+  <div class="stage-card future">
+    <div class="stage-num future">Stage 3</div>
+    <div class="stage-title">Multi-Brain</div>
+    <div class="stage-timeline">Weeks 16–28</div>
+  </div>
+  <div class="stage-card future">
+    <div class="stage-num future">Stage 4</div>
+    <div class="stage-title">Full System</div>
+    <div class="stage-timeline">Months 6–12</div>
+  </div>
+  <div class="stage-card future">
+    <div class="stage-num future">Stage 5</div>
+    <div class="stage-title">Institutional Scale</div>
+    <div class="stage-timeline">Year 2+</div>
+  </div>
+</div>
+
+<!-- Week by Week -->
+<h2 class="section-title">Stage 1: Week-by-Week Plan vs. Reality</h2>
+<div class="week-grid">
+
+  <!-- Week 1 -->
+  <div class="week-row">
+    <div class="week-header">
+      <div>
+        <span class="week-label">Week 1</span>
+        <span class="week-focus"> — Dev Environment</span>
+      </div>
+      <span class="status-badge badge-partial">Mostly Done</span>
+    </div>
+    <div class="columns">
+      <div>
+        <div class="col-header">Plan</div>
+        <div class="comp-items">
+          <div class="comp-item">MacBook setup (Homebrew, Node, Python, Git)</div>
+          <div class="comp-item">Sign up QuantVPS</div>
+          <div class="comp-item">Install Claude Code</div>
+          <div class="comp-item">Create GitHub repo</div>
+          <div class="comp-item">Create initial knowledge base</div>
+          <div class="comp-item">Install OpenClaw locally</div>
+        </div>
+      </div>
+      <div>
+        <div class="col-header">Reality</div>
+        <div class="comp-items">
+          <div class="comp-item"><span class="check">✓</span> MacBook running, tools installed</div>
+          <div class="comp-item"><span class="check">✓</span> QuantVPS purchased & accessible (172.93.181.209)</div>
+          <div class="comp-item"><span class="check">✓</span> Claude Code / Cowork active</div>
+          <div class="comp-item"><span class="cross">✗</span> No GitHub repo created yet</div>
+          <div class="comp-item"><span class="warn-icon">⚠</span> TEMPO_PROJECT_STATE.md exists but no master KNOWLEDGE_BASE.md</div>
+          <div class="comp-item"><span class="warn-icon">⚠</span> OpenClaw config files created, not yet installed/onboarded on VPS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week 2 -->
+  <div class="week-row">
+    <div class="week-header">
+      <div>
+        <span class="week-label">Week 2</span>
+        <span class="week-focus"> — API Wrapper + Context Engine</span>
+      </div>
+      <span class="status-badge badge-not-started">Not Started</span>
+    </div>
+    <div class="columns">
+      <div>
+        <div class="col-header">Plan</div>
+        <div class="comp-items">
+          <div class="comp-item">Build FastAPI wrapper (100K+ token system prompt)</div>
+          <div class="comp-item">Build Context Engine v1 (VIX, calendar, day type, sessions)</div>
+          <div class="comp-item">Deploy both on VPS</div>
+        </div>
+      </div>
+      <div>
+        <div class="col-header">Reality</div>
+        <div class="comp-items">
+          <div class="comp-item"><span class="warn-icon">⚠</span> genius-brain.js skeleton exists (basic Node, not FastAPI)</div>
+          <div class="comp-item"><span class="cross">✗</span> Context Engine not started</div>
+          <div class="comp-item"><span class="cross">✗</span> Nothing deployed on VPS yet (files just uploaded today)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week 3 -->
+  <div class="week-row">
+    <div class="week-header">
+      <div>
+        <span class="week-label">Week 3</span>
+        <span class="week-focus"> — Quantower Bridge</span>
+      </div>
+      <span class="status-badge badge-not-started">Not Started</span>
+    </div>
+    <div class="columns">
+      <div>
+        <div class="col-header">Plan</div>
+        <div class="comp-items">
+          <div class="comp-item">Build C# FileWatcher strategy for Quantower</div>
+          <div class="comp-item">Test signal.json → order → fill.json round trip</div>
+        </div>
+      </div>
+      <div>
+        <div class="col-header">Reality</div>
+        <div class="comp-items">
+          <div class="comp-item"><span class="cross">✗</span> Not started</div>
+          <div class="comp-item"><span class="cross">✗</span> Not started</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week 4-5 -->
+  <div class="week-row">
+    <div class="week-header">
+      <div>
+        <span class="week-label">Weeks 4–5</span>
+        <span class="week-focus"> — Tempo Brain Extraction + Backtest</span>
+      </div>
+      <span class="status-badge badge-partial">Way Ahead on Extraction, Behind on Code</span>
+    </div>
+    <div class="columns">
+      <div>
+        <div class="col-header">Plan</div>
+        <div class="comp-items">
+          <div class="comp-item">Watch Tempo videos with extraction checklist</div>
+          <div class="comp-item">Codify rules into structured format</div>
+          <div class="comp-item">Claude Code writes brain as Python module</div>
+          <div class="comp-item">Build QuantConnect backtest</div>
+        </div>
+      </div>
+      <div>
+        <div class="col-header">Reality</div>
+        <div class="comp-items">
+          <div class="comp-item"><span class="check">✓</span> <strong>281/324 videos transcribed</strong> (257K words) — massively ahead</div>
+          <div class="comp-item"><span class="check">✓</span> V3 rules extracted: 20 sections, specific numbers (gap sizes, TP levels, stop sizes, risk %, timing)</div>
+          <div class="comp-item"><span class="warn-icon">⚠</span> V2 brain exists (qc_tempo_brain_v2.py) but has critical bugs</div>
+          <div class="comp-item"><span class="warn-icon">⚠</span> 2 backtests run — V1 blew up in 2022, V2 circuit breaker kills it permanently</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week 6 -->
+  <div class="week-row">
+    <div class="week-header">
+      <div>
+        <span class="week-label">Week 6</span>
+        <span class="week-focus"> — Validate</span>
+      </div>
+      <span class="status-badge badge-not-started">Not Started</span>
+    </div>
+    <div class="columns">
+      <div>
+        <div class="col-header">Plan</div>
+        <div class="comp-items">
+          <div class="comp-item">Compare backtest to Tempo's actual trades</div>
+          <div class="comp-item">Adjust parameters</div>
+          <div class="comp-item">Package as OpenClaw Skill</div>
+        </div>
+      </div>
+      <div>
+        <div class="col-header">Reality</div>
+        <div class="comp-items">
+          <div class="comp-item"><span class="cross">✗</span> Can't validate — backtest code still broken</div>
+          <div class="comp-item"><span class="cross">✗</span> V3 rules not yet incorporated into algorithm</div>
+          <div class="comp-item"><span class="cross">✗</span> Not started</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week 7-8 -->
+  <div class="week-row">
+    <div class="week-header">
+      <div>
+        <span class="week-label">Weeks 7–8</span>
+        <span class="week-focus"> — Paper Trading</span>
+      </div>
+      <span class="status-badge badge-not-started">Not Started</span>
+    </div>
+    <div class="columns">
+      <div>
+        <div class="col-header">Plan</div>
+        <div class="comp-items">
+          <div class="comp-item">Deploy Tempo brain on VPS in paper mode</div>
+          <div class="comp-item">Monitor via Telegram, track performance</div>
+        </div>
+      </div>
+      <div>
+        <div class="col-header">Reality</div>
+        <div class="comp-items">
+          <div class="comp-item"><span class="cross">✗</span> Not started</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Key Insights -->
+<div class="insights">
+  <h2>Key Findings</h2>
+
+  <div class="insight">
+    <div class="insight-label ahead">Way Ahead: Strategy Extraction</div>
+    <div class="insight-text">281 of 324 videos transcribed (87%), V3 rules extracted with specific numbers — IFVG gaps (8–15 pts), TP levels (15/30/50/70+ pts), stop sizes (20–35 pts), risk per trade (0.4–0.6%), position sizing, session timing, SMT requirements. This was supposed to be Weeks 4–5 work. You're weeks ahead on the knowledge side.</div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-label behind">Behind: Production Infrastructure</div>
+    <div class="insight-text">The VPS exists but nothing is running on it yet. No OpenClaw onboarded, no API Wrapper deployed, no Context Engine, no Quantower bridge. The setup.sh script and config files are created but haven't been executed. Files were only uploaded to the VPS today.</div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-label blocker">Blocker: Algorithm Quality</div>
+    <div class="insight-text">V1 backtest showed the strategy works in trending markets (+300% in 2020–2021) but completely failed in 2022 bear market (-92%). V2 added a circuit breaker but it's permanently broken — once tripped it never resets, killing all future trading. V3 extracted rules (correct risk sizing, trimming, stops) have NOT been incorporated into the code yet. This is the critical gap.</div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-label blocker">Blocker: Session Friction</div>
+    <div class="insight-text">Multiple Claude sessions have gone in circles re-discovering the same context. The TEMPO_PROJECT_STATE.md was created to fix this, but VPS uploads kept failing (browser chunking blocked, SSH blocked from sandbox). Today's scp upload was the first successful file transfer to VPS.</div>
+  </div>
+</div>
+
+<!-- Four Layer Component Status -->
+<h2 class="section-title">Four-Layer Architecture Status</h2>
+<div class="components">
+
+  <div class="comp-card">
+    <div class="comp-header">
+      <div class="comp-title">Layer 1: Claude Code (Builder)</div>
+      <span class="status-badge badge-done">Active</span>
+    </div>
+    <div class="comp-items">
+      <div class="comp-item"><span class="check">✓</span> Claude Code / Cowork available</div>
+      <div class="comp-item"><span class="check">✓</span> Can write & iterate code</div>
+      <div class="comp-item"><span class="check">✓</span> Local file access working</div>
+      <div class="comp-item"><span class="warn-icon">⚠</span> No GitHub repo for sync</div>
+    </div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-header">
+      <div class="comp-title">Layer 2: API Wrapper (Genius Brain)</div>
+      <span class="status-badge badge-not-started">Not Built</span>
+    </div>
+    <div class="comp-items">
+      <div class="comp-item"><span class="warn-icon">⚠</span> genius-brain.js exists (basic Node.js script)</div>
+      <div class="comp-item"><span class="cross">✗</span> Not a proper FastAPI app</div>
+      <div class="comp-item"><span class="cross">✗</span> Not deployed on VPS</div>
+      <div class="comp-item"><span class="cross">✗</span> No prompt caching configured</div>
+    </div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-header">
+      <div class="comp-title">Layer 3: OpenClaw (Operator)</div>
+      <span class="status-badge badge-partial">Config Only</span>
+    </div>
+    <div class="comp-items">
+      <div class="comp-item"><span class="check">✓</span> openclaw.json config created</div>
+      <div class="comp-item"><span class="check">✓</span> Telegram bot token set up</div>
+      <div class="comp-item"><span class="check">✓</span> SOUL.md / USER.md / HEARTBEAT.md drafted</div>
+      <div class="comp-item"><span class="cross">✗</span> OpenClaw NOT installed on VPS</div>
+      <div class="comp-item"><span class="cross">✗</span> Qdrant NOT running</div>
+      <div class="comp-item"><span class="cross">✗</span> No onboarding completed</div>
+    </div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-header">
+      <div class="comp-title">Layer 4: Claude Business Suite</div>
+      <span class="status-badge badge-done">Active</span>
+    </div>
+    <div class="comp-items">
+      <div class="comp-item"><span class="check">✓</span> Claude.ai available</div>
+      <div class="comp-item"><span class="check">✓</span> Cowork active</div>
+      <div class="comp-item"><span class="check">✓</span> Chrome extension available</div>
+    </div>
+  </div>
+</div>
+
+<!-- Execution Components -->
+<h2 class="section-title">Execution Pipeline Status</h2>
+<div class="components">
+  <div class="comp-card">
+    <div class="comp-header">
+      <div class="comp-title">Tempo Brain (Algorithm)</div>
+      <span class="status-badge badge-partial">Broken</span>
+    </div>
+    <div class="comp-items">
+      <div class="comp-item"><span class="check">✓</span> V1 & V2 code written</div>
+      <div class="comp-item"><span class="cross">✗</span> Circuit breaker permanently kills trading</div>
+      <div class="comp-item"><span class="cross">✗</span> Risk at 1% (should be 0.4–0.6%)</div>
+      <div class="comp-item"><span class="cross">✗</span> V3 extracted rules NOT incorporated</div>
+      <div class="comp-item"><span class="cross">✗</span> No DOL framework</div>
+      <div class="comp-item"><span class="cross">✗</span> No dynamic entry timeframe</div>
+      <div class="comp-item"><span class="cross">✗</span> SMT not properly implemented</div>
+    </div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-header">
+      <div class="comp-title">Context Engine</div>
+      <span class="status-badge badge-not-started">Not Started</span>
+    </div>
+    <div class="comp-items">
+      <div class="comp-item"><span class="cross">✗</span> No VIX integration</div>
+      <div class="comp-item"><span class="cross">✗</span> No economic calendar</div>
+      <div class="comp-item"><span class="cross">✗</span> No session range tracking</div>
+      <div class="comp-item"><span class="cross">✗</span> No day fingerprinting</div>
+    </div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-header">
+      <div class="comp-title">Quantower Bridge</div>
+      <span class="status-badge badge-not-started">Not Started</span>
+    </div>
+    <div class="comp-items">
+      <div class="comp-item"><span class="cross">✗</span> No C# FileWatcher</div>
+      <div class="comp-item"><span class="cross">✗</span> No signal.json schema</div>
+      <div class="comp-item"><span class="cross">✗</span> No fill.json round-trip</div>
+    </div>
+  </div>
+
+  <div class="comp-card">
+    <div class="comp-header">
+      <div class="comp-title">Knowledge Base</div>
+      <span class="status-badge badge-partial">Partial</span>
+    </div>
+    <div class="comp-items">
+      <div class="comp-item"><span class="check">✓</span> V3 rules extracted (20 sections, 257K words)</div>
+      <div class="comp-item"><span class="check">✓</span> tempo_rules_v3_complete.md on VPS</div>
+      <div class="comp-item"><span class="check">✓</span> TEMPO_PROJECT_STATE.md maintained</div>
+      <div class="comp-item"><span class="cross">✗</span> No compiled KNOWLEDGE_BASE.md master file</div>
+      <div class="comp-item"><span class="warn-icon">⚠</span> 43 trade recaps + 42 premium education + 18 YouTube classes still untranscribed</div>
+    </div>
+  </div>
+</div>
+
+<!-- Recommended Next Actions -->
+<div class="insights" style="border-color: #58a6ff;">
+  <h2>Recommended Priority Actions</h2>
+
+  <div class="insight">
+    <div class="insight-label" style="color: #f85149;">Priority 1: Fix the Algorithm</div>
+    <div class="insight-text">Build V3 brain incorporating the extracted rules: fix circuit breaker (add recovery), correct risk to 0.4–0.6%, implement V3 trimming (55/30/15), add proper SMT, implement session timing (9:30–11 AM primary), add the "2 losses then stop" rule. This unblocks backtesting and everything downstream.</div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-label" style="color: #d29922;">Priority 2: Run VPS Setup Script</div>
+    <div class="insight-text">The setup.sh already exists. SSH into VPS from Mac terminal and run it. This installs Node, Docker, Qdrant, OpenClaw, and creates the directory structure. Then run openclaw onboard. ~30 min of terminal commands.</div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-label" style="color: #58a6ff;">Priority 3: Build KNOWLEDGE_BASE.md</div>
+    <div class="insight-text">Compile V3 rules + architecture doc + context engine specs into a single master file for the API Wrapper's system prompt. This is what makes Layer 2 work.</div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-label" style="color: #8b949e;">Priority 4: Transcribe Premium Content</div>
+    <div class="insight-text">42 premium education videos (the real gold — structured teaching) and 18 YouTube classes (permanent links). These fill the remaining gaps in the rule extraction. Run yt-dlp + Whisper from Mac terminal.</div>
+  </div>
+</div>
+
+</body>
+</html>

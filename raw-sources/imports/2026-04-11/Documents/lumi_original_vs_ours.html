@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumi Original vs Our Implementation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; padding: 32px; max-width: 1200px; margin: 0 auto; }
+  h1 { color: #58a6ff; font-size: 22px; margin-bottom: 4px; }
+  .subtitle { color: #8b949e; font-size: 13px; margin-bottom: 28px; }
+  .section { color: #f0883e; font-size: 16px; font-weight: 600; margin: 28px 0 12px; border-bottom: 1px solid #30363d; padding-bottom: 6px; }
+
+  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  th { background: #161b22; color: #8b949e; padding: 10px 14px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #30363d; }
+  th.col-dim { width: 16%; }
+  th.col-orig { width: 34%; color: #bc8cff; }
+  th.col-ours { width: 34%; color: #58a6ff; }
+  th.col-match { width: 16%; }
+  td { padding: 10px 14px; border-bottom: 1px solid #21262d; vertical-align: top; font-size: 13px; line-height: 1.55; }
+  td:first-child { color: #f0883e; font-weight: 600; font-size: 12px; }
+  tr:hover td { background: #161b22; }
+
+  .match { color: #7ee787; font-weight: 600; font-size: 12px; }
+  .diff  { color: #f85149; font-weight: 600; font-size: 12px; }
+  .close { color: #d29922; font-weight: 600; font-size: 12px; }
+
+  .mono { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; background: #161b22; padding: 1px 5px; border-radius: 3px; }
+  .dim { color: #8b949e; }
+  .note { background: #1c1917; border-left: 3px solid #f0883e; padding: 10px 14px; margin: 12px 0; font-size: 12px; color: #d4a574; line-height: 1.5; }
+  .note-green { background: #0d1f0d; border-left: 3px solid #238636; padding: 10px 14px; margin: 12px 0; font-size: 12px; color: #7ee787; line-height: 1.5; }
+  em { color: #d2a8ff; font-style: normal; }
+</style>
+</head>
+<body>
+
+<h1>LumiTraders Original Rules vs Our Backtest Implementation</h1>
+<p class="subtitle">@LumiTraders spec (from screenshots) compared line-by-line against lumi_backtest.py (FVG+10 variant, 539 trades, 62% WR, 2.76 PF)</p>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section">Step 1 — HTF Level Identification</div>
+
+<table>
+  <thead>
+    <tr><th class="col-dim">Rule</th><th class="col-orig">Lumi Original</th><th class="col-ours">Our Implementation</th><th class="col-match">Match?</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Timeframes</td>
+      <td>M15, M30, H1, H4</td>
+      <td>M15, M30, H1 <span class="dim">(no H4 — we only build bars from same-day ticks, not enough data for 4H bars)</span></td>
+      <td><span class="close">PARTIAL</span></td>
+    </tr>
+    <tr>
+      <td>Level types</td>
+      <td>FVG, OB, Liquidity (swing H/L)</td>
+      <td>FVG, OB, swing H/L, <em>plus</em> equal-high/low liquidity pools <span class="dim">(extra type not in original)</span></td>
+      <td><span class="close">EXTENDED</span></td>
+    </tr>
+    <tr>
+      <td>Swing lookback</td>
+      <td>Not specified</td>
+      <td><span class="mono">lookback=2</span> on all HTF bars (5-bar pattern: 2 each side)</td>
+      <td><span class="dim">N/A</span></td>
+    </tr>
+    <tr>
+      <td>OB definition</td>
+      <td>Not specified beyond "displacement candle"</td>
+      <td>Bearish candle followed by bullish candle with body &gt; 50% of prior body (and vice versa). Needs displacement confirmation.</td>
+      <td><span class="dim">N/A</span></td>
+    </tr>
+    <tr>
+      <td>FVG min gap</td>
+      <td>Not specified</td>
+      <td><span class="mono">1.0 pts</span> on HTF</td>
+      <td><span class="dim">N/A</span></td>
+    </tr>
+    <tr>
+      <td>Level dedup</td>
+      <td>Not mentioned</td>
+      <td><span class="mono">8 pts</span> tolerance — if two levels are within 8pts and same type, keep one</td>
+      <td><span class="diff">ADDED</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <strong>Missing: H4 levels.</strong> Lumi explicitly lists H4 as an HTF source. We don't build H4 bars because we only load same-day tick data. This could miss multi-day structural levels. Lumi also doesn't specify exact OB/FVG parameters — we had to infer reasonable defaults.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section">Step 2 — Sweep Detection</div>
+
+<table>
+  <thead>
+    <tr><th class="col-dim">Rule</th><th class="col-orig">Lumi Original</th><th class="col-ours">Our Implementation</th><th class="col-match">Match?</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sweep timeframes</td>
+      <td><strong>M30</strong> and <strong>H1</strong> — two separate timeframes</td>
+      <td>M30 and H1 — exact match. M30 sweep → M3 path. H1 sweep → M5 path.</td>
+      <td><span class="match">MATCH</span></td>
+    </tr>
+    <tr>
+      <td>Sweep definition</td>
+      <td>Wick past level + close back inside</td>
+      <td>High/Low past level by <span class="mono">≥ 1.0 pts</span> + close back inside by <span class="mono">≥ 0.5 pts</span></td>
+      <td><span class="close">CLOSE</span></td>
+    </tr>
+    <tr>
+      <td>Min penetration</td>
+      <td>Not specified numerically</td>
+      <td><span class="mono">MIN_SWEEP_TICKS = 1.0</span> pts beyond the level</td>
+      <td><span class="dim">N/A</span></td>
+    </tr>
+    <tr>
+      <td>Close-back threshold</td>
+      <td>Just "close back inside"</td>
+      <td><span class="mono">SWEEP_FAIL_TICKS = 0.5</span> pts back past the level</td>
+      <td><span class="close">STRICTER</span></td>
+    </tr>
+    <tr>
+      <td>One sweep per level</td>
+      <td>Not specified</td>
+      <td>Yes — bucketed by 2pts, once swept cannot re-sweep same price</td>
+      <td><span class="diff">ADDED</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section">Step 3 — LTF Order Block</div>
+
+<table>
+  <thead>
+    <tr><th class="col-dim">Rule</th><th class="col-orig">Lumi Original</th><th class="col-ours">Our Implementation</th><th class="col-match">Match?</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>TF pairing</td>
+      <td>M30 sweep → <strong>M3</strong> OB. H1 sweep → <strong>M5</strong> OB.</td>
+      <td>M30 → M3. H1 → M5. Exact match.</td>
+      <td><span class="match">MATCH</span></td>
+    </tr>
+    <tr>
+      <td>OB definition</td>
+      <td>"Displacement candle in the reversal direction"</td>
+      <td>Candle with body ≥ 25% of range, followed by displacement candle with body &gt; 50% of prior body, in reversal direction</td>
+      <td><span class="close">CLOSE</span></td>
+    </tr>
+    <tr>
+      <td>OB search window</td>
+      <td>Not specified</td>
+      <td><span class="mono">max_bars=20</span> after sweep time</td>
+      <td><span class="dim">N/A</span></td>
+    </tr>
+    <tr>
+      <td>Min body size</td>
+      <td>Not specified</td>
+      <td><span class="mono">OB_MIN_BODY_PCT = 0.25</span> (body ≥ 25% of candle range)</td>
+      <td><span class="dim">N/A</span></td>
+    </tr>
+    <tr>
+      <td>Which OB to use</td>
+      <td>Not specified</td>
+      <td>First OB found after sweep (<span class="mono">obs[0]</span>)</td>
+      <td><span class="dim">N/A</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section">Step 4 — LTF Fair Value Gap</div>
+
+<table>
+  <thead>
+    <tr><th class="col-dim">Rule</th><th class="col-orig">Lumi Original</th><th class="col-ours">Our Implementation</th><th class="col-match">Match?</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>TF pairing</td>
+      <td>M30 sweep → <strong>M3</strong> FVG. H1 sweep → <strong>M5</strong> FVG.</td>
+      <td>M30 → M3. H1 → M5. Exact match.</td>
+      <td><span class="match">MATCH</span></td>
+    </tr>
+    <tr>
+      <td>FVG before OB</td>
+      <td>Allowed — enter after OB is confirmed</td>
+      <td>Implemented: searches for FVGs between sweep and OB. Entry at OB time if found.</td>
+      <td><span class="match">MATCH</span></td>
+    </tr>
+    <tr>
+      <td>FVG after OB</td>
+      <td>Allowed — enter as soon as FVG forms</td>
+      <td>Implemented: searches for FVGs after OB. Entry at FVG confirmation time.</td>
+      <td><span class="match">MATCH</span></td>
+    </tr>
+    <tr>
+      <td>Min FVG gap</td>
+      <td>Not specified</td>
+      <td><span class="mono">FVG_MIN_GAP = 0.5 pts</span></td>
+      <td><span class="dim">N/A</span></td>
+    </tr>
+    <tr>
+      <td>FVG search window</td>
+      <td>Not specified</td>
+      <td><span class="mono">max_bars=25</span> for FVG after OB; 15 bars back for FVG before OB</td>
+      <td><span class="dim">N/A</span></td>
+    </tr>
+    <tr>
+      <td>Adding to position</td>
+      <td>"Can add to position if price retraces into FVG"</td>
+      <td><strong>Not implemented</strong> — single entry only, no pyramiding</td>
+      <td><span class="diff">MISSING</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section">Step 5 — Entry Logic</div>
+
+<table>
+  <thead>
+    <tr><th class="col-dim">Rule</th><th class="col-orig">Lumi Original</th><th class="col-ours">Our Implementation</th><th class="col-match">Match?</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Entry price<br>(FVG after OB)</td>
+      <td>FVG edge — enter at the gap boundary closest to price</td>
+      <td>Long: <span class="mono">fvg_low</span> (bottom of bullish FVG). Short: <span class="mono">fvg_high</span> (top of bearish FVG).</td>
+      <td><span class="match">MATCH</span></td>
+    </tr>
+    <tr>
+      <td>Entry price<br>(FVG before OB)</td>
+      <td>"Enter after OB is confirmed" — implies OB level is the entry</td>
+      <td>Long: <span class="mono">ob_high</span>. Short: <span class="mono">ob_low</span>. Entry is OB edge, not FVG.</td>
+      <td><span class="close">CLOSE</span></td>
+    </tr>
+    <tr>
+      <td>Entry type</td>
+      <td>Implied limit order (price must "retrace into FVG")</td>
+      <td>Limit fill check: verifies price trades within 1pt of entry within 10-min window. No fill → skip.</td>
+      <td><span class="match">MATCH</span></td>
+    </tr>
+    <tr>
+      <td>Entry timing</td>
+      <td>Not precise — "enter at FVG edge"</td>
+      <td>FVG-after-OB: enter at FVG confirmation time. FVG-before-OB: enter at OB confirmation time.</td>
+      <td><span class="close">CLOSE</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section">Step 6 — Stop Loss</div>
+
+<table>
+  <thead>
+    <tr><th class="col-dim">Rule</th><th class="col-orig">Lumi Original</th><th class="col-ours">Our Implementation</th><th class="col-match">Match?</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Stop reference</td>
+      <td><strong>Swing High / Swing Low</strong> — "the recent swing extreme before the setup"</td>
+      <td><strong>Swing mode</strong>: lowest low (long) or highest high (short) in 8 bars before entry on LTF, plus 1pt buffer<br>
+          <strong>FVG+10 mode</strong>: FVG edge + 10pts fixed buffer</td>
+      <td><span class="close">SWING=CLOSE<br>FVG10=DEVIATION</span></td>
+    </tr>
+    <tr>
+      <td>Stop type</td>
+      <td>Hard stop (implied — "Swing H/L" with no soft stop discussion)</td>
+      <td>Hard stop — tick-level, immediate exit when price touches</td>
+      <td><span class="match">MATCH</span></td>
+    </tr>
+    <tr>
+      <td>B/E mechanism</td>
+      <td>Not mentioned</td>
+      <td>Not implemented</td>
+      <td><span class="match">MATCH</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <strong>FVG+10 is our invention.</strong> The original Lumi spec says swing H/L for the stop. We tested FVG+10 as an alternative and it massively outperformed (62% WR, 2.76 PF vs 44% WR, 1.03 PF). This is the biggest divergence from the original rules and where the entire edge comes from.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section">Step 7 — Target</div>
+
+<table>
+  <thead>
+    <tr><th class="col-dim">Rule</th><th class="col-orig">Lumi Original</th><th class="col-ours">Our Implementation</th><th class="col-match">Match?</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Target formula</td>
+      <td><strong>2R from FVG</strong> — "NOT from personal entry, NOT from swing stop"</td>
+      <td><span class="mono">target = fvg_entry ± 2.0 × risk</span> where <span class="mono">risk = |fvg_entry - stop|</span></td>
+      <td><span class="close">DIFFERENT</span></td>
+    </tr>
+    <tr>
+      <td>R measured from</td>
+      <td>"2R is always measured from the FVG entry price" — implies R = FVG gap size, target = 2 × gap from FVG</td>
+      <td>R = distance from FVG entry to stop (not the FVG gap itself). So if stop is 15pts from FVG, target is 30pts from FVG.</td>
+      <td><span class="diff">DIFFERENT</span></td>
+    </tr>
+    <tr>
+      <td>Partials</td>
+      <td>Not mentioned — appears to be all-or-nothing to 2R</td>
+      <td>All-or-nothing: stop, target, or EOD flatten. No partials.</td>
+      <td><span class="match">MATCH</span></td>
+    </tr>
+    <tr>
+      <td>EOD flatten</td>
+      <td>Not explicitly stated</td>
+      <td><span class="mono">20:55 UTC</span> (3:55 PM EST) — close any open trade</td>
+      <td><span class="dim">N/A</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <strong>Ambiguity in Lumi's "2R from FVG".</strong> The original says "2R from FVG entry price" but doesn't define R. It could mean: (a) R = FVG gap size, so target = 2 × gap distance from FVG edge, or (b) R = FVG entry to stop, so target = 2 × risk from FVG. We implemented (b). With FVG+10 stop, R is small (~10pts), so target is ~20pts from FVG. With swing stop, R is larger (~15-25pts), so target is ~30-50pts.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section">Trading Hours & Filters</div>
+
+<table>
+  <thead>
+    <tr><th class="col-dim">Rule</th><th class="col-orig">Lumi Original</th><th class="col-ours">Our Implementation</th><th class="col-match">Match?</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Session hours</td>
+      <td>8:00 AM – 4:00 PM EST</td>
+      <td>8:00 AM – 4:00 PM EST (13:00–21:00 UTC)</td>
+      <td><span class="match">MATCH</span></td>
+    </tr>
+    <tr>
+      <td>Strong zones</td>
+      <td>8–9 AM, 10–11 AM, 1:30–2:30 PM EST</td>
+      <td>Tracked as <span class="mono">in_strong_zone</span> flag for analysis. <strong>Not used as a filter</strong> — all hours trade equally.</td>
+      <td><span class="close">TRACKED<br>NOT FILTERED</span></td>
+    </tr>
+    <tr>
+      <td>Max trades/day</td>
+      <td>Not specified — ~200 in 4 months ≈ ~2.5/day</td>
+      <td><span class="mono">MAX_TRADES_PER_DAY = 5</span></td>
+      <td><span class="close">HIGHER</span></td>
+    </tr>
+    <tr>
+      <td>Min risk filter</td>
+      <td>Not specified</td>
+      <td><span class="mono">MIN_RISK_PTS = 4.0</span>, <span class="mono">MAX_RISK_PTS = 120.0</span></td>
+      <td><span class="diff">ADDED</span></td>
+    </tr>
+    <tr>
+      <td>Sanity checks</td>
+      <td>Not specified</td>
+      <td>Skip if SL or TP on wrong side of entry. Skip if fill not verified within 10min/1pt.</td>
+      <td><span class="diff">ADDED</span></td>
+    </tr>
+    <tr>
+      <td>DST handling</td>
+      <td>Not mentioned (trades EST)</td>
+      <td>Fixed UTC offsets — does <strong>not</strong> adjust for DST. EST assumed year-round.</td>
+      <td><span class="diff">NO DST</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="section">Summary of All Differences</div>
+
+<table>
+  <thead>
+    <tr><th style="width:50%">Faithful to Original</th><th style="width:50%">Different from Original</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <div style="margin: 4px 0"><span class="match">✓</span> M30/H1 sweep → M3/M5 OB+FVG pairing</div>
+        <div style="margin: 4px 0"><span class="match">✓</span> FVG before OB and FVG after OB both implemented</div>
+        <div style="margin: 4px 0"><span class="match">✓</span> Entry at FVG edge (FVG-after-OB) / OB edge (FVG-before-OB)</div>
+        <div style="margin: 4px 0"><span class="match">✓</span> 2R target from FVG entry</div>
+        <div style="margin: 4px 0"><span class="match">✓</span> 8:00 AM – 4:00 PM EST session</div>
+        <div style="margin: 4px 0"><span class="match">✓</span> Hard stop (no soft stop / B/E)</div>
+        <div style="margin: 4px 0"><span class="match">✓</span> No partials — all-or-nothing to target</div>
+        <div style="margin: 4px 0"><span class="match">✓</span> HTF levels: FVG + OB + swings on M15/M30/H1</div>
+        <div style="margin: 4px 0"><span class="match">✓</span> Limit-style entry with fill verification</div>
+      </td>
+      <td>
+        <div style="margin: 4px 0"><span class="diff">✗</span> <strong>FVG+10 stop (winning variant)</strong> — original says swing H/L</div>
+        <div style="margin: 4px 0"><span class="diff">✗</span> <strong>R = entry-to-stop distance</strong> — original may mean R = FVG gap size</div>
+        <div style="margin: 4px 0"><span class="diff">✗</span> No H4 bars (can't build from single-day data)</div>
+        <div style="margin: 4px 0"><span class="diff">✗</span> Added equal-high/low liquidity pools (not in original)</div>
+        <div style="margin: 4px 0"><span class="diff">✗</span> Level dedup at 8pts (not specified in original)</div>
+        <div style="margin: 4px 0"><span class="diff">✗</span> Swept-level memory (can't re-sweep same price)</div>
+        <div style="margin: 4px 0"><span class="diff">✗</span> Max 5 trades/day cap (original ~2.5/day implied)</div>
+        <div style="margin: 4px 0"><span class="diff">✗</span> No position pyramiding ("add to position" not coded)</div>
+        <div style="margin: 4px 0"><span class="diff">✗</span> Strong time zones tracked but not used as filter</div>
+        <div style="margin: 4px 0"><span class="diff">✗</span> No DST adjustment (EST assumed year-round)</div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note-green">
+  <strong>Bottom line:</strong> The core flow (HTF level → M30/H1 sweep → M3/M5 OB → M3/M5 FVG → entry at FVG edge → 2R target) is faithfully implemented. The two biggest divergences are (1) the FVG+10pt stop instead of swing H/L — which is where all the edge comes from — and (2) how "R" is defined in the target calculation. Everything else is either a parameter choice that Lumi didn't specify, or a mechanical addition (fill checks, sanity guards) needed for automated backtesting.
+</div>
+
+</body>
+</html>

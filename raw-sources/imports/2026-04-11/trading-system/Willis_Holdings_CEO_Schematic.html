@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Willis Holdings CEO System — Architecture Schematic</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 28px; color: #58a6ff; margin-bottom: 8px; }
+  .subtitle { text-align: center; color: #8b949e; font-size: 14px; margin-bottom: 40px; }
+
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* Flow sections */
+  .flow-section { margin-bottom: 32px; }
+  .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #8b949e; margin-bottom: 12px; padding-left: 4px; }
+
+  /* Cards */
+  .card { border: 1px solid #30363d; border-radius: 12px; padding: 20px; background: #161b22; position: relative; }
+  .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-icon { font-size: 24px; }
+  .card-title { font-size: 18px; font-weight: 600; color: #f0f6fc; }
+  .card-file { font-size: 11px; color: #8b949e; font-family: monospace; }
+  .card-desc { color: #8b949e; font-size: 13px; line-height: 1.5; }
+
+  /* Grid layouts */
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* Division cards */
+  .div-card { border: 1px solid #30363d; border-radius: 10px; padding: 16px; background: #161b22; }
+  .div-card.trading { border-left: 3px solid #3fb950; }
+  .div-card.it { border-left: 3px solid #58a6ff; }
+  .div-card.hr { border-left: 3px solid #d2a8ff; }
+  .div-card.finance { border-left: 3px solid #f0883e; }
+  .div-name { font-weight: 600; font-size: 15px; color: #f0f6fc; margin-bottom: 4px; }
+  .div-file { font-size: 10px; color: #8b949e; font-family: monospace; margin-bottom: 8px; }
+  .div-reports { font-size: 12px; color: #8b949e; line-height: 1.6; }
+  .div-reports li { margin-left: 16px; list-style: disc; }
+
+  /* Arrow connectors */
+  .arrow-down { text-align: center; font-size: 28px; color: #30363d; margin: 16px 0; }
+  .arrow-label { font-size: 11px; color: #58a6ff; text-align: center; }
+
+  /* Decision thresholds */
+  .threshold { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 8px; margin-bottom: 8px; }
+  .threshold.green { background: rgba(63, 185, 80, 0.1); border: 1px solid rgba(63, 185, 80, 0.3); }
+  .threshold.yellow { background: rgba(210, 168, 255, 0.1); border: 1px solid rgba(210, 168, 255, 0.3); }
+  .threshold.red { background: rgba(248, 81, 73, 0.1); border: 1px solid rgba(248, 81, 73, 0.3); }
+  .threshold-amount { font-weight: 700; font-size: 14px; min-width: 80px; }
+  .threshold.green .threshold-amount { color: #3fb950; }
+  .threshold.yellow .threshold-amount { color: #d2a8ff; }
+  .threshold.red .threshold-amount { color: #f85149; }
+  .threshold-action { font-size: 13px; color: #c9d1d9; }
+
+  /* Telegram output */
+  .telegram-card { background: #1c2128; border: 1px solid #30363d; border-radius: 12px; padding: 20px; }
+  .telegram-msg { background: #0d1117; border-radius: 8px; padding: 14px; font-family: monospace; font-size: 11px; line-height: 1.6; color: #c9d1d9; white-space: pre-wrap; margin-top: 12px; border: 1px solid #21262d; }
+
+  /* Cron schedule */
+  .cron-bar { display: flex; gap: 16px; margin-top: 12px; }
+  .cron-item { flex: 1; background: #0d1117; border: 1px solid #21262d; border-radius: 8px; padding: 12px; text-align: center; }
+  .cron-time { font-size: 20px; font-weight: 700; color: #58a6ff; }
+  .cron-label { font-size: 11px; color: #8b949e; margin-top: 4px; }
+
+  /* Status badges */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .badge.live { background: rgba(63, 185, 80, 0.2); color: #3fb950; }
+  .badge.planned { background: rgba(210, 168, 255, 0.2); color: #d2a8ff; }
+  .badge.off { background: rgba(139, 148, 158, 0.2); color: #8b949e; }
+
+  /* Future capabilities */
+  .future-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .future-item { border: 1px dashed #30363d; border-radius: 8px; padding: 14px; text-align: center; }
+  .future-item .icon { font-size: 20px; margin-bottom: 6px; }
+  .future-item .label { font-size: 12px; color: #8b949e; }
+
+  /* Two-way section */
+  .interaction { margin-top: 12px; }
+  .interaction-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid #21262d; }
+  .interaction-item:last-child { border-bottom: none; }
+  .interaction-dir { font-size: 16px; min-width: 24px; }
+  .interaction-text { font-size: 13px; color: #c9d1d9; }
+  .interaction-text code { background: #21262d; padding: 2px 6px; border-radius: 4px; font-size: 11px; color: #79c0ff; }
+
+  @media (max-width: 768px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: 1fr; }
+    .future-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Willis Holdings CEO System</h1>
+<p class="subtitle">Autonomous AI Holding Company — Architecture & Current State</p>
+
+<!-- CRON TRIGGER -->
+<div class="flow-section">
+  <div class="section-label">1 — Trigger (VPS Cron)</div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">⏰</span>
+      <span class="card-title">Cron Schedule</span>
+      <span class="badge live">LIVE</span>
+    </div>
+    <div class="card-desc">Runs automatically on VPS (root@172.93.181.209). Can also be triggered manually via SSH.</div>
+    <div class="cron-bar">
+      <div class="cron-item">
+        <div class="cron-time">7:00 UTC</div>
+        <div class="cron-label">Morning Briefing<br>1:00 AM CT</div>
+      </div>
+      <div class="cron-item">
+        <div class="cron-time">17:00 UTC</div>
+        <div class="cron-label">EOD Briefing<br>11:00 AM CT</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="arrow-down">↓</div>
+
+<!-- ORCHESTRATOR -->
+<div class="flow-section">
+  <div class="section-label">2 — CEO Orchestrator (The Brain)</div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">🧠</span>
+      <span class="card-title">CEOOrchestrator</span>
+      <span class="badge live">LIVE</span>
+    </div>
+    <div class="card-file">conglomerate/ceo/orchestrator.py — 282 lines</div>
+    <div class="card-desc" style="margin-top:8px">
+      Entry point for the entire system. Receives the cycle command (morning/eod), then orchestrates everything below: collects division reports → runs decision engine → generates briefing → sends via Telegram → logs state.
+    </div>
+  </div>
+</div>
+
+<div class="arrow-down">↓</div>
+<div class="arrow-label">Collects reports from all 4 divisions</div>
+
+<!-- DIVISIONS -->
+<div class="flow-section">
+  <div class="section-label">3 — Division Collectors (Data Sources)</div>
+  <div class="grid-4">
+    <div class="div-card trading">
+      <div class="div-name">📈 Trading</div>
+      <div class="div-file">divisions/trading.py</div>
+      <div class="div-reports">
+        <li>Batch progress & results</li>
+        <li>New strategy winners</li>
+        <li>Active model count</li>
+        <li>Slippage/cost status</li>
+        <li>Drawdown tracking</li>
+      </div>
+    </div>
+    <div class="div-card it">
+      <div class="div-name">🖥️ IT / Infra</div>
+      <div class="div-file">divisions/it_infra.py</div>
+      <div class="div-reports">
+        <li>VPS health (CPU/mem/disk)</li>
+        <li>Cron job status</li>
+        <li>GitHub PAT expiry</li>
+        <li>Service uptime</li>
+        <li>Cost monitoring</li>
+      </div>
+    </div>
+    <div class="div-card hr">
+      <div class="div-name">🤖 HR / Bots</div>
+      <div class="div-file">divisions/hr_bots.py</div>
+      <div class="div-reports">
+        <li>Active agent count</li>
+        <li>Error rates per agent</li>
+        <li>API spend tracking</li>
+        <li>Model routing optimization</li>
+        <li>Agent performance scores</li>
+      </div>
+    </div>
+    <div class="div-card finance">
+      <div class="div-name">💰 Finance / Tax</div>
+      <div class="div-file">divisions/finance.py</div>
+      <div class="div-reports">
+        <li>Tax deadlines</li>
+        <li>P&L projections (3 scenarios)</li>
+        <li>Entity structure review</li>
+        <li>Deduction opportunities</li>
+        <li>Quarterly payment tracking</li>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="arrow-down">↓</div>
+<div class="arrow-label">All reports flow to Decision Engine</div>
+
+<!-- DECISION ENGINE -->
+<div class="flow-section">
+  <div class="section-label">4 — Decision Engine (Autonomous Actions)</div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">⚖️</span>
+      <span class="card-title">DecisionEngine</span>
+      <span class="badge live">LIVE</span>
+    </div>
+    <div class="card-file">conglomerate/ceo/decision_engine.py — 188 lines</div>
+    <div style="margin-top: 12px;">
+      <div class="threshold green">
+        <div class="threshold-amount">&lt; $500</div>
+        <div class="threshold-action"><strong>Autonomous</strong> — Execute immediately + log. Example: retune an underperforming bot's prompt, switch tasks to cheaper model.</div>
+      </div>
+      <div class="threshold yellow">
+        <div class="threshold-amount">$500–$5K</div>
+        <div class="threshold-action"><strong>Flag in briefing</strong> — Execute + tell Harrison. Example: infrastructure cost spike, trading drawdown approaching limit.</div>
+      </div>
+      <div class="threshold red">
+        <div class="threshold-amount">&gt; $5K</div>
+        <div class="threshold-action"><strong>Needs approval</strong> — Propose in briefing, wait for Harrison. Example: quarterly tax payment, new trading model, entity restructuring.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="arrow-down">↓</div>
+<div class="arrow-label">Reports + decisions → formatted briefing</div>
+
+<!-- BRIEFING GENERATOR -->
+<div class="flow-section">
+  <div class="section-label">5 — Briefing Generator</div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">📋</span>
+      <span class="card-title">BriefingGenerator</span>
+      <span class="badge live">LIVE</span>
+    </div>
+    <div class="card-file">conglomerate/ceo/briefing.py — 221 lines</div>
+    <div class="card-desc" style="margin-top:8px">Formats all division reports and decisions into structured HTML for Telegram. Morning briefing includes P&L, scorecards, opportunities, risks, autonomous decisions, and today's plan. EOD includes results vs plan, variance, and tomorrow's priorities.</div>
+  </div>
+</div>
+
+<div class="arrow-down">↓</div>
+<div class="arrow-label">HTML message → Telegram Bot API</div>
+
+<!-- TELEGRAM -->
+<div class="flow-section">
+  <div class="section-label">6 — Telegram Delivery</div>
+  <div class="telegram-card">
+    <div class="card-header">
+      <span class="card-icon">✈️</span>
+      <span class="card-title">Telegram Bot</span>
+      <span class="badge live">LIVE</span>
+    </div>
+    <div class="card-file">conglomerate/ceo/telegram_bot.py — 92 lines | Bot token: 8389...UvQ | Harrison ID: 451811002</div>
+    <div class="card-desc" style="margin-top:8px">Sends formatted briefings directly to Harrison's Telegram. Auto-splits messages &gt; 4096 chars. Supports urgent alerts outside of scheduled cycles.</div>
+    <div class="telegram-msg">════════════════════════════════════════
+<b>Willis Holdings — Daily Brief</b>
+Feb 17, 2026 | CEO Report
+════════════════════════════════════════
+
+<b>CONSOLIDATED P&L</b>
+  Yesterday:  $-2
+  MTD:        +$0
+  YTD:        +$0
+
+<b>DIVISION SCORECARDS</b>
+│ Trading     │    +$0 │ 🟢 Active │
+│ IT/Infra    │    +$0 │ 🟢 Running│
+│ HR/Bots     │    $-2 │ 🟢 Active │
+│ Finance     │    +$0 │ 🟢 Active │
+
+🔥 <b>TOP OPPORTUNITIES</b>
+1. Section 475 MTM election
+2. Equipment deductions
+3. Home office deduction
+
+⚠️ <b>RISKS & FLAGS</b>
+1. BLOCKING: slippage discrepancy ✅ RESOLVED
+2. Same-bar entry bias
+3. Tax deadline in 25 days</div>
+  </div>
+</div>
+
+<div style="margin: 40px 0; border-top: 1px solid #30363d;"></div>
+
+<!-- INTERACTION MODEL -->
+<div class="flow-section">
+  <div class="section-label">How You Interact With It</div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">👤</span>
+      <span class="card-title">Harrison's Touchpoints</span>
+    </div>
+    <div class="interaction">
+      <div class="interaction-item">
+        <div class="interaction-dir">📱</div>
+        <div class="interaction-text"><strong>Telegram (passive)</strong> — Briefings arrive automatically at 1:00 AM and 11:00 AM CT. Just read them on your phone.</div>
+      </div>
+      <div class="interaction-item">
+        <div class="interaction-dir">🔧</div>
+        <div class="interaction-text"><strong>Manual trigger (VPS)</strong> — SSH in and run:<br><code>python3 -m conglomerate.ceo.orchestrator morning</code><br>Add <code>--dry-run</code> to preview without sending.</div>
+      </div>
+      <div class="interaction-item">
+        <div class="interaction-dir">🚨</div>
+        <div class="interaction-text"><strong>Alerts (planned)</strong> — The bot has <code>send_alert()</code> for urgent notifications outside of the schedule. Not wired up yet.</div>
+      </div>
+      <div class="interaction-item">
+        <div class="interaction-dir">💬</div>
+        <div class="interaction-text"><strong>Two-way chat (not built yet)</strong> — Currently one-way only. Future: reply to Telegram messages to approve decisions, ask questions, or trigger actions.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin: 40px 0; border-top: 1px solid #30363d;"></div>
+
+<!-- FUTURE -->
+<div class="flow-section">
+  <div class="section-label">Not Built Yet — Future Capabilities</div>
+  <div class="future-grid">
+    <div class="future-item">
+      <div class="icon">💬</div>
+      <div class="label"><strong>Two-Way Telegram</strong><br>Reply to approve decisions, ask questions, trigger reruns</div>
+    </div>
+    <div class="future-item">
+      <div class="icon">⚡</div>
+      <div class="label"><strong>Real-Time Alerts</strong><br>Drawdown alerts, batch completion, credential expiry warnings</div>
+    </div>
+    <div class="future-item">
+      <div class="icon">🔄</div>
+      <div class="label"><strong>Auto-Execution</strong><br>Restart crashed jobs, trigger batch reruns, rotate credentials</div>
+    </div>
+    <div class="future-item">
+      <div class="icon">📊</div>
+      <div class="label"><strong>Live P&L Feed</strong><br>Connect to broker for real-time position tracking</div>
+    </div>
+    <div class="future-item">
+      <div class="icon">🏢</div>
+      <div class="label"><strong>More Divisions</strong><br>Arbitrage, Content, Real Estate, BizDev, Research, Capital</div>
+    </div>
+    <div class="future-item">
+      <div class="icon">🌐</div>
+      <div class="label"><strong>Productize</strong><br>Package as a general-purpose autonomous CEO for any business</div>
+    </div>
+  </div>
+</div>
+
+<!-- STATE -->
+<div class="flow-section" style="margin-top: 32px;">
+  <div class="section-label">State & Logging</div>
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">💾</span>
+      <span class="card-title">ConglomerateState</span>
+    </div>
+    <div class="card-file">conglomerate/ceo/state.py | conglomerate/state/</div>
+    <div class="card-desc" style="margin-top:8px">Every cycle is logged as JSON: reports, decisions, briefing sent status, timestamps. Stored in <code>conglomerate/state/cycles/</code>. Decision audit trail in <code>state/decisions/</code>. CEO log at <code>state/ceo.log</code>.</div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

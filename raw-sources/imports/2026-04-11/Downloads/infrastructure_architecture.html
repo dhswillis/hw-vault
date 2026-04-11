@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infrastructure Architecture — Multi-Model Agent System</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #e6edf3; padding: 24px; line-height: 1.6; max-width: 1280px; margin: 0 auto; }
+  h1 { font-size: 26px; margin-bottom: 4px; }
+  .sub { color: #8b949e; font-size: 13px; margin-bottom: 32px; }
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 20px; font-weight: 600; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #30363d; }
+  .section-desc { color: #8b949e; font-size: 14px; margin-bottom: 20px; }
+
+  .flow { background: #0d1117; border: 1px solid #21262d; border-radius: 8px; padding: 16px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; line-height: 2; white-space: pre-wrap; margin: 16px 0; }
+  .g { color: #3fb950; } .b { color: #58a6ff; } .y { color: #d29922; } .r { color: #f85149; }
+  .dim { color: #484f58; } .w { color: #e6edf3; font-weight: 600; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
+  @media (max-width: 900px) { .grid2, .grid3, .grid4 { grid-template-columns: 1fr; } }
+
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; }
+  .card.blue { border-color: #1f6feb; }
+  .card.green { border-color: #238636; }
+  .card.yellow { border-color: #9e6a03; }
+  .card.red { border-color: #da3633; }
+  .card-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+  .card-label.blue { color: #58a6ff; }
+  .card-label.green { color: #3fb950; }
+  .card-label.yellow { color: #d29922; }
+  .card-label.red { color: #f85149; }
+  .card-label.dim { color: #8b949e; }
+  .card-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .card-text { font-size: 13px; color: #b1bac4; }
+  .card-cost { font-size: 24px; font-weight: 700; margin: 8px 0 4px; }
+  .card-detail { font-size: 11px; color: #8b949e; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; }
+  th { text-align: left; padding: 10px 12px; border-bottom: 2px solid #30363d; color: #8b949e; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+  td { padding: 10px 12px; border-bottom: 1px solid #21262d; }
+  tr:hover { background: rgba(255,255,255,0.02); }
+  .highlight-row { background: rgba(88,166,255,0.06); }
+
+  .callout { background: #161b22; border-left: 3px solid #58a6ff; padding: 16px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 14px; }
+  .callout.warn { border-left-color: #d29922; }
+  .callout.good { border-left-color: #3fb950; }
+  .callout strong { color: #58a6ff; }
+  .callout.warn strong { color: #d29922; }
+  .callout.good strong { color: #3fb950; }
+
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .tag.free { background: rgba(35,134,54,0.2); color: #3fb950; }
+  .tag.cheap { background: rgba(88,166,255,0.2); color: #58a6ff; }
+  .tag.mid { background: rgba(210,153,34,0.2); color: #d29922; }
+  .tag.expensive { background: rgba(218,54,51,0.2); color: #f85149; }
+
+  .steps { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+  .step { display: flex; gap: 12px; align-items: flex-start; }
+  .step-num { background: #58a6ff; color: #0d1117; min-width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .step-text { font-size: 14px; }
+  .step-text code { background: #21262d; padding: 1px 6px; border-radius: 4px; font-family: 'SF Mono', monospace; font-size: 12px; }
+
+  .arch-diagram { background: #0d1117; border: 1px solid #30363d; border-radius: 12px; padding: 24px; margin: 20px 0; }
+</style>
+</head>
+<body>
+
+<h1>Infrastructure Architecture: Multi-Model Agent System</h1>
+<p class="sub">Efficient execution via intelligent model routing, local backtesting, and cost-optimized API usage &nbsp;|&nbsp; February 2026</p>
+
+<!-- ============ SECTION 1: THE PROBLEM ============ -->
+<div class="section">
+  <div class="section-title">1. The Problem: Why Current Setup Burns Money</div>
+
+  <div class="grid2">
+    <div class="card red">
+      <div class="card-label red">Current State</div>
+      <div class="card-title">Single-Model, Manual Everything</div>
+      <div class="card-text">
+        Every task goes through Claude Opus/Sonnet at premium pricing. Routine tasks (parsing JSON, formatting output, generating boilerplate) cost the same per-token as complex strategy analysis. Backtests require QuantConnect's cloud. VPS is empty. You're the router.
+      </div>
+      <div class="card-cost r">~$200-300/mo</div>
+      <div class="card-detail">Claude Max credits + wasted re-context + QC cloud dependency</div>
+    </div>
+    <div class="card green">
+      <div class="card-label green">Target State</div>
+      <div class="card-title">Multi-Model, Autonomous, Cost-Optimized</div>
+      <div class="card-text">
+        An intelligent router sends each task to the cheapest model that can handle it. Free/cheap models handle 80% of work. Claude only activates for complex reasoning. Backtests run locally via Backtrader (free, unlimited). VPS operates 24/7.
+      </div>
+      <div class="card-cost g">~$50-80/mo</div>
+      <div class="card-detail">VPS $70 + API ~$10-15 (prompt caching + cheap routing)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION 2: FULL ARCHITECTURE ============ -->
+<div class="section">
+  <div class="section-title">2. Full Infrastructure Architecture</div>
+  <div class="section-desc">Three execution tiers. One routing layer. Everything connects through the GitHub repo.</div>
+
+  <div class="arch-diagram">
+    <div class="flow"><span class="w">═══════════════════════════════════════════════════════════════════</span>
+<span class="w">  INFRASTRUCTURE ARCHITECTURE: MULTI-MODEL AGENT SYSTEM</span>
+<span class="w">═══════════════════════════════════════════════════════════════════</span>
+
+<span class="b">┌─────────────────────────────────────────────────────────────────┐</span>
+<span class="b">│  GITHUB REPO (Single Source of Truth)                           │</span>
+<span class="b">│  trading-system/                                                │</span>
+<span class="b">│  ├── CLAUDE.md          ← auto-context for Claude Code         │</span>
+<span class="b">│  ├── docs/brains/       ← strategy rules (TEMPO.md, etc.)      │</span>
+<span class="b">│  ├── strategies/        ← brain Python code                    │</span>
+<span class="b">│  ├── backtests/         ← Backtrader test harnesses            │</span>
+<span class="b">│  ├── api-wrapper/       ← FastAPI + model router               │</span>
+<span class="b">│  ├── context-engine/    ← market context builder               │</span>
+<span class="b">│  ├── openclaw-skills/   ← OpenClaw deployment configs          │</span>
+<span class="b">│  └── data/              ← price data, backtest results         │</span>
+<span class="b">└──────────────┬──────────────────────────┬──────────────────────┘</span>
+               <span class="dim">│ git push                        │ git pull</span>
+<span class="g">┌──────────────▼──────────────┐</span>  <span class="y">┌──────────▼──────────────────┐</span>
+<span class="g">│  MacBook Air (Dev Machine)  │</span>  <span class="y">│  QuantVPS (Production)       │</span>
+<span class="g">│                             │</span>  <span class="y">│  172.93.181.209              │</span>
+<span class="g">│  ┌─ Claude Code CLI ──────┐ │</span>  <span class="y">│                              │</span>
+<span class="g">│  │ Reads CLAUDE.md auto   │ │</span>  <span class="y">│  ┌─ OpenClaw Agent ────────┐ │</span>
+<span class="g">│  │ Full terminal access   │ │</span>  <span class="y">│  │ 24/7 autonomous          │ │</span>
+<span class="g">│  │ SSH to VPS             │ │</span>  <span class="y">│  │ Heartbeat scheduler      │ │</span>
+<span class="g">│  │ Writes/tests code      │ │</span>  <span class="y">│  │ Telegram interface        │ │</span>
+<span class="g">│  └────────────────────────┘ │</span>  <span class="y">│  └──────────┬───────────────┘ │</span>
+<span class="g">│                             │</span>  <span class="y">│             │                 │</span>
+<span class="g">│  ┌─ Backtrader (Local) ───┐ │</span>  <span class="y">│  ┌──────────▼───────────────┐ │</span>
+<span class="g">│  │ Dev backtests          │ │</span>  <span class="y">│  │  MODEL ROUTER             │ │</span>
+<span class="g">│  │ Quick iteration        │ │</span>  <span class="y">│  │  (The Smart Brain)        │ │</span>
+<span class="g">│  │ Free, unlimited        │ │</span>  <span class="y">│  │                           │ │</span>
+<span class="g">│  └────────────────────────┘ │</span>  <span class="y">│  │  Classifies task ──────┐  │ │</span>
+<span class="g">│                             │</span>  <span class="y">│  │                       │  │ │</span>
+<span class="g">│  ┌─ Backtrader (Massive) ─┐ │</span>  <span class="y">│  │  ┌─ Tier 1: FREE ──────┤  │ │</span>
+<span class="g">│  │ Full multi-year runs   │ │</span>  <span class="y">│  │  │ DeepSeek R1          │  │ │</span>
+<span class="g">│  │ Parallel strategies    │ │</span>  <span class="y">│  │  │ Llama 3.3 70B        │  │ │</span>
+<span class="g">│  │ Also runs on VPS  ─────┼─┤</span>  <span class="y">│  │  │ Parsing, formatting   │  │ │</span>
+<span class="g">│  └────────────────────────┘ │</span>  <span class="y">│  │  └──────────────────────┤  │ │</span>
+<span class="g">└─────────────────────────────┘</span>  <span class="y">│  │  ┌─ Tier 2: CHEAP ──────┤  │ │</span>
+                                  <span class="y">│  │  │ Grok 4.1 Fast        │  │ │</span>
+                                  <span class="y">│  │  │ DeepSeek V3           │  │ │</span>
+                                  <span class="y">│  │  │ Code gen, analysis    │  │ │</span>
+                                  <span class="y">│  │  └──────────────────────┤  │ │</span>
+                                  <span class="y">│  │  ┌─ Tier 3: PREMIUM ────┤  │ │</span>
+                                  <span class="y">│  │  │ Claude Sonnet 4.5    │  │ │</span>
+                                  <span class="y">│  │  │ Full strategy eval   │  │ │</span>
+                                  <span class="y">│  │  │ + Prompt caching     │  │ │</span>
+                                  <span class="y">│  │  └──────────────────────┤  │ │</span>
+                                  <span class="y">│  │  ┌─ Tier 4: CRITICAL ───┘  │ │</span>
+                                  <span class="y">│  │  │ Claude Opus 4.5          │ │</span>
+                                  <span class="y">│  │  │ Trade signals only       │ │</span>
+                                  <span class="y">│  │  └──────────────────────────┘ │</span>
+                                  <span class="y">│  └─────────────────────────────┘ │</span>
+                                  <span class="y">│                                  │</span>
+                                  <span class="y">│  ┌─ Backtrader (Production) ───┐ │</span>
+                                  <span class="y">│  │ Scheduled multi-year runs   │ │</span>
+                                  <span class="y">│  │ Parallel strategy testing   │ │</span>
+                                  <span class="y">│  │ Results → model router      │ │</span>
+                                  <span class="y">│  └─────────────────────────────┘ │</span>
+                                  <span class="y">│                                  │</span>
+                                  <span class="y">│  ┌─ Quantower Bridge ──────────┐ │</span>
+                                  <span class="y">│  │ signal.json → order exec    │ │</span>
+                                  <span class="y">│  │ fill.json → trade log       │ │</span>
+                                  <span class="y">│  │ Replikanto → prop accounts  │ │</span>
+                                  <span class="y">│  └─────────────────────────────┘ │</span>
+                                  <span class="y">└──────────────────────────────────┘</span></div>
+  </div>
+</div>
+
+<!-- ============ SECTION 3: MODEL ROUTER ============ -->
+<div class="section">
+  <div class="section-title">3. The Model Router: Intelligent Task Routing</div>
+  <div class="section-desc">The router is a Python module that classifies each task and sends it to the cheapest model that can handle it. Runs as part of the API Wrapper on the VPS.</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tier</th>
+        <th>Models</th>
+        <th>Input $/M</th>
+        <th>Output $/M</th>
+        <th>Task Types</th>
+        <th>% of Workload</th>
+        <th>Cost Tag</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="highlight-row">
+        <td><strong>Tier 1</strong></td>
+        <td>DeepSeek R1<br>Llama 3.3 70B</td>
+        <td><strong>FREE</strong><br>$0.10</td>
+        <td><strong>FREE</strong><br>$0.32</td>
+        <td>JSON parsing, data formatting, log summarization, boilerplate generation, simple Q&A, context extraction</td>
+        <td><strong>~40%</strong></td>
+        <td><span class="tag free">FREE</span></td>
+      </tr>
+      <tr>
+        <td><strong>Tier 2</strong></td>
+        <td>Grok 4.1 Fast<br>DeepSeek V3<br>Mistral Medium</td>
+        <td>$0.20<br>$0.32<br>$0.10</td>
+        <td>$0.50<br>$0.89<br>$0.30</td>
+        <td>Code generation, backtest code, analysis summaries, pattern recognition, context engine logic</td>
+        <td><strong>~35%</strong></td>
+        <td><span class="tag cheap">$0.10–0.50</span></td>
+      </tr>
+      <tr>
+        <td><strong>Tier 3</strong></td>
+        <td>Claude Sonnet 4.5<br>(with prompt caching)</td>
+        <td>$3.00<br><em>cached: $0.30</em></td>
+        <td>$15.00</td>
+        <td>Full strategy evaluation, setup validation against 100K+ token knowledge base, complex reasoning</td>
+        <td><strong>~20%</strong></td>
+        <td><span class="tag mid">$0.30–3.00</span></td>
+      </tr>
+      <tr>
+        <td><strong>Tier 4</strong></td>
+        <td>Claude Opus 4.5</td>
+        <td>$5.00<br><em>cached: $0.50</em></td>
+        <td>$25.00</td>
+        <td>Live trade signal validation ONLY. The "are you sure?" layer before real money moves.</td>
+        <td><strong>~5%</strong></td>
+        <td><span class="tag expensive">$5.00+</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout good">
+    <strong>Cost impact:</strong> If 100% of tasks went to Claude Sonnet without caching: ~$50/mo in API calls. With this routing, ~75% of tasks go to Tier 1-2 (free or pennies), and Tier 3 uses prompt caching (90% input cost reduction). Estimated API cost: <strong>$10-15/mo</strong>.
+  </div>
+
+  <div class="callout">
+    <strong>How the router works:</strong> It's a Python class with a <code>classify(task)</code> method. Tasks come in with a type tag (from OpenClaw or the API Wrapper). The router maps task types to tiers, calls the appropriate model via OpenRouter (single API gateway for all models), and returns the response. Fallback: if a cheap model fails or returns low-confidence, auto-escalate to the next tier.
+  </div>
+
+  <div class="flow"><span class="b">MODEL ROUTER — Task Classification Rules</span>
+
+<span class="g">Tier 1 (FREE):</span>
+  task_type in ["parse_json", "format_output", "summarize_log",
+                 "extract_field", "template_fill", "data_transform"]
+
+<span class="b">Tier 2 (CHEAP):</span>
+  task_type in ["generate_code", "write_backtest", "analyze_results",
+                 "pattern_scan", "context_build", "report_generate"]
+
+<span class="y">Tier 3 (PREMIUM):</span>
+  task_type in ["strategy_evaluate", "setup_validate", "full_context_query",
+                 "knowledge_base_reason", "complex_analysis"]
+  <span class="dim">→ Uses prompt caching: knowledge base as cached system prompt</span>
+
+<span class="r">Tier 4 (CRITICAL):</span>
+  task_type in ["trade_signal_confirm", "risk_check", "live_execution_approve"]
+  <span class="dim">→ Only fires when real money is on the line</span>
+
+<span class="w">Auto-escalation:</span>
+  If response.confidence < 0.7 → escalate to next tier
+  If response.error → retry once, then escalate
+  If tier_4 fails → HALT, alert Harrison via Telegram</div>
+</div>
+
+<!-- ============ SECTION 4: OPENROUTER ============ -->
+<div class="section">
+  <div class="section-title">4. OpenRouter: One API for All Models</div>
+  <div class="section-desc">Instead of managing 5 different API keys and endpoints, OpenRouter provides a single gateway to every model.</div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-label dim">Without OpenRouter</div>
+      <div class="card-title">5 APIs to Manage</div>
+      <div class="card-text">
+        Anthropic API (Claude) — separate key, endpoint, SDK<br>
+        xAI API (Grok) — separate key, endpoint, SDK<br>
+        DeepSeek API — separate key, endpoint<br>
+        Meta/Together (Llama) — separate key, endpoint<br>
+        Mistral API — separate key, endpoint<br><br>
+        Each with different auth, rate limits, error handling, retry logic. 5x the code, 5x the maintenance.
+      </div>
+    </div>
+    <div class="card blue">
+      <div class="card-label blue">With OpenRouter</div>
+      <div class="card-title">1 API, All Models</div>
+      <div class="card-text">
+        Single API key, single endpoint:<br>
+        <code style="background:#21262d; padding:2px 6px; border-radius:4px; font-size:12px;">https://openrouter.ai/api/v1/chat/completions</code><br><br>
+        Same request format for every model. Just change the <code style="background:#21262d; padding:2px 6px; border-radius:4px; font-size:12px;">model</code> field:<br>
+        • <code style="font-size:12px;">anthropic/claude-sonnet-4.5</code><br>
+        • <code style="font-size:12px;">x-ai/grok-4.1-fast</code><br>
+        • <code style="font-size:12px;">deepseek/deepseek-r1</code><br>
+        • <code style="font-size:12px;">meta-llama/llama-3.3-70b</code><br><br>
+        One error handler. One retry logic. One billing dashboard.
+      </div>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <strong>Exception: Claude prompt caching.</strong> For Tier 3/4 calls that use the 100K+ token knowledge base as a cached system prompt, call the Anthropic API directly (not through OpenRouter). Prompt caching saves 90% on input tokens and is only available via Anthropic's native API. The router handles this automatically — OpenRouter for Tiers 1-2, Anthropic direct for Tiers 3-4.
+  </div>
+</div>
+
+<!-- ============ SECTION 5: BACKTRADER ============ -->
+<div class="section">
+  <div class="section-title">5. Backtrader: Free, Unlimited, Local Backtesting</div>
+  <div class="section-desc">Replace QuantConnect cloud dependency with a Python-native backtesting engine that runs on your Mac or VPS.</div>
+
+  <div class="grid2">
+    <div class="card red">
+      <div class="card-label red">QuantConnect (Current)</div>
+      <div class="card-title">Cloud-Dependent</div>
+      <div class="card-text">
+        ✗ Runs on QC's servers — rate limited<br>
+        ✗ Researcher tier limits on compute<br>
+        ✗ Browser-based interaction (fragile)<br>
+        ✗ C# bias (Python support is secondary)<br>
+        ✗ Can't run locally for rapid iteration<br>
+        ✗ OOM issues with second-resolution data<br>
+        ✓ Good data library (futures, equities)
+      </div>
+    </div>
+    <div class="card green">
+      <div class="card-label green">Backtrader (Target)</div>
+      <div class="card-title">Local, Free, Unlimited</div>
+      <div class="card-text">
+        ✓ Runs on Mac or VPS — no cloud needed<br>
+        ✓ No rate limits — run as many as you want<br>
+        ✓ Pure Python — matches your brain code<br>
+        ✓ Second-resolution data support native<br>
+        ✓ Parallel backtests on VPS (4+ cores)<br>
+        ✓ CSV, Pandas, IB data feeds<br>
+        ✓ Free, open source, well-documented<br>
+        ⚠ Need to source your own futures data
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Data sourcing for Backtrader:</strong> You already have ES and NQ price data in <code>~/Downloads/tempo_extracted/price_data/</code> (1d and 1h). For second-resolution data, options include: (1) Databento — futures tick data, ~$50-100 for historical download, (2) Polygon.io — $99/mo for full futures, (3) Interactive Brokers — free with account, real-time + historical, or (4) export from Quantower's data manager (you already have Quantower). The cheapest path is exporting from Quantower since you're already paying for it.
+  </div>
+
+  <div class="flow"><span class="b">BACKTRADER EXECUTION MODES</span>
+
+<span class="g">Mode 1: Dev Iteration (Mac)</span>
+  Claude Code writes/edits brain → runs Backtrader locally
+  <span class="dim">→ Quick 1-month test: ~30 seconds</span>
+  <span class="dim">→ Fast feedback loop for strategy tweaks</span>
+
+<span class="y">Mode 2: Full Validation (VPS)</span>
+  OpenClaw triggers full backtest via Heartbeat
+  <span class="dim">→ Multi-year run (2020-2026): ~5-15 minutes</span>
+  <span class="dim">→ Results analyzed by Tier 2 model (cheap)</span>
+  <span class="dim">→ Report sent via Telegram</span>
+
+<span class="b">Mode 3: Parallel Strategy Sweep (VPS)</span>
+  Run 10-50 parameter variations simultaneously
+  <span class="dim">→ 4 cores = 4 parallel backtests</span>
+  <span class="dim">→ Results aggregated, best params identified</span>
+  <span class="dim">→ Tier 2 model generates comparison report</span>
+  <span class="dim">→ Tier 3 (Claude Sonnet) validates winning config</span>
+
+<span class="r">Mode 4: Walk-Forward Optimization (VPS, scheduled)</span>
+  Weekly: re-run backtest on latest data
+  <span class="dim">→ Compare live results vs backtest predictions</span>
+  <span class="dim">→ Flag any divergence > 20%</span>
+  <span class="dim">→ Alert Harrison if strategy is degrading</span></div>
+
+  <div class="callout warn">
+    <strong>Keep QuantConnect as backup.</strong> Don't delete your QC setup. Use it for: (1) comparing Backtrader results against QC's execution model, (2) accessing QC's built-in futures data library for validation, (3) any scenario where you want a second opinion on backtest accuracy. But primary iteration moves to Backtrader.
+  </div>
+</div>
+
+<!-- ============ SECTION 6: COST COMPARISON ============ -->
+<div class="section">
+  <div class="section-title">6. Monthly Cost Comparison</div>
+
+  <div class="grid3">
+    <div class="card red">
+      <div class="card-label red">Current Setup</div>
+      <div class="card-cost" style="color:#f85149;">~$270/mo</div>
+      <div class="card-text" style="font-size:12px;">
+        Claude Max: $200/mo<br>
+        QuantVPS (idle): $70/mo<br>
+        API credits: $0 (not using API)<br>
+        <br>
+        <em>~50% of Max credits wasted on context recovery. VPS sitting empty.</em>
+      </div>
+    </div>
+    <div class="card yellow">
+      <div class="card-label yellow">Phase 1: Claude Code + GitHub</div>
+      <div class="card-cost" style="color:#d29922;">~$180/mo</div>
+      <div class="card-text" style="font-size:12px;">
+        Claude Max: $200/mo (but ~85% productive now)<br>
+        QuantVPS: $70/mo<br>
+        OpenRouter: ~$5-10/mo (Tier 1-2 calls)<br>
+        <br>
+        <em>Minus: Can downgrade Claude Max tier if Code is efficient enough. Real savings: better output per dollar.</em>
+      </div>
+    </div>
+    <div class="card green">
+      <div class="card-label green">Phase 2: Full Multi-Model Stack</div>
+      <div class="card-cost" style="color:#3fb950;">~$90-120/mo</div>
+      <div class="card-text" style="font-size:12px;">
+        QuantVPS: $70/mo<br>
+        OpenRouter (Tier 1-2): ~$5/mo<br>
+        Anthropic API (Tier 3-4 + caching): ~$15-20/mo<br>
+        Claude Max: $100/mo (can drop to lower tier)<br>
+        Futures data: $0-50 (Quantower export or Databento)<br>
+        <br>
+        <em>VPS is productive. API usage is optimized. Backtests are free (Backtrader).</em>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION 7: COMPONENT MAP ============ -->
+<div class="section">
+  <div class="section-title">7. What Needs to Be Built (In Order)</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Component</th>
+        <th>What It Does</th>
+        <th>Runs On</th>
+        <th>Dependencies</th>
+        <th>Effort</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1</strong></td>
+        <td><strong>GitHub Repo + CLAUDE.md</strong></td>
+        <td>Central source of truth. Claude Code auto-context.</td>
+        <td>GitHub</td>
+        <td>None</td>
+        <td>30 min</td>
+      </tr>
+      <tr>
+        <td><strong>2</strong></td>
+        <td><strong>Model Router</strong></td>
+        <td>Python class: classify task → pick model → call via OpenRouter or Anthropic API</td>
+        <td>VPS (+ importable on Mac)</td>
+        <td>OpenRouter API key</td>
+        <td>2-3 hrs</td>
+      </tr>
+      <tr>
+        <td><strong>3</strong></td>
+        <td><strong>API Wrapper (FastAPI)</strong></td>
+        <td>HTTP endpoint wrapping the model router. Knowledge base as cached system prompt for Tier 3-4.</td>
+        <td>VPS</td>
+        <td>Model Router, Anthropic key</td>
+        <td>3-4 hrs</td>
+      </tr>
+      <tr>
+        <td><strong>4</strong></td>
+        <td><strong>Backtrader Harness</strong></td>
+        <td>Adapter that runs brain code (same Python) in Backtrader's framework. CSV data feed.</td>
+        <td>Mac + VPS</td>
+        <td>Price data, brain code</td>
+        <td>3-4 hrs</td>
+      </tr>
+      <tr>
+        <td><strong>5</strong></td>
+        <td><strong>VPS Bootstrap</strong></td>
+        <td>Run setup.sh + openclaw onboard + clone repo + start services</td>
+        <td>VPS</td>
+        <td>GitHub repo, API keys</td>
+        <td>1 hr</td>
+      </tr>
+      <tr>
+        <td><strong>6</strong></td>
+        <td><strong>Context Engine v1</strong></td>
+        <td>Pulls VIX, calendar, session ranges → writes context.json</td>
+        <td>VPS</td>
+        <td>Data sources (Yahoo, ForexFactory)</td>
+        <td>4-5 hrs</td>
+      </tr>
+      <tr>
+        <td><strong>7</strong></td>
+        <td><strong>V3 Tempo Brain</strong></td>
+        <td>Fix circuit breaker, apply V3 rules (risk, trimming, SMT, timing)</td>
+        <td>Mac (dev) → VPS</td>
+        <td>V3 rules doc, Backtrader harness</td>
+        <td>6-8 hrs</td>
+      </tr>
+      <tr>
+        <td><strong>8</strong></td>
+        <td><strong>KNOWLEDGE_BASE.md</strong></td>
+        <td>Master compiled doc for API Wrapper system prompt</td>
+        <td>GitHub → VPS</td>
+        <td>V3 rules, architecture doc</td>
+        <td>2 hrs</td>
+      </tr>
+      <tr>
+        <td><strong>9</strong></td>
+        <td><strong>Quantower Bridge</strong></td>
+        <td>C# FileWatcher: signal.json → order → fill.json</td>
+        <td>VPS (Quantower)</td>
+        <td>Signal schema, Quantower running</td>
+        <td>4-5 hrs</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout good">
+    <strong>Total build estimate: ~25-35 hours.</strong> With Claude Code + CLAUDE.md (no context loss between sessions), this could be done in 1-2 focused weeks. Components 1-4 can be built in parallel. Component 5 is a terminal session. Components 6-9 build on the foundation.
+  </div>
+</div>
+
+<!-- ============ SECTION 8: XGROK BONUS ============ -->
+<div class="section">
+  <div class="section-title">8. Grok Bonus: Free Credits</div>
+
+  <div class="card blue">
+    <div class="card-label blue">xAI API Free Tier</div>
+    <div class="card-title">$25 free credits on signup + $150/mo via data sharing</div>
+    <div class="card-text">
+      xAI offers $25 free API credits when you create an account. Additionally, they have a data sharing program that gives you $150/month in free credits if you opt in. Grok 4.1 Fast at $0.20/$0.50 per M tokens means $150 buys roughly 300M input tokens — that's an absurd amount of Tier 2 work for free.
+      <br><br>
+      <strong>Recommendation:</strong> Sign up at <code>console.x.ai</code>, enable data sharing (this is for backtesting/dev work, not sensitive data), and use Grok as the primary Tier 2 model. This alone could make Tier 2 essentially free.
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION 9: BUILD ORDER ============ -->
+<div class="section">
+  <div class="section-title">9. Recommended Build Sequence</div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num" style="background:#3fb950;">1</div>
+      <div class="step-text"><strong>Today: Create GitHub repo + CLAUDE.md</strong> — This immediately fixes the context loss problem and unblocks everything else. Harrison creates repo from Mac terminal. I can generate the CLAUDE.md content right now.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:#3fb950;">2</div>
+      <div class="step-text"><strong>Today/Tomorrow: Get API keys</strong> — Sign up for OpenRouter (<code>openrouter.ai</code>), xAI (<code>console.x.ai</code>), and grab your existing Anthropic API key from <code>console.anthropic.com</code>. Store in <code>.env</code> file in repo (gitignored).</div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:#58a6ff;">3</div>
+      <div class="step-text"><strong>This week: Build Model Router + API Wrapper</strong> — Use Claude Code (<code>cd ~/trading-system && claude</code>). It reads CLAUDE.md, understands the architecture, and builds both components. Test locally, then deploy to VPS via <code>git push</code> + <code>ssh ... git pull</code>.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:#58a6ff;">4</div>
+      <div class="step-text"><strong>This week: Set up Backtrader</strong> — <code>pip install backtrader</code> on Mac + VPS. Create harness that wraps the Tempo brain Python code. Export second-resolution data from Quantower. Run first local backtest.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:#d29922;">5</div>
+      <div class="step-text"><strong>Next week: VPS bootstrap</strong> — SSH in, run <code>setup.sh</code>, clone repo, run <code>openclaw onboard</code>, start services. Connect Telegram. Test end-to-end.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:#d29922;">6</div>
+      <div class="step-text"><strong>Next week: Fix V3 brain + Backtest</strong> — Apply V3 extracted rules to algorithm via Claude Code. Run Backtrader locally for quick iteration, then full run on VPS. Compare to QC results.</div>
+    </div>
+    <div class="step">
+      <div class="step-num" style="background:#8b949e;">7</div>
+      <div class="step-text"><strong>Week 3+: Context Engine + Quantower Bridge</strong> — These are the production-only components. Build once backtesting proves the brain works.</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

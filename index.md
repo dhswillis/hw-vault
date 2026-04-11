@@ -8,6 +8,8 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 
 - [[wiki/concepts/bos-fvg]] — **DEAD (2026-04-10).** BOS_FVG is NOT validated. Bar-sim trailing inflated prior results by +0.29 R/trade; tick replay shows +0.001 avgR.
 - [[wiki/concepts/bar-sim-trailing-bug]] — Structural reason trailing stops can't be backtested on 1-minute OHLC. Caused the BOS_FVG illusion.
+- [[wiki/concepts/maps-of-content]] — Curated editorial index notes for topic clusters; the Obsidian-community layer on top of Karpathy's flat `index.md`.
+- [[wiki/concepts/inbox-processing]] — Morning ritual for converting raw captures into structured wiki notes. Implemented as `/inbox`.
 - [[wiki/concepts/ifvg]] — Inverted Fair Value Gap, Tempo's canonical entry signal. Close-through FVG on a pre-existing gap after a sweep.
 - [[wiki/concepts/smt]] — Smart Money Technique: NQ vs ES divergence. Primary Tempo confluence since Nov 2025.
 - [[wiki/concepts/dol-framework]] — Draw on Liquidity. Hierarchy of structural magnets — London H/L → data wicks → hourly → 50% range → PDH/PDL.
@@ -33,6 +35,7 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 
 ## Summaries
 
+- [[wiki/summaries/audits-cluster]] — Cluster summary of 7 audit documents. Contamination chronology from V10i look-ahead (Feb) → V8 phantom B/E → bar-sim trailing (Apr).
 - [[wiki/summaries/bos-fvg-failure-consolidated]] — **2026-04-10 failure report.** Paired bar-vs-tick replay: bar +0.359 avgR, tick +0.001 avgR. Invalidates every prior BOS_FVG "validated" claim.
 - [[wiki/summaries/bos-fvg-10pt-audit]] — 2026-03-08 tick-level audit of BOS_FVG 10+pt static T3R. Baseline +0.015 avgR, nothing survives Bonferroni correction.
 - [[wiki/summaries/research-arc-map]] *(also synthesis)* — **Master map** of the V7 → V11 research arc and the five-phase crisis cycle.
@@ -65,10 +68,19 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 - [[wiki/syntheses/bos-fvg-claim-vs-reality]] — Deep dive on why BOS_FVG is not Tempo's IFVG and why "BOS_FVG is the core signal of Tempo" was a two-layer mistake.
 - [[wiki/syntheses/mining-reports-v1-v2-reconciliation]] — Cross-source analysis: why V1 claimed 97.9% WR while V2 shows 63.5%. Three corrections documented. **Note 2026-04-10**: even the V2 "honest" 63.5% WR is now invalidated for BOS_FVG — see [[bos-fvg-failure-consolidated]].
 
+## Maps
+
+*(none yet — create with `/moc <topic>` once a topic cluster has 10+ pages. Candidates once a MOC is written: `tempo-moc`, `audit-history-moc`, `context-engine-moc`.)*
+
 ## Projects (work)
 
-*(none yet)*
+*(none yet — see `user_role_haven_park.md` in auto-memory for the Haven Park context that should populate this section)*
 
 ## Projects (personal)
 
-*(none yet)*
+*(none yet — `personal/projects/tempo-trading/` is the expected first entry)*
+
+## Inbox — pending ingest
+
+- [[inbox/2026-04-11-vault-map-report|2026-04-11 Vault Map Report]] — full inventory of home-folder documents cross-referenced against `raw-sources/`. 336 scanned, 166 external unmapped, 52 duplicates (50 byte-identical, 2 content mismatches).
+- [[inbox/2026-04-11-import-manifest|2026-04-11 Import Manifest]] — 166 files copied into `raw-sources/imports/2026-04-11/` mirroring original paths. Every file wiki-linked from the manifest so the graph shows them connected. Ready for Claude Code to run Ingest.

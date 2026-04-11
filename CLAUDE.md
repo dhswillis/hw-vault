@@ -12,23 +12,27 @@ Personal second-brain vault following the Karpathy LLM Wiki pattern:
 
 ## Folder conventions
 
-- `work/projects/` — active work projects, one folder per project (kebab-case)
+- `work/projects/` — active work projects, one folder per project (kebab-case). Primary context: **Haven Park Communities** (Harrison is Director of Asset Management). See `wiki/entities/harrison-haven-park.md` for the work context roster.
 - `work/meetings/` — meeting notes, one file per meeting
 - `work/decisions/` — decision log entries
-- `work/people/` — colleagues, clients, stakeholders
-- `personal/projects/` — personal side projects
+- `work/people/` — colleagues, clients, stakeholders (one file each)
+- `personal/projects/` — personal side projects (including trading: `personal/projects/tempo-trading/`)
 - `personal/goals/` — goals, OKRs, reviews
 - `personal/health/` — fitness, sleep, habits
 - `personal/finance/` — personal finance notes (never store account numbers)
+- `personal/legal/` — legal + estate matters (gitignored for privacy; sensitive docs)
 - `daily/` — daily notes, `YYYY-MM-DD.md`
+- `weekly/` — weekly reviews, `YYYY-Www.md`
 - `wiki/concepts/` — concept pages (ideas, frameworks, patterns)
 - `wiki/entities/` — people, companies, products, places
 - `wiki/summaries/` — per-source summaries (one per raw source)
 - `wiki/syntheses/` — cross-source analyses and answered queries worth keeping
-- `raw-sources/` — **read-only**. Articles, PDFs, transcripts, clipped pages
+- `wiki/maps/` — Maps of Content (MOCs) — curated index notes for a topic cluster, see [[concepts/maps-of-content]]
+- `raw-sources/` — **read-only**. Articles, PDFs, transcripts, clipped pages. Subfolders by domain (`trading/`, `work/`, `personal/`, `claude-data/`).
 - `raw-sources/assets/` — images (gitignored, may grow large)
-- `templates/` — note templates
-- `inbox/` — quick capture, triaged during `/wrap-up`
+- `templates/` — note templates (daily, weekly, project, meeting, moc, decision, person)
+- `templates/prompts/` — reusable prompt snippets for common workflows
+- `inbox/` — quick capture, triaged during `/inbox` or `/wrap-up`
 
 ## Naming
 
@@ -157,6 +161,59 @@ Always set `updated` when you modify a file. Never backdate `created`.
 5. Append to `log.md`: `## [YYYY-MM-DD HH:MM] wrap-up | <session summary>`.
 6. Run `git add . && git commit -m "wrap-up: <session summary>" && git push`. If no remote is configured, skip the push and say so.
 
+### /inbox
+**Trigger:** user says `/inbox` or "process my inbox".
+
+The morning ritual for converting raw capture into structured notes. Inspired by the standard Claude-Code-in-Obsidian pattern (see [[concepts/inbox-processing]]).
+
+1. Read each file in `inbox/`.
+2. For each item, classify: **note** (belongs in wiki), **action** (goes into a project's Open actions), **calendar** (scheduled item — add to today's or a future daily), **reference** (belongs in `raw-sources/` then run `/ingest`), or **delete** (junk).
+3. Create the appropriate structured note or append to the appropriate place. Always set full frontmatter.
+4. Identify cross-links to existing wiki pages. Add `[[double brackets]]` wherever the new note mentions a concept or entity that already has a page.
+5. Delete or move the inbox item once filed.
+6. Append to `log.md`: `## [YYYY-MM-DD HH:MM] inbox | N items processed`.
+
+Rule: **never leave items in `inbox/` longer than a week**. The next `/weekly` review will flag orphans.
+
+### /weekly
+**Trigger:** user says `/weekly` on Friday, or on Monday for the prior week.
+
+Weekly review — one of the most valuable habits in any knowledge system. Structured so Claude can do 80% of it automatically from the week's daily notes and project files.
+
+1. Create `weekly/YYYY-Www.md` from `templates/weekly.md` where `Www` is ISO week number.
+2. **Summarize completed work** from the week's daily notes (`daily/YYYY-MM-DD.md` × 5-7). Pull wins, blockers, notes.
+3. **Aggregate open actions** from all projects with a `- [ ]` still unchecked. Group by project.
+4. **Surface stale items** — anything in `inbox/` > 7 days, any `daily/*.md` with unchecked actions carried forward more than twice.
+5. **Identify decisions** made this week — cross-reference `work/decisions/`.
+6. **Flag pending queries** — anything in `wiki/syntheses/` with unresolved open questions.
+7. **Next-week focus** — prompt the user for their top 3 priorities; fill in the template.
+8. Append to `log.md`: `## [YYYY-MM-DD HH:MM] weekly | Www review`.
+
+### /moc
+**Trigger:** user says `/moc <topic>` or requests a Map of Content for a subject.
+
+Create or update a Map of Content — a curated index note that pulls together all wiki pages on a topic. MOCs are how large clusters become navigable; they complement (but don't replace) `index.md`.
+
+1. Scan `wiki/` for all pages that tag, link to, or describe the topic.
+2. Create or update `wiki/maps/<topic>-moc.md` with:
+   - A 2-3 sentence orientation for the topic
+   - A curated hierarchy of the most important pages (not every page — the MOC is an editor's-cut view)
+   - Cross-links to any related MOCs
+3. Add a `[[maps/<topic>-moc]]` back-link to each wiki page included.
+4. Update `index.md` — add the MOC under a new `## Maps` section if not already present.
+5. Append to `log.md`: `## [YYYY-MM-DD HH:MM] moc | <topic>`.
+
+See `templates/moc.md` for the MOC structure.
+
+### /capture
+**Trigger:** user says `/capture <thought>` or `/capture` followed by content.
+
+Quick-capture without classification. Drops a timestamped file in `inbox/` for later processing via `/inbox`.
+
+1. Create `inbox/YYYY-MM-DD-HHMM-<slug>.md` with the user's content verbatim and minimal frontmatter (`date`, `tags: [inbox]`).
+2. Do NOT attempt to classify or cross-link yet — that's what `/inbox` is for.
+3. Append to `log.md`: `## [YYYY-MM-DD HH:MM] capture | <slug>`.
+
 ## Hard rules
 
 - **NEVER modify files in `raw-sources/`.** Read-only. Annotations go in `wiki/summaries/`.
@@ -182,3 +239,73 @@ Free-form tags are fine for domain (e.g. `trading`, `nq`, `ninjatrader`). Reserv
 - `Write` is faster than `Read → Edit` for files small enough to rewrite in full. Use it for `index.md`, `log.md` updates, and any single-page overwrite.
 - `Edit` is correct when (a) the file is large and only a small region changes, or (b) you need `replace_all` semantics. Edit requires a prior `Read`.
 - For non-markdown ingests, convert to text in `/tmp/` and read the converted file — don't try to read `.docx`, `.xlsx`, or compressed formats directly.
+
+## Obsidian best practices integrated
+
+Schema is informed by what the Obsidian + Claude Code community has converged on in 2026. Not every plugin is required — the vault is fully usable with Obsidian core — but the conventions are friendly to these additions if/when they're installed.
+
+### Recommended plugins (install if you want richer automation)
+
+- **Templater** — variable-driven templates (`{{date}}`, `{{title}}`, JavaScript snippets). The existing `templates/*.md` use plain tokens that work with either raw Templater or manual substitution.
+- **Dataview** — query notes as a database. Enables auto-updating tables in `index.md`, weekly reviews, and MOCs. Frontmatter is already shaped for Dataview queries (consistent `type`, `status`, `tags`, `date` fields).
+- **Periodic Notes** — adds weekly/monthly/quarterly note support on top of daily notes. Matches the `weekly/` folder and `/weekly` operation.
+- **Tasks** — tracks `- [ ]` checkboxes across the vault, aggregates them, supports due-date queries. Enables `/weekly` to pull open actions automatically.
+- **Calendar** — month-view sidebar for navigating daily notes.
+- **QuickAdd** — rapid capture shortcuts. Matches the `/capture` operation.
+
+**Install order** (community guidance): start with Templater + Dataview + Calendar. Add the rest only when you feel the specific pain they solve. Do not install 50 plugins on day one.
+
+### MOCs vs index.md
+
+`index.md` is a **flat catalog** — one line per wiki page, grouped by type. Fast lookup.
+
+A **Map of Content** (`wiki/maps/<topic>-moc.md`) is a **curated editorial view** of a topic — the pages that matter most, in a meaningful hierarchy, with opinionated annotations. Use MOCs when a topic cluster has 10+ pages that a reader wouldn't be able to navigate via flat index alone.
+
+Rule of thumb: create a MOC when you notice yourself typing the same 5 cross-links in multiple wiki pages. Those links want to be one MOC.
+
+### Frontmatter as a database
+
+Every frontmatter field should support future Dataview queries. Keep the schema consistent:
+
+- `type` — always one of the enumerated values per file type
+- `tags` — lowercase kebab-case, no spaces, no `#` prefix in frontmatter
+- `created`, `updated`, `date` — ISO format `YYYY-MM-DD`
+- `status` — `active` / `paused` / `done` / `archived`
+- `related` — array of vault paths for cross-linking
+- `sources` — array of `raw-sources/` paths for provenance
+
+Dataview queries you can run once those plugins are installed (example):
+
+```dataview
+TABLE status, updated FROM "work/projects" WHERE status = "active" SORT updated DESC
+```
+
+### Daily note philosophy
+
+Daily notes are a **timeline**, not a planner. Don't over-structure them. The template has six sections (focus / open actions / notes / wins / blockers / tomorrow) but you should feel free to omit any. The `/weekly` operation aggregates across daily notes, so the value of any single daily note is low — the value is in the week of them together.
+
+### Linking every mention
+
+The single most load-bearing habit: **wrap every significant concept, entity, or project in `[[double brackets]]` the first time it appears in any note you write**. Obsidian's graph view rewards this exponentially — one extra link on each of 100 notes creates a navigable graph, while zero links creates a filing cabinet.
+
+## Reserved status & workflow tags (extended)
+
+In addition to `suspect-results`, `superseded`, `open-question`, `stub`:
+
+- `dead-strategy` — signal/strategy tested and confirmed to have no edge. Must include a "Why it died" section and forward-link to the audit.
+- `canonical` — the authoritative source for a concept/entity. Other pages should link *to* the canonical, not duplicate it.
+- `draft` — work in progress, not ready to cite.
+- `in-flight` — currently being edited this session; may change.
+- `needs-reingest` — source has been updated since the summary was written; re-ingest to refresh.
+
+## Authority hierarchy
+
+When two sources disagree, trust them in this order (highest first):
+
+1. **User's direct edits to vault files** made during the current session (highest — see `feedback_user_corrections_authoritative` memory)
+2. **Project CLAUDE.md** files (e.g. `~/Documents/trading-system/CLAUDE.md`) — ground truth for the project's current position
+3. **Most recent tick-level audit** that paired against ground-truth data
+4. **Most recent clean-sim audit** (walk-forward, multi-comparison corrected)
+5. **Mining reports / research docs** — historical, often contaminated, cite with caveats
+6. **User's auto-memory** (`~/.claude/projects/-Users-harrisonwillis/memory/MEMORY.md`) — useful context but point-in-time
+7. **General web knowledge** — lowest; only cite when nothing in the vault has the answer

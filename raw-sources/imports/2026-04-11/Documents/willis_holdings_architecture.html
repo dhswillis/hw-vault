@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Holdings — Example Architecture</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0e17; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 40px; min-height: 100vh; }
+  h1 { text-align: center; font-size: 32px; color: #fff; margin-bottom: 4px; letter-spacing: 2px; font-weight: 800; }
+  .subtitle { text-align: center; font-size: 13px; color: #6b7280; margin-bottom: 50px; letter-spacing: 3px; text-transform: uppercase; }
+
+  .diagram { max-width: 1100px; margin: 0 auto; }
+
+  .layer { margin-bottom: 36px; }
+  .layer-label { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; color: #6b7280; margin-bottom: 12px; padding-left: 4px; font-weight: 600; }
+
+  .row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  .node {
+    border-radius: 12px; padding: 16px 20px; min-width: 160px; text-align: center;
+    position: relative; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .node:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .node-title { font-weight: 700; font-size: 14px; margin-bottom: 3px; }
+  .node-desc { font-size: 11px; opacity: 0.75; line-height: 1.4; }
+  .node-status { font-size: 9px; margin-top: 6px; padding: 2px 8px; border-radius: 10px; display: inline-block; font-weight: 600; letter-spacing: 0.5px; }
+
+  /* Node colors */
+  .human { background: linear-gradient(135deg, #1e3a5f, #1a2744); border: 1px solid #2563eb; }
+  .human .node-title { color: #60a5fa; }
+  .orchestrator { background: linear-gradient(135deg, #2d1b4e, #1a1235); border: 1px solid #7c3aed; }
+  .orchestrator .node-title { color: #a78bfa; }
+  .brain { background: linear-gradient(135deg, #1a3c34, #0f2620); border: 1px solid #059669; }
+  .brain .node-title { color: #34d399; }
+  .hands { background: linear-gradient(135deg, #4a2c17, #2d1a0e); border: 1px solid #d97706; }
+  .hands .node-title { color: #fbbf24; }
+  .infra { background: linear-gradient(135deg, #1e2937, #111827); border: 1px solid #4b5563; }
+  .infra .node-title { color: #9ca3af; }
+  .division { background: linear-gradient(135deg, #1a2744, #0f1a2e); border: 1px solid #3b82f6; min-width: 190px; }
+  .division .node-title { color: #60a5fa; }
+  .division-planned { background: linear-gradient(135deg, #1a1a2e, #111120); border: 1px solid #4b5563; border-style: dashed; min-width: 190px; }
+  .division-planned .node-title { color: #6b7280; }
+  .execution { background: linear-gradient(135deg, #3b1323, #220b15); border: 1px solid #dc2626; }
+  .execution .node-title { color: #f87171; }
+  .arb { background: linear-gradient(135deg, #2d1b4e, #1a1235); border: 1px solid #8b5cf6; min-width: 190px; }
+  .arb .node-title { color: #c4b5fd; }
+
+  .status-live { background: #059669; color: #fff; }
+  .status-building { background: #d97706; color: #fff; }
+  .status-planned { background: #374151; color: #9ca3af; }
+  .status-mining { background: #2563eb; color: #fff; }
+
+  /* Arrows */
+  .arrow-section { text-align: center; margin: -6px 0 -6px 0; }
+  .arrow { color: #374151; font-size: 18px; letter-spacing: 4px; }
+  .arrow-label { font-size: 9px; color: #4b5563; letter-spacing: 1px; }
+
+  .wide { min-width: 320px; }
+
+  /* Pipeline */
+  .pipeline { display: flex; align-items: center; justify-content: center; gap: 0; margin: 10px 0; flex-wrap: wrap; }
+  .pipeline-node { padding: 10px 16px; font-size: 12px; font-weight: 600; border: 1px solid; }
+  .pipeline-arrow { color: #374151; font-size: 16px; padding: 0 3px; }
+  .p-research { background: #0f1a2e; border-color: #3b82f6; color: #60a5fa; border-radius: 8px 0 0 8px; }
+  .p-backtest { background: #1a3c34; border-color: #059669; color: #34d399; }
+  .p-live { background: #3b1323; border-color: #dc2626; color: #f87171; }
+  .p-copy { background: #2d1b4e; border-color: #7c3aed; color: #a78bfa; }
+  .p-accounts { background: #4a2c17; border-color: #d97706; color: #fbbf24; border-radius: 0 8px 8px 0; }
+
+  .section-divider { border-top: 1px solid #1f2937; margin: 40px 0 32px 0; }
+
+  .stats { display: flex; gap: 28px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-value { font-size: 22px; font-weight: 700; color: #fff; }
+  .stat-label { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; }
+
+  .section-title { text-align: center; font-size: 16px; color: #fff; margin-bottom: 20px; font-weight: 700; letter-spacing: 1px; }
+
+  /* Agent swarm */
+  .swarm { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+  .bot { background: #111827; border: 1px solid #1f2937; border-radius: 8px; padding: 8px 14px; font-size: 11px; text-align: center; min-width: 120px; }
+  .bot-name { font-weight: 700; color: #9ca3af; font-size: 12px; }
+  .bot-role { color: #6b7280; font-size: 10px; }
+
+  .footnote { text-align: center; font-size: 11px; color: #374151; margin-top: 50px; }
+</style>
+</head>
+<body>
+
+<h1>PERSONAL HOLDINGS</h1>
+<p class="subtitle">AI-Managed Research Platform &middot; Example Architecture</p>
+
+<div class="diagram">
+
+  <!-- ============================================ -->
+  <!-- COMMAND LAYER -->
+  <!-- ============================================ -->
+  <div class="layer">
+    <div class="layer-label">Command Layer</div>
+    <div class="row">
+      <div class="node human wide">
+        <div class="node-title">Owner</div>
+        <div class="node-desc">Telegram, Desktop, Phone &middot; Decision authority</div>
+        <div class="node-status status-live">LIVE</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-section"><div class="arrow">▼</div><div class="arrow-label">Telegram &middot; CLI &middot; Desktop</div></div>
+
+  <!-- ============================================ -->
+  <!-- ORCHESTRATION LAYER -->
+  <!-- ============================================ -->
+  <div class="layer">
+    <div class="layer-label">Orchestration Layer</div>
+    <div class="row">
+      <div class="node orchestrator wide">
+        <div class="node-title">Operator (OpenClaw)</div>
+        <div class="node-desc">COO &middot; Routes tasks to agents &middot; Manages divisions &middot; Heartbeat monitoring</div>
+        <div class="node-status status-building">CONNECTING</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-section"><div class="arrow">▼ &nbsp;&nbsp;&nbsp;&nbsp; ▼ &nbsp;&nbsp;&nbsp;&nbsp; ▼</div><div class="arrow-label">delegates to intelligence layer</div></div>
+
+  <!-- ============================================ -->
+  <!-- INTELLIGENCE LAYER -->
+  <!-- ============================================ -->
+  <div class="layer">
+    <div class="layer-label">Intelligence Layer</div>
+    <div class="row">
+      <div class="node brain">
+        <div class="node-title">Ollama / Llama 3.3</div>
+        <div class="node-desc">Brain &middot; Free local LLM<br>Routing, Q&A, quick decisions</div>
+        <div class="node-status status-live">LIVE &middot; $0/mo</div>
+      </div>
+      <div class="node hands">
+        <div class="node-title">Claude Code</div>
+        <div class="node-desc">Hands &middot; Paid API<br>Computer control, coding, mining, installs</div>
+        <div class="node-status status-live">LIVE</div>
+      </div>
+      <div class="node hands">
+        <div class="node-title">Cowork (Claude)</div>
+        <div class="node-desc">Analyst &middot; Desktop agent<br>Docs, strategy, browser, spreadsheets</div>
+        <div class="node-status status-live">LIVE</div>
+      </div>
+      <div class="node brain">
+        <div class="node-title">Llama 3.1:8b</div>
+        <div class="node-desc">Fast &middot; Fallback model<br>Quick routing when Brain is busy</div>
+        <div class="node-status status-live">LIVE &middot; $0/mo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-section"><div class="arrow">▼</div><div class="arrow-label">executes across infrastructure</div></div>
+
+  <!-- ============================================ -->
+  <!-- INFRASTRUCTURE LAYER -->
+  <!-- ============================================ -->
+  <div class="layer">
+    <div class="layer-label">Infrastructure</div>
+    <div class="row">
+      <div class="node infra">
+        <div class="node-title">Mac (Local)</div>
+        <div class="node-desc">Primary workstation<br>Backtesting, mining, local AI</div>
+        <div class="node-status status-live">PRIMARY</div>
+      </div>
+      <div class="node infra">
+        <div class="node-title">Windows VM (UTM)</div>
+        <div class="node-desc">NinjaTrader 8<br>Visual backtest + live execution</div>
+        <div class="node-status status-building">INSTALLING</div>
+      </div>
+      <div class="node infra">
+        <div class="node-title">Cloud VPS</div>
+        <div class="node-desc">Remote processing<br>Batch jobs &middot; Cron scheduling</div>
+        <div class="node-status status-live">LIVE</div>
+      </div>
+      <div class="node infra">
+        <div class="node-title">GitHub</div>
+        <div class="node-desc">Source control<br>Version management &middot; CI/CD</div>
+        <div class="node-status status-live">LIVE</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ============================================ -->
+  <!-- DIVISIONS -->
+  <!-- ============================================ -->
+  <div class="section-title">Research Divisions</div>
+
+  <!-- Active Divisions -->
+  <div class="layer">
+    <div class="layer-label">Active Divisions</div>
+    <div class="row">
+      <div class="node division">
+        <div class="node-title">1. Trading</div>
+        <div class="node-desc">Personal portfolio trading<br>Backtesting &middot; Parameter mining<br>NinjaTrader execution</div>
+        <div class="node-status status-live">ACTIVE</div>
+      </div>
+      <div class="node division">
+        <div class="node-title">2. Finance (CFO)</div>
+        <div class="node-desc">Tax calendar &middot; Entity management<br>FP&amp;A projections &middot; Quarterly estimates<br>Cash flow forecasting</div>
+        <div class="node-status status-live">ACTIVE</div>
+      </div>
+      <div class="node division">
+        <div class="node-title">3. HR & Bots</div>
+        <div class="node-desc">Agent roster &middot; Model routing<br>Agent lifecycle management<br>Cost tracking &middot; Performance</div>
+        <div class="node-status status-live">ACTIVE</div>
+      </div>
+      <div class="node division">
+        <div class="node-title">4. IT Infrastructure</div>
+        <div class="node-desc">Cloud servers &middot; Source control<br>CI/CD &middot; Deploy scripts<br>Scheduling &middot; Monitoring</div>
+        <div class="node-status status-live">ACTIVE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Planned Divisions -->
+  <div class="layer">
+    <div class="layer-label">Planned Divisions</div>
+    <div class="row">
+      <div class="node arb">
+        <div class="node-title">5. Arbitrage</div>
+        <div class="node-desc">Polymarket + Kalshi<br>Prediction markets &middot; Kelly sizing<br>Bot swarm for odds scraping</div>
+        <div class="node-status status-planned">PLANNED</div>
+      </div>
+      <div class="node division-planned">
+        <div class="node-title">6. Macro Research</div>
+        <div class="node-desc">Fed liquidity monitor &middot; PREA data<br>Luke Gromen / FFTT signals<br>Treasury, RRP, TGA tracking</div>
+        <div class="node-status status-planned">PLANNED</div>
+      </div>
+      <div class="node division-planned" style="background: linear-gradient(135deg, #1a3020, #0f1a12); border-color: #16a34a;">
+        <div class="node-title" style="color: #4ade80;">7. REIT Trading</div>
+        <div class="node-desc">Public REIT analysis &middot; PREA benchmarks<br>Cap rate modeling &middot; Sector rotation<br>Dividend yield screening</div>
+        <div class="node-status status-planned">PLANNED</div>
+      </div>
+      <div class="node division-planned" style="background: linear-gradient(135deg, #1a3020, #0f1a12); border-color: #16a34a;">
+        <div class="node-title" style="color: #4ade80;">8. Private Equity</div>
+        <div class="node-desc">PE deal flow &middot; Fund analysis<br>LP/GP structures &middot; IRR modeling<br>Secondaries market monitoring</div>
+        <div class="node-status status-planned">PLANNED</div>
+      </div>
+      <div class="node division-planned" style="background: linear-gradient(135deg, #1a3020, #0f1a12); border-color: #16a34a;">
+        <div class="node-title" style="color: #4ade80;">9. RE Private Equity</div>
+        <div class="node-desc">Real estate PE &middot; Value-add deals<br>Multifamily &middot; Industrial &middot; Data centers<br>Joint venture structuring</div>
+        <div class="node-status status-planned">PLANNED</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ============================================ -->
+  <!-- AGENT SWARM -->
+  <!-- ============================================ -->
+  <div class="section-title">Agent Swarm</div>
+  <div class="layer">
+    <div class="layer-label">Skills &amp; Agents</div>
+    <div class="swarm">
+      <div class="bot">
+        <div class="bot-name">claude-code-manager</div>
+        <div class="bot-role">Spawn & monitor Claude Code</div>
+      </div>
+      <div class="bot">
+        <div class="bot-name">trading-operator</div>
+        <div class="bot-role">Backtest status & results</div>
+      </div>
+      <div class="bot">
+        <div class="bot-name">shell-runner</div>
+        <div class="bot-role">Safe bash execution</div>
+      </div>
+      <div class="bot">
+        <div class="bot-name">ceo-briefing</div>
+        <div class="bot-role">Daily briefings to Harrison</div>
+      </div>
+      <div class="bot">
+        <div class="bot-name">mining-watchdog</div>
+        <div class="bot-role">Keep Claude Code alive</div>
+      </div>
+      <div class="bot">
+        <div class="bot-name">arb-scanner</div>
+        <div class="bot-role">Polymarket/Kalshi odds</div>
+      </div>
+      <div class="bot">
+        <div class="bot-name">news-monitor</div>
+        <div class="bot-role">SEC, macro, market catalysts</div>
+      </div>
+      <div class="bot">
+        <div class="bot-name">reit-screener</div>
+        <div class="bot-role">REIT market analysis & deals</div>
+      </div>
+      <div class="bot">
+        <div class="bot-name">fed-liquidity</div>
+        <div class="bot-role">RRP, TGA, Treasury tracking</div>
+      </div>
+      <div class="bot">
+        <div class="bot-name">gromen-tracker</div>
+        <div class="bot-role">FFTT / macro thesis monitor</div>
+      </div>
+      <div class="bot">
+        <div class="bot-name">pe-deal-flow</div>
+        <div class="bot-role">PE & REPE deal screening</div>
+      </div>
+      <div class="bot">
+        <div class="bot-name">prea-monitor</div>
+        <div class="bot-role">PREA benchmarks & RE data</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ============================================ -->
+  <!-- ARBITRAGE SWARM -->
+  <!-- ============================================ -->
+  <div class="section-title">Arbitrage Bot Swarm (Division 5)</div>
+  <div class="layer">
+    <div class="row">
+      <div class="node arb">
+        <div class="node-title">Odds Scraper Bots</div>
+        <div class="node-desc">Polymarket &middot; Kalshi &middot; PredictIt<br>Real-time odds monitoring<br>Cross-platform price discrepancies</div>
+        <div class="node-status status-planned">PLANNED</div>
+      </div>
+      <div class="node arb">
+        <div class="node-title">Kelly Sizer</div>
+        <div class="node-desc">Optimal position sizing<br>Edge estimation &middot; Bankroll management<br>Fractional Kelly for safety</div>
+        <div class="node-status status-planned">PLANNED</div>
+      </div>
+      <div class="node arb">
+        <div class="node-title">Execution Bot</div>
+        <div class="node-desc">API integration &middot; Order placement<br>Slippage tracking &middot; P&L reporting<br>Auto-hedge cross-platform</div>
+        <div class="node-status status-planned">PLANNED</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ============================================ -->
+  <!-- TRADING PIPELINE -->
+  <!-- ============================================ -->
+  <div class="section-title">Trading — Execution Pipeline</div>
+  <div class="layer">
+    <div class="pipeline">
+      <div class="pipeline-node p-research">Signal Mining<br><span style="font-size:10px;opacity:0.6">Research &amp; backtest</span></div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-node p-backtest">NinjaTrader 8<br><span style="font-size:10px;opacity:0.6">Visual validation</span></div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-node p-live">Live Execution<br><span style="font-size:10px;opacity:0.6">Automated signals</span></div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-node p-copy" style="border-radius: 0 8px 8px 0;">Accounts<br><span style="font-size:10px;opacity:0.6">Live trading</span></div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ============================================ -->
+  <!-- SIGNAL RESEARCH -->
+  <!-- ============================================ -->
+  <div class="section-title">Research Capabilities</div>
+  <div class="layer">
+    <div class="row">
+      <div class="node division">
+        <div class="node-title">Signal Mining</div>
+        <div class="node-desc">Automated parameter sweeps<br>Multi-phase optimization<br>Walk-forward validation</div>
+        <div class="node-status status-live">ACTIVE</div>
+      </div>
+      <div class="node division">
+        <div class="node-title">Backtesting</div>
+        <div class="node-desc">Tick-level data &middot; 1yr+ history<br>Look-ahead bias prevention<br>Trade-by-trade analysis</div>
+        <div class="node-status status-live">ACTIVE</div>
+      </div>
+      <div class="node division">
+        <div class="node-title">Quantitative Models</div>
+        <div class="node-desc">Multiple signal types<br>Multi-timeframe analysis<br>Regime detection</div>
+        <div class="node-status status-live">ACTIVE</div>
+      </div>
+      <div class="node division" style="background: linear-gradient(135deg, #1a3020, #0f1a12); border-color: #16a34a;">
+        <div class="node-title" style="color: #4ade80;">REIT Analysis</div>
+        <div class="node-desc">Market screening &middot; Cap rates<br>Comparable analysis<br>Due diligence automation</div>
+        <div class="node-status status-planned">PLANNED</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value">9</div>
+      <div class="stat-label">Divisions</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">12</div>
+      <div class="stat-label">Agents</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">4</div>
+      <div class="stat-label">Active</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">5</div>
+      <div class="stat-label">Planned</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">3</div>
+      <div class="stat-label">AI Models</div>
+    </div>
+  </div>
+
+</div>
+
+<p class="footnote">Personal Holdings &middot; Example Architecture &middot; Feb 2026</p>
+
+</body>
+</html>

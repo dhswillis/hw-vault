@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market vs Limit Entry — IFVG MTF Cascade</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a0f; color: #e0e0e0; padding: 24px; }
+  h1 { font-size: 22px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  h2 { font-size: 17px; color: #fff; margin-bottom: 12px; }
+  .subtitle { color: #888; font-size: 13px; margin-bottom: 24px; }
+  .section { margin-bottom: 32px; }
+
+  .config-bar { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .config-tag { background: #1a1a2e; border: 1px solid #333; border-radius: 6px; padding: 5px 10px; font-size: 11px; color: #aaa; }
+  .config-tag span { color: #6dd5fa; font-weight: 600; }
+
+  .callout { border-radius: 10px; padding: 18px; margin-bottom: 24px; }
+  .callout.blue { background: linear-gradient(135deg, #0d1b33, #0a1628); border: 1px solid #1e3a5f; }
+  .callout.green { background: linear-gradient(135deg, #0d3320, #0a2a1a); border: 1px solid #1a6b3a; }
+  .callout h3 { font-size: 15px; margin-bottom: 6px; }
+  .callout.blue h3 { color: #6dd5fa; }
+  .callout.green h3 { color: #4ade80; }
+  .callout p { font-size: 13px; line-height: 1.5; color: #a0b0c8; }
+  .callout strong { color: #fff; }
+
+  table { width: 100%; border-collapse: collapse; background: #12121a; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+  th { background: #1a1a2e; color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 10px; text-align: right; border-bottom: 1px solid #222; }
+  th:first-child { text-align: left; }
+  td { padding: 7px 10px; text-align: right; font-size: 13px; border-bottom: 1px solid #1a1a22; font-variant-numeric: tabular-nums; }
+  td:first-child { text-align: left; color: #aaa; font-size: 12px; }
+  tr:hover { background: #1a1a28; }
+  .good { color: #4ade80; font-weight: 600; }
+  .bad { color: #f87171; }
+  .neutral { color: #fbbf24; }
+  .best-row td { background: #0d1f12; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .kill-card { background: #1a1012; border: 1px solid #4a1020; border-radius: 8px; padding: 14px; }
+  .kill-card h4 { color: #f87171; font-size: 13px; margin-bottom: 6px; }
+  .kill-card p { font-size: 12px; color: #c88; line-height: 1.4; }
+  .win-card { background: #0d1f12; border: 1px solid #1a6b3a; border-radius: 8px; padding: 14px; }
+  .win-card h4 { color: #4ade80; font-size: 13px; margin-bottom: 6px; }
+  .win-card p { font-size: 12px; color: #8c8; line-height: 1.4; }
+
+  .bar-row { display: flex; align-items: center; margin-bottom: 6px; }
+  .bar-label { width: 180px; font-size: 11px; color: #888; text-align: right; padding-right: 10px; }
+  .bar-track { flex: 1; height: 22px; background: #1a1a22; border-radius: 3px; position: relative; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; display: flex; align-items: center; padding-left: 6px; font-size: 10px; font-weight: 600; color: #fff; min-width: 30px; }
+  .bar-fill.green { background: linear-gradient(90deg, #166534, #22c55e); }
+  .bar-fill.yellow { background: linear-gradient(90deg, #854d0e, #eab308); }
+  .bar-fill.red { background: linear-gradient(90deg, #991b1b, #ef4444); }
+  .bar-fill.blue { background: linear-gradient(90deg, #1e3a5f, #3b82f6); }
+
+  .note { color: #666; font-size: 11px; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<h1>Market vs Limit Entry — IFVG MTF Cascade</h1>
+<div class="subtitle">15M Sweep &rarr; 15S Entry | 30 Days (Mar 6 &ndash; Apr 16, 2025) | R3.0 DC6 MD3 SW1.5 | 0.5pt slip (market) | 0.5pt RT commission (all) | Strict limit fills (trade-through)</div>
+
+<!-- ============ SECTION 1: Raw Unfiltered ============ -->
+<div class="section">
+<h2>1. Unfiltered Baseline — All Signals</h2>
+<table>
+  <tr><th style="text-align:left">Mode</th><th>Trades</th><th>Fill%</th><th>WR%</th><th>PF</th><th>Pts/Day</th><th>R/Day</th><th>Max DD (R)</th></tr>
+  <tr><td>MARKET (0.5pt slip)</td><td>354</td><td>100</td><td>48</td><td>1.10</td><td>+17.9</td><td>+6.8</td><td>58.6</td></tr>
+  <tr><td>LIMIT_CLOSE</td><td>354</td><td>100</td><td>48</td><td>1.12</td><td>+20.5</td><td>+7.0</td><td>57.6</td></tr>
+  <tr><td>LIMIT_MID</td><td>285</td><td>80</td><td>35</td><td>1.28</td><td>+23.6</td><td>+5.1</td><td>40.6</td></tr>
+  <tr><td>LIMIT_EDGE</td><td>252</td><td>71</td><td>27</td><td>1.15</td><td>+10.4</td><td>+3.0</td><td>41.2</td></tr>
+</table>
+<p class="note">LIMIT_CLOSE = limit at FVG bar close (same price as market, no slip). All modes use same risk definition from gap structure.</p>
+</div>
+
+<!-- ============ SECTION 2: What's Killing WR ============ -->
+<div class="section">
+<h2>2. What's Killing Win Rate</h2>
+<div class="grid2">
+  <div class="kill-card">
+    <h4>NY Lunch (11:30&ndash;13:00 ET)</h4>
+    <p>24 trades, <strong>4% WR</strong>, &minus;238 pts. Dead zone — no follow-through, chop eats limits alive.</p>
+  </div>
+  <div class="kill-card">
+    <h4>Shorts: 18% WR</h4>
+    <p>108 trades, &minus;765 pts. Longs are 46% WR, +1472 pts. The 15M sweep &rarr; 15S long is the real edge. Shorts just donate.</p>
+  </div>
+  <div class="kill-card">
+    <h4>Wide Risk (>20 pts): 4% WR</h4>
+    <p>69 trades, &minus;997 pts. With 3R target, 20pt risk needs 60pts of move. Doesn't happen on 15S entries.</p>
+  </div>
+  <div class="kill-card">
+    <h4>Big Gaps (>4 pts): 3% WR</h4>
+    <p>69 trades, &minus;1294 pts. Large FVGs on 15S = the move already happened. No energy left for 3R.</p>
+  </div>
+</div>
+<div class="grid2">
+  <div class="win-card">
+    <h4>Small Gaps (&le;4 pts): 57% WR</h4>
+    <p>134 trades (no lunch), +1866 pts, PF 6.14. Tight gaps = tight risk = 3R target within reach.</p>
+  </div>
+  <div class="win-card">
+    <h4>15MSL (15min swing lows): 48% WR</h4>
+    <p>105 trades, +1155 pts. Sweep of swing lows &rarr; long = institutional accumulation. Best source level.</p>
+  </div>
+  <div class="win-card">
+    <h4>NYPM (13:00+): 51% WR</h4>
+    <p>39 trades, +526 pts, PF 2.72. Afternoon follow-through on morning sweeps.</p>
+  </div>
+  <div class="win-card">
+    <h4>Tight Risk (&le;15 pts): 59% WR</h4>
+    <p>152 trades (no lunch), +2163 pts, PF 6.36. The sweet spot for 15S entries.</p>
+  </div>
+</div>
+</div>
+
+<!-- ============ SECTION 3: Filtered Configs ============ -->
+<div class="section">
+<h2>3. Market vs Limit Mid — With Filters</h2>
+
+<div class="callout blue">
+  <h3>Same filters applied to both entry modes</h3>
+  <p>Each row shows MARKET (with 0.5pt slip) and LIMIT_MID (no slip, strict trade-through fill) on the same signal universe.
+  The question: does the limit's quality filter + no-slip offset the missed fills?</p>
+</div>
+
+<table>
+  <tr><th style="text-align:left">Filter</th><th colspan="5" style="text-align:center; border-left: 1px solid #333;">MARKET</th><th colspan="5" style="text-align:center; border-left: 1px solid #333;">LIMIT MID</th></tr>
+  <tr><th></th>
+      <th style="border-left: 1px solid #333;">Tr</th><th>WR%</th><th>PF</th><th>Pts/d</th><th>DD</th>
+      <th style="border-left: 1px solid #333;">Tr</th><th>WR%</th><th>PF</th><th>Pts/d</th><th>DD</th></tr>
+  <tr>
+    <td>Baseline</td>
+    <td style="border-left: 1px solid #222;">354</td><td>48</td><td>1.10</td><td>+17.9</td><td>58.6</td>
+    <td style="border-left: 1px solid #222;">285</td><td>35</td><td>1.28</td><td>+23.6</td><td>40.6</td>
+  </tr>
+  <tr>
+    <td>No lunch + Risk&le;20</td>
+    <td style="border-left: 1px solid #222;">265</td><td>60</td><td>2.16</td><td>+91.8</td><td>42.9</td>
+    <td style="border-left: 1px solid #222;">199</td><td>48</td><td>2.46</td><td>+58.0</td><td>33.9</td>
+  </tr>
+  <tr>
+    <td>No lunch + Risk&le;15</td>
+    <td style="border-left: 1px solid #222;">202</td><td class="good">67</td><td class="good">4.12</td><td class="good">+102.6</td><td>39.8</td>
+    <td style="border-left: 1px solid #222;">152</td><td>59</td><td class="good">6.36</td><td>+72.1</td><td class="good">17.4</td>
+  </tr>
+  <tr>
+    <td>No lunch + Drop swing H + Risk&le;25</td>
+    <td style="border-left: 1px solid #222;">195</td><td>56</td><td>2.26</td><td>+66.5</td><td>33.5</td>
+    <td style="border-left: 1px solid #222;">165</td><td>50</td><td class="good">5.12</td><td>+72.6</td><td class="good">14.5</td>
+  </tr>
+  <tr>
+    <td>No lunch + Longs + Risk&le;20</td>
+    <td style="border-left: 1px solid #222;">156</td><td>60</td><td>2.78</td><td>+64.7</td><td>36.6</td>
+    <td style="border-left: 1px solid #222;">137</td><td>57</td><td class="good">6.24</td><td>+69.8</td><td class="good">15.8</td>
+  </tr>
+  <tr>
+    <td>No lunch + Gap&le;4</td>
+    <td style="border-left: 1px solid #222;">137</td><td>58</td><td>1.76</td><td>+34.3</td><td>25.5</td>
+    <td style="border-left: 1px solid #222;">134</td><td>57</td><td class="good">6.14</td><td>+62.2</td><td class="good">7.3</td>
+  </tr>
+  <tr class="best-row">
+    <td><strong>No lunch + Long + Risk&le;20 + Gap&le;5</strong></td>
+    <td style="border-left: 1px solid #222;">104</td><td class="good">67</td><td class="good">4.18</td><td>+54.8</td><td>21.8</td>
+    <td style="border-left: 1px solid #222;">99</td><td class="good">66</td><td class="good">11.80</td><td>+60.6</td><td class="good">8.7</td>
+  </tr>
+</table>
+</div>
+
+<!-- ============ SECTION 4: Best Configs ============ -->
+<div class="section">
+<h2>4. Top Configs — Pts/Day</h2>
+<div class="bar-row">
+  <div class="bar-label">MKT NoLunch Risk&le;15</div>
+  <div class="bar-track"><div class="bar-fill green" style="width:100%">+102.6 pts/d &nbsp;| 67% WR &nbsp;| PF 4.12 &nbsp;| DD 39.8R</div></div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">MKT NoLunch Risk&le;20</div>
+  <div class="bar-track"><div class="bar-fill green" style="width:89%">+91.8 pts/d &nbsp;| 60% WR &nbsp;| PF 2.16 &nbsp;| DD 42.9R</div></div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">LM NoLunch DropSH Risk&le;25</div>
+  <div class="bar-track"><div class="bar-fill yellow" style="width:71%">+72.6 pts/d &nbsp;| 50% WR &nbsp;| PF 5.12 &nbsp;| DD 14.5R</div></div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">LM NoLunch Risk&le;15</div>
+  <div class="bar-track"><div class="bar-fill yellow" style="width:70%">+72.1 pts/d &nbsp;| 59% WR &nbsp;| PF 6.36 &nbsp;| DD 17.4R</div></div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">LM NoLunch Long Risk&le;20</div>
+  <div class="bar-track"><div class="bar-fill yellow" style="width:68%">+69.8 pts/d &nbsp;| 57% WR &nbsp;| PF 6.24 &nbsp;| DD 15.8R</div></div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">LM NoLunch Gap&le;4</div>
+  <div class="bar-track"><div class="bar-fill yellow" style="width:61%">+62.2 pts/d &nbsp;| 57% WR &nbsp;| PF 6.14 &nbsp;| DD 7.3R</div></div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">LM NoLunch Long R&le;20 G&le;5</div>
+  <div class="bar-track"><div class="bar-fill blue" style="width:59%">+60.6 pts/d &nbsp;| 66% WR &nbsp;| PF 11.80 &nbsp;| DD 8.7R</div></div>
+</div>
+</div>
+
+<!-- ============ SECTION 5: The Trade-off ============ -->
+<div class="section">
+<h2>5. The Trade-Off</h2>
+<div class="callout green">
+  <h3>Market wins on raw pts/day. Limit Mid wins on risk-adjusted.</h3>
+  <p>
+    <strong>Best raw output:</strong> MARKET + No Lunch + Risk&le;15 = <strong>+102.6 pts/day, 67% WR</strong> but DD is 39.8R.<br>
+    <strong>Best risk-adjusted:</strong> LIMIT_MID + No Lunch + Gap&le;4 = <strong>+62.2 pts/day, 57% WR, PF 6.14, DD 7.3R</strong>. Calmar ratio is 8.5x vs Market's 2.6x.<br>
+    <strong>Best WR + PF:</strong> LIMIT_MID + No Lunch + Long + Risk&le;20 + Gap&le;5 = <strong>66% WR, PF 11.80, DD 8.7R</strong>. 99 trades in 30 days (3.3/day).<br><br>
+    The limit midpoint acts as a quality filter — it skips the runners that would've been coin flips and only fills on pullbacks where the trade has room to work.
+    Combined with killing lunch, capping risk, and filtering gap size, you get a 66% win rate with an 11.8 profit factor.
+    The trade count drops from 354 to 99, but every trade is high quality.
+  </p>
+</div>
+</div>
+
+<!-- ============ SECTION 6: Source Breakdown ============ -->
+<div class="section">
+<h2>6. Level Source Breakdown (LIMIT_MID, No Lunch)</h2>
+<table>
+  <tr><th style="text-align:left">Source</th><th>Trades</th><th>WR%</th><th>AvgR</th><th>Tot Pts</th><th>Verdict</th></tr>
+  <tr><td>15MSL (15m swing low)</td><td>105</td><td class="good">48</td><td class="good">+1.08</td><td class="good">+1155</td><td class="good">KEEP</td></tr>
+  <tr><td>1HSL (1H swing low)</td><td>35</td><td>43</td><td class="good">+0.86</td><td>+172</td><td class="good">KEEP</td></tr>
+  <tr><td>PDM (prior day mid)</td><td>6</td><td>50</td><td class="good">+1.25</td><td>+20</td><td class="neutral">SMALL</td></tr>
+  <tr><td>LondonL</td><td>8</td><td>50</td><td class="good">+1.11</td><td>+63</td><td class="neutral">SMALL</td></tr>
+  <tr><td>1HSH (1H swing high)</td><td>34</td><td>24</td><td>-0.02</td><td class="bad">-153</td><td class="bad">CUT</td></tr>
+  <tr><td>15MSH (15m swing high)</td><td>54</td><td class="bad">15</td><td class="bad">-0.41</td><td class="bad">-524</td><td class="bad">CUT</td></tr>
+</table>
+<p class="note">Swing LOWS (long entries on sweep) dominate. Swing HIGHS (short entries) are net negative. Supports the "longs only" filter finding.</p>
+</div>
+
+<div style="color:#555; font-size:11px; margin-top:32px; text-align:center;">
+  30 days NQ tick data (Databento) | 15M&rarr;15S R3.0 DC6 MD3 SW1.5 | 0.5pt slip (market) + 0.5pt RT commission | Strict limit fills
+</div>
+
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Willis Holdings — Agent Army Architecture</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; overflow-x: hidden; }
+
+.container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+
+h1 { text-align: center; font-size: 2em; margin-bottom: 8px; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.subtitle { text-align: center; color: #888; margin-bottom: 40px; font-size: 0.95em; }
+
+/* Legend */
+.legend { display: flex; gap: 24px; justify-content: center; margin-bottom: 32px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.85em; }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+.dot-free { background: #22c55e; }
+.dot-paid { background: #f59e0b; }
+.dot-external { background: #8b5cf6; }
+.dot-human { background: #3b82f6; }
+
+/* Architecture grid */
+.arch-grid { display: flex; flex-direction: column; gap: 24px; }
+
+/* Row */
+.arch-row { display: flex; gap: 16px; align-items: stretch; justify-content: center; flex-wrap: wrap; }
+
+/* Cards */
+.card {
+  background: #151520;
+  border: 1px solid #2a2a3a;
+  border-radius: 12px;
+  padding: 20px;
+  min-width: 200px;
+  max-width: 320px;
+  flex: 1;
+  transition: all 0.2s;
+  position: relative;
+}
+.card:hover { border-color: #4a4a6a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+
+.card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.card-icon { font-size: 1.4em; }
+.card-title { font-weight: 600; font-size: 1.05em; }
+.card-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 0.7em;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+.badge-free { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+.badge-paid { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+.badge-external { background: rgba(139,92,246,0.15); color: #8b5cf6; border: 1px solid rgba(139,92,246,0.3); }
+
+.card-desc { font-size: 0.85em; color: #999; line-height: 1.5; }
+.card-tech { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+.tech-tag {
+  font-size: 0.72em;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.06);
+  color: #aaa;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Connectors */
+.connector-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 0;
+}
+.connector-line {
+  width: 2px;
+  height: 24px;
+  background: linear-gradient(to bottom, #3b82f6, #60a5fa);
+}
+.connector-arrow {
+  color: #60a5fa;
+  font-size: 1.2em;
+}
+.connector-label {
+  font-size: 0.75em;
+  color: #666;
+  margin: 0 12px;
+}
+.connector-horizontal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+/* Section headers */
+.section-header {
+  text-align: center;
+  padding: 12px 0;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #555;
+  border-top: 1px solid #1a1a2a;
+  margin-top: 8px;
+}
+
+/* Big card for Harrison */
+.card-harrison {
+  background: linear-gradient(135deg, #1a1a3a, #151530);
+  border-color: #3b82f6;
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+}
+.card-harrison .card-icon { font-size: 2em; }
+
+/* Operator card */
+.card-operator {
+  background: linear-gradient(135deg, #1a2a1a, #152015);
+  border-color: #22c55e;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Division cards */
+.card-division { border-left: 3px solid; }
+.card-active { border-left-color: #22c55e; }
+.card-building { border-left-color: #f59e0b; }
+.card-planned { border-left-color: #555; }
+
+/* Cost summary */
+.cost-box {
+  background: #1a1520;
+  border: 1px solid #2a2a3a;
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+.cost-item { text-align: center; }
+.cost-label { font-size: 0.8em; color: #888; margin-bottom: 4px; }
+.cost-value { font-size: 1.4em; font-weight: 700; }
+.cost-free { color: #22c55e; }
+.cost-cheap { color: #60a5fa; }
+.cost-variable { color: #f59e0b; }
+
+/* Flow arrows between sections */
+.flow-indicator {
+  text-align: center;
+  padding: 8px;
+  color: #444;
+  font-size: 1.2em;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Willis Holdings — Agent Army Architecture</h1>
+<p class="subtitle">OpenClaw + Ollama (free) brain · Claude API only for vision · Persistent memory · Agent swarm</p>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot dot-free"></div> Free (local)</div>
+  <div class="legend-item"><div class="legend-dot dot-paid"></div> Paid (Claude API)</div>
+  <div class="legend-item"><div class="legend-dot dot-external"></div> External service</div>
+  <div class="legend-item"><div class="legend-dot dot-human"></div> Human (Harrison)</div>
+</div>
+
+<!-- LAYER 1: Harrison -->
+<div class="arch-row">
+  <div class="card card-harrison">
+    <div class="card-header" style="justify-content:center;"><span class="card-icon">👤</span><span class="card-title">Harrison</span></div>
+    <div class="card-desc">Commands via Telegram, Signal, or CLI. Reviews briefings. Approves decisions &gt;$5K.</div>
+    <div class="card-tech"><span class="tech-tag">Telegram</span><span class="tech-tag">Signal</span><span class="tech-tag">CLI</span></div>
+  </div>
+</div>
+
+<div class="flow-indicator">▼ messages ▼</div>
+
+<!-- LAYER 2: OpenClaw / Operator -->
+<div class="arch-row">
+  <div class="card card-operator" style="max-width:600px;">
+    <div class="card-header"><span class="card-icon">🧠</span><span class="card-title">OpenClaw + Operator Agent</span></div>
+    <span class="card-badge badge-free">FREE</span>
+    <div class="card-desc">
+      The brain. Receives all messages, routes to the right tool/agent.
+      Runs Ollama locally for reasoning, classification, memory management, and conversation.
+      Only escalates to Claude API when vision or complex coding is needed.
+    </div>
+    <div class="card-tech">
+      <span class="tech-tag">Ollama (Llama 3.3)</span>
+      <span class="tech-tag">SQLite memory</span>
+      <span class="tech-tag">OpenClaw framework</span>
+      <span class="tech-tag">Python</span>
+    </div>
+  </div>
+</div>
+
+<div class="flow-indicator">▼ routes to ▼</div>
+
+<!-- LAYER 3: Core Capabilities -->
+<div class="section-header">Core Capabilities</div>
+<div class="arch-row">
+
+  <div class="card">
+    <div class="card-header"><span class="card-icon">🖥️</span><span class="card-title">Computer Use</span></div>
+    <span class="card-badge badge-paid">PAID</span>
+    <div class="card-desc">Visual desktop control. Screenshots + mouse/keyboard. Only capability that requires Claude API (vision model).</div>
+    <div class="card-tech">
+      <span class="tech-tag">Claude Sonnet</span>
+      <span class="tech-tag">screencapture</span>
+      <span class="tech-tag">cliclick</span>
+      <span class="tech-tag">AppleScript</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-icon">💻</span><span class="card-title">Claude Code</span></div>
+    <span class="card-badge badge-paid">PAID*</span>
+    <div class="card-desc">Complex coding tasks. Spawns headless sessions, auto-rotates when context fills. Memory injected into each new session.</div>
+    <div class="card-tech">
+      <span class="tech-tag">claude --print</span>
+      <span class="tech-tag">Auto-rotate</span>
+      <span class="tech-tag">Context carry</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-icon">🐚</span><span class="card-title">Shell</span></div>
+    <span class="card-badge badge-free">FREE</span>
+    <div class="card-desc">Direct terminal commands. Safety checks, blocked commands list, confirmation for destructive ops.</div>
+    <div class="card-tech">
+      <span class="tech-tag">subprocess</span>
+      <span class="tech-tag">Safety checks</span>
+      <span class="tech-tag">Confirm flow</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-icon">🧩</span><span class="card-title">Memory</span></div>
+    <span class="card-badge badge-free">FREE</span>
+    <div class="card-desc">Persistent SQLite store. Facts, sessions, interactions, tasks. Auto-extracts facts from conversations via Ollama.</div>
+    <div class="card-tech">
+      <span class="tech-tag">SQLite</span>
+      <span class="tech-tag">Auto-extract</span>
+      <span class="tech-tag">Context gen</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="flow-indicator">▼ orchestrates ▼</div>
+
+<!-- LAYER 4: Agent Swarm / Divisions -->
+<div class="section-header">Agent Swarm — Willis Holdings Divisions</div>
+<div class="arch-row">
+
+  <div class="card card-division card-active">
+    <div class="card-header"><span class="card-icon">📈</span><span class="card-title">Trading (TEMPO)</span></div>
+    <span class="card-badge badge-free">ACTIVE</span>
+    <div class="card-desc">NQ futures. V2 mining: 80R/day, Calmar 425. NautilusTrader validation in progress. Two-book architecture.</div>
+    <div class="card-tech">
+      <span class="tech-tag">NautilusTrader</span>
+      <span class="tech-tag">Databento</span>
+      <span class="tech-tag">CrossTrade</span>
+      <span class="tech-tag">Replikanto</span>
+    </div>
+  </div>
+
+  <div class="card card-division card-active">
+    <div class="card-header"><span class="card-icon">💰</span><span class="card-title">Finance (CFO)</span></div>
+    <span class="card-badge badge-free">ACTIVE</span>
+    <div class="card-desc">Tax calendar, quarterly estimates, FP&A projections. Bull/base/bear scenarios. Entity structure monitoring.</div>
+    <div class="card-tech">
+      <span class="tech-tag">Tax deadlines</span>
+      <span class="tech-tag">FP&A</span>
+      <span class="tech-tag">P&L consolidation</span>
+    </div>
+  </div>
+
+  <div class="card card-division card-active">
+    <div class="card-header"><span class="card-icon">🤖</span><span class="card-title">HR & Bots</span></div>
+    <span class="card-badge badge-free">ACTIVE</span>
+    <div class="card-desc">Agent roster management. Model routing optimization. Performance tracking. Onboarding new agents.</div>
+    <div class="card-tech">
+      <span class="tech-tag">Agent roster</span>
+      <span class="tech-tag">Cost tracking</span>
+      <span class="tech-tag">Routing</span>
+    </div>
+  </div>
+
+  <div class="card card-division card-active">
+    <div class="card-header"><span class="card-icon">🔧</span><span class="card-title">IT Infrastructure</span></div>
+    <span class="card-badge badge-free">ACTIVE</span>
+    <div class="card-desc">VPS health (172.93.181.209). GitHub PAT tracking. Credential expiry alerts. Cost monitoring.</div>
+    <div class="card-tech">
+      <span class="tech-tag">VPS SSH</span>
+      <span class="tech-tag">GitHub</span>
+      <span class="tech-tag">Cron jobs</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="arch-row" style="margin-top:12px;">
+
+  <div class="card card-division card-building">
+    <div class="card-header"><span class="card-icon">🎯</span><span class="card-title">Arbitrage</span></div>
+    <span class="card-badge badge-external">PLANNED</span>
+    <div class="card-desc">Polymarket + Kalshi prediction markets. Probability modeling, Kelly sizing, cross-platform scanning.</div>
+    <div class="card-tech">
+      <span class="tech-tag">Polymarket API</span>
+      <span class="tech-tag">Kelly criterion</span>
+    </div>
+  </div>
+
+  <div class="card card-division card-building">
+    <div class="card-header"><span class="card-icon">📝</span><span class="card-title">Content</span></div>
+    <span class="card-badge badge-external">PLANNED</span>
+    <div class="card-desc">Trading insights → content pipeline. Social metrics, engagement tracking, content calendar.</div>
+    <div class="card-tech">
+      <span class="tech-tag">Social APIs</span>
+      <span class="tech-tag">Content calendar</span>
+    </div>
+  </div>
+
+  <div class="card card-division card-building">
+    <div class="card-header"><span class="card-icon">🔬</span><span class="card-title">Research</span></div>
+    <span class="card-badge badge-external">PLANNED</span>
+    <div class="card-desc">Daily intelligence briefs. News APIs, academic papers, SEC filings. Competitive monitoring.</div>
+    <div class="card-tech">
+      <span class="tech-tag">News APIs</span>
+      <span class="tech-tag">SEC EDGAR</span>
+      <span class="tech-tag">Web research</span>
+    </div>
+  </div>
+
+  <div class="card card-division card-planned">
+    <div class="card-header"><span class="card-icon">🏠</span><span class="card-title">Real Estate</span></div>
+    <span class="card-badge badge-external">FUTURE</span>
+    <div class="card-desc">Deal analyzer, market scraper, portfolio tracker. Zillow, Redfin, MLS integration.</div>
+    <div class="card-tech">
+      <span class="tech-tag">Zillow API</span>
+      <span class="tech-tag">MLS</span>
+    </div>
+  </div>
+
+  <div class="card card-division card-planned">
+    <div class="card-header"><span class="card-icon">🚀</span><span class="card-title">BizDev</span></div>
+    <span class="card-badge badge-external">FUTURE</span>
+    <div class="card-desc">Incubator. Idea scoring, market sizing, MVP builder. Flippa/Empire Flippers acquisition screener.</div>
+    <div class="card-tech">
+      <span class="tech-tag">Flippa</span>
+      <span class="tech-tag">MVP builder</span>
+    </div>
+  </div>
+
+  <div class="card card-division card-planned">
+    <div class="card-header"><span class="card-icon">💎</span><span class="card-title">Fundraising</span></div>
+    <span class="card-badge badge-external">FUTURE</span>
+    <div class="card-desc">Activates after 6 months track record. Tearsheet builder, prop firm monitor, AUM pipeline.</div>
+    <div class="card-tech">
+      <span class="tech-tag">Tearsheets</span>
+      <span class="tech-tag">Prop firms</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="flow-indicator">▼ outputs ▼</div>
+
+<!-- LAYER 5: Decision Engine + Briefings -->
+<div class="section-header">Decision Engine & Outputs</div>
+<div class="arch-row">
+
+  <div class="card">
+    <div class="card-header"><span class="card-icon">⚖️</span><span class="card-title">Decision Engine</span></div>
+    <span class="card-badge badge-free">FREE</span>
+    <div class="card-desc">
+      Three-tier autonomous decisions:<br>
+      &lt; $500 → Auto-execute<br>
+      $500–$5K → Flag in briefing<br>
+      &gt; $5K → Require Harrison's OK
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-icon">📊</span><span class="card-title">Daily Briefings</span></div>
+    <span class="card-badge badge-free">FREE</span>
+    <div class="card-desc">Morning + EOD cycle. Consolidated P&L, division scorecards, risks, opportunities, variance vs plan.</div>
+    <div class="card-tech">
+      <span class="tech-tag">2x daily</span>
+      <span class="tech-tag">HTML format</span>
+      <span class="tech-tag">Telegram</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-icon">📋</span><span class="card-title">Audit Trail</span></div>
+    <span class="card-badge badge-free">FREE</span>
+    <div class="card-desc">Every decision logged. Cycle reports in JSON. Metrics in JSONL time series. Git-friendly flat files.</div>
+    <div class="card-tech">
+      <span class="tech-tag">JSON logs</span>
+      <span class="tech-tag">JSONL metrics</span>
+      <span class="tech-tag">SQLite</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- LAYER 6: Live Execution -->
+<div class="section-header" style="margin-top:24px;">Live Trading Pipeline</div>
+<div class="arch-row">
+
+  <div class="card" style="max-width:160px; text-align:center;">
+    <div class="card-icon" style="font-size:1.8em;">🐍</div>
+    <div class="card-title" style="font-size:0.9em; margin-top:8px;">NautilusTrader</div>
+    <div class="card-desc" style="font-size:0.75em;">Local Mac<br>Signal gen</div>
+  </div>
+
+  <div style="display:flex; align-items:center; color:#60a5fa;">→</div>
+
+  <div class="card" style="max-width:160px; text-align:center;">
+    <div class="card-icon" style="font-size:1.8em;">🔌</div>
+    <div class="card-title" style="font-size:0.9em; margin-top:8px;">CrossTrade</div>
+    <div class="card-desc" style="font-size:0.75em;">REST API<br>$49/mo</div>
+  </div>
+
+  <div style="display:flex; align-items:center; color:#60a5fa;">→</div>
+
+  <div class="card" style="max-width:160px; text-align:center;">
+    <div class="card-icon" style="font-size:1.8em;">📺</div>
+    <div class="card-title" style="font-size:0.9em; margin-top:8px;">NinjaTrader</div>
+    <div class="card-desc" style="font-size:0.75em;">Order routing<br>Execution</div>
+  </div>
+
+  <div style="display:flex; align-items:center; color:#60a5fa;">→</div>
+
+  <div class="card" style="max-width:160px; text-align:center;">
+    <div class="card-icon" style="font-size:1.8em;">📡</div>
+    <div class="card-title" style="font-size:0.9em; margin-top:8px;">Replikanto</div>
+    <div class="card-desc" style="font-size:0.75em;">Trade copier<br>Multi-account</div>
+  </div>
+
+  <div style="display:flex; align-items:center; color:#60a5fa;">→</div>
+
+  <div class="card" style="max-width:160px; text-align:center; border-color:#22c55e;">
+    <div class="card-icon" style="font-size:1.8em;">🏦</div>
+    <div class="card-title" style="font-size:0.9em; margin-top:8px;">Prop Accounts</div>
+    <div class="card-desc" style="font-size:0.75em;">Multiple firms<br>Live trading</div>
+  </div>
+
+</div>
+
+<!-- Cost Summary -->
+<div class="cost-box">
+  <div class="cost-item">
+    <div class="cost-label">Brain / Routing / Memory</div>
+    <div class="cost-value cost-free">$0/mo</div>
+    <div class="cost-label">Ollama local</div>
+  </div>
+  <div class="cost-item">
+    <div class="cost-label">Computer Use (vision)</div>
+    <div class="cost-value cost-variable">~$5–20/mo</div>
+    <div class="cost-label">Claude Sonnet API</div>
+  </div>
+  <div class="cost-item">
+    <div class="cost-label">Claude Code</div>
+    <div class="cost-value cost-variable">Usage-based</div>
+    <div class="cost-label">Only for coding tasks</div>
+  </div>
+  <div class="cost-item">
+    <div class="cost-label">Infrastructure</div>
+    <div class="cost-value cost-cheap">~$70/mo</div>
+    <div class="cost-label">VPS + APIs</div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

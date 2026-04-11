@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architecture: Current vs. Planned vs. Credit-Saving Local Agent</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #e6edf3; padding: 24px; line-height: 1.6; max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 26px; margin-bottom: 4px; }
+  .sub { color: #8b949e; font-size: 13px; margin-bottom: 32px; }
+
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 20px; font-weight: 600; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #30363d; }
+
+  /* Architecture diagrams */
+  .arch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+  @media (max-width: 800px) { .arch-grid { grid-template-columns: 1fr; } }
+
+  .arch-box { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; }
+  .arch-box.current { border-color: #da3633; }
+  .arch-box.planned { border-color: #238636; }
+  .arch-box.proposed { border-color: #58a6ff; }
+
+  .arch-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+  .arch-label.red { color: #f85149; }
+  .arch-label.green { color: #3fb950; }
+  .arch-label.blue { color: #58a6ff; }
+  .arch-title { font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+
+  .flow { background: #0d1117; border-radius: 8px; padding: 14px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; line-height: 1.8; margin: 12px 0; white-space: pre-wrap; }
+  .flow .arrow { color: #8b949e; }
+  .flow .active { color: #3fb950; }
+  .flow .broken { color: #f85149; }
+  .flow .missing { color: #484f58; }
+  .flow .new { color: #58a6ff; }
+
+  .cost-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-top: 8px; }
+  .cost-tag.high { background: rgba(218,54,51,0.2); color: #f85149; }
+  .cost-tag.med { background: rgba(210,153,34,0.2); color: #d29922; }
+  .cost-tag.low { background: rgba(35,134,54,0.2); color: #3fb950; }
+  .cost-tag.free { background: rgba(88,166,255,0.2); color: #58a6ff; }
+
+  /* Problem/Solution */
+  .problem { background: rgba(218,54,51,0.08); border: 1px solid rgba(218,54,51,0.3); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .solution { background: rgba(35,134,54,0.08); border: 1px solid rgba(35,134,54,0.3); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .proposal { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.3); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+
+  .box-title { font-weight: 600; margin-bottom: 8px; font-size: 15px; }
+  .box-title.red { color: #f85149; }
+  .box-title.green { color: #3fb950; }
+  .box-title.blue { color: #58a6ff; }
+
+  /* Layer cards */
+  .layers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
+  @media (max-width: 800px) { .layers { grid-template-columns: repeat(2, 1fr); } }
+  .layer { background: #21262d; border-radius: 8px; padding: 12px; text-align: center; }
+  .layer.live { border: 1px solid #238636; }
+  .layer.partial { border: 1px solid #d29922; }
+  .layer.dead { border: 1px solid #484f58; opacity: 0.5; }
+  .layer-num { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #8b949e; }
+  .layer-name { font-size: 13px; font-weight: 600; margin: 4px 0; }
+  .layer-status { font-size: 11px; }
+  .layer-status.on { color: #3fb950; }
+  .layer-status.partial { color: #d29922; }
+  .layer-status.off { color: #f85149; }
+
+  /* Comparison table */
+  .comp-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; }
+  .comp-table th { text-align: left; padding: 10px 12px; border-bottom: 2px solid #30363d; color: #8b949e; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+  .comp-table td { padding: 10px 12px; border-bottom: 1px solid #21262d; vertical-align: top; }
+  .comp-table tr:hover { background: rgba(255,255,255,0.02); }
+  .check { color: #3fb950; }
+  .cross { color: #f85149; }
+  .warn { color: #d29922; }
+
+  /* GitHub section */
+  .gh-flow { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
+  .gh-step { display: flex; gap: 12px; align-items: flex-start; }
+  .gh-num { background: #58a6ff; color: #0d1117; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .gh-text { font-size: 14px; }
+  .gh-text code { background: #21262d; padding: 1px 6px; border-radius: 4px; font-family: 'SF Mono', monospace; font-size: 12px; }
+
+  /* Credit comparison */
+  .credit-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 16px 0; }
+  @media (max-width: 800px) { .credit-grid { grid-template-columns: 1fr; } }
+  .credit-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 16px; }
+  .credit-card h3 { font-size: 14px; margin-bottom: 8px; }
+  .credit-cost { font-size: 28px; font-weight: 700; }
+  .credit-cost.high { color: #f85149; }
+  .credit-cost.med { color: #d29922; }
+  .credit-cost.low { color: #3fb950; }
+  .credit-detail { font-size: 12px; color: #8b949e; margin-top: 4px; }
+
+  .callout { background: #161b22; border-left: 3px solid #58a6ff; padding: 16px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 14px; }
+  .callout strong { color: #58a6ff; }
+</style>
+</head>
+<body>
+
+<h1>Architecture: Where You Are → Where You Need to Be</h1>
+<p class="sub">Option 4 Hybrid Full Stack &nbsp;|&nbsp; February 11, 2026</p>
+
+<!-- ============ SECTION 1: CURRENT vs PLANNED ============ -->
+<div class="section">
+  <div class="section-title">1. Four-Layer Architecture: Current State</div>
+
+  <div class="layers">
+    <div class="layer live">
+      <div class="layer-num">Layer 1</div>
+      <div class="layer-name">Claude Code / Cowork</div>
+      <div class="layer-status on">✓ Active on Mac</div>
+    </div>
+    <div class="layer dead">
+      <div class="layer-num">Layer 2</div>
+      <div class="layer-name">API Wrapper</div>
+      <div class="layer-status off">✗ Not built</div>
+    </div>
+    <div class="layer dead">
+      <div class="layer-num">Layer 3</div>
+      <div class="layer-name">OpenClaw</div>
+      <div class="layer-status off">✗ Config only</div>
+    </div>
+    <div class="layer live">
+      <div class="layer-num">Layer 4</div>
+      <div class="layer-name">Business Suite</div>
+      <div class="layer-status on">✓ Active</div>
+    </div>
+  </div>
+
+  <div class="arch-grid">
+    <div class="arch-box current">
+      <div class="arch-label red">What's Happening Now</div>
+      <div class="arch-title">Manual Human Middleware</div>
+      <div class="flow"><span class="active">Harrison opens Cowork</span>
+  <span class="arrow">→</span> <span class="broken">Context lost from last session</span>
+  <span class="arrow">→</span> <span class="broken">Re-explains everything (burns credits)</span>
+  <span class="arrow">→</span> <span class="broken">Claude goes in circles</span>
+  <span class="arrow">→</span> <span class="broken">Session ends, context lost again</span>
+  <span class="arrow">→</span> <span class="broken">Repeat</span></div>
+      <p style="font-size:13px; color:#f85149; margin-top:8px;">You ARE the middleware. Every session starts from scratch. Credits burn on re-discovery, not building.</p>
+      <span class="cost-tag high">~$200/mo Claude Max, most wasted on re-explaining</span>
+    </div>
+
+    <div class="arch-box planned">
+      <div class="arch-label green">What Option 4 Designed</div>
+      <div class="arch-title">Autonomous Full Stack</div>
+      <div class="flow"><span class="active">Knowledge lives on VPS (never resets)</span>
+  <span class="arrow">→</span> <span class="active">OpenClaw reads files, has full context</span>
+  <span class="arrow">→</span> <span class="active">Calls API Wrapper for deep analysis</span>
+  <span class="arrow">→</span> <span class="active">Monitors markets, writes signals</span>
+  <span class="arrow">→</span> <span class="active">Quantower executes trades</span>
+  <span class="arrow">→</span> <span class="active">Reports via Telegram</span>
+  <span class="arrow">→</span> <span class="active">Harrison reviews on phone</span></div>
+      <p style="font-size:13px; color:#3fb950; margin-top:8px;">You direct via Telegram. The system operates autonomously with persistent memory.</p>
+      <span class="cost-tag low">~$120/mo VPS + API (prompt caching = 90% savings)</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION 2: THE CREDIT PROBLEM ============ -->
+<div class="section">
+  <div class="section-title">2. Why You're Burning Credits</div>
+
+  <div class="problem">
+    <div class="box-title red">The Core Problem</div>
+    <p>Every Cowork/Claude.ai session starts with zero memory. You spend the first 20–30 minutes (and messages) re-explaining the project, pointing Claude to files, correcting mistakes it's already been corrected on. That's 30–50% of your credits going to context recovery, not actual work.</p>
+    <p style="margin-top:8px;">The TEMPO_PROJECT_STATE.md you created helps, but Claude still needs to read it, parse it, and you still need to guide it to the right section. And the sandbox blocks SSH, so infrastructure tasks keep failing.</p>
+  </div>
+
+  <div class="credit-grid">
+    <div class="credit-card">
+      <h3>Current: Cowork Sessions</h3>
+      <div class="credit-cost high">~50%</div>
+      <div class="credit-detail">of messages wasted on re-explaining context, failed SSH attempts, going in circles</div>
+    </div>
+    <div class="credit-card">
+      <h3>With Claude Code + GitHub</h3>
+      <div class="credit-cost med">~15%</div>
+      <div class="credit-detail">overhead — CLAUDE.md auto-loads context, code runs directly, no sandbox limits</div>
+    </div>
+    <div class="credit-card">
+      <h3>With Full Option 4 Stack</h3>
+      <div class="credit-cost low">~5%</div>
+      <div class="credit-detail">overhead — VPS has permanent memory, API caching, you only direct via Telegram</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION 3: LOCAL AUTONOMOUS AGENT ============ -->
+<div class="section">
+  <div class="section-title">3. The Local Agent Solution (Stop Burning Credits)</div>
+
+  <div class="proposal">
+    <div class="box-title blue">Proposed: Claude Code + GitHub Repo as Your Local Agent</div>
+    <p>Claude Code (the CLI tool) runs in your Mac terminal. Unlike Cowork, it can:</p>
+    <ul style="margin: 12px 0 12px 20px; font-size: 14px;">
+      <li><strong>Auto-read CLAUDE.md</strong> — Put project context in a CLAUDE.md file at the repo root. Claude Code reads it automatically every session. No re-explaining.</li>
+      <li><strong>Run SSH directly</strong> — No sandbox. scp, ssh, git push all work natively from your terminal.</li>
+      <li><strong>Execute code</strong> — Run backtests, Python scripts, npm commands directly. No container restrictions.</li>
+      <li><strong>Use your Max subscription</strong> — Same credits you're already paying for. No extra API costs.</li>
+      <li><strong>Stay in project context</strong> — Point it at the trading-system/ folder and it understands the whole repo.</li>
+    </ul>
+  </div>
+
+  <div class="arch-box proposed" style="margin-bottom: 24px;">
+    <div class="arch-label blue">Proposed Architecture: Development Phase</div>
+    <div class="arch-title">GitHub Repo + Claude Code + VPS</div>
+    <div class="flow"><span class="new">GitHub repo: trading-system/</span>
+  <span class="arrow">├──</span> <span class="new">CLAUDE.md (auto-loaded context for Claude Code)</span>
+  <span class="arrow">├──</span> <span class="new">docs/brains/TEMPO.md (V3 rules)</span>
+  <span class="arrow">├──</span> <span class="new">strategies/tempo_brain_v3.py</span>
+  <span class="arrow">├──</span> <span class="new">backtests/qc_tempo_brain.py</span>
+  <span class="arrow">├──</span> <span class="new">api-wrapper/ (FastAPI app)</span>
+  <span class="arrow">├──</span> <span class="new">context-engine/ (Python)</span>
+  <span class="arrow">├──</span> <span class="new">openclaw-skills/ (OpenClaw configs)</span>
+  <span class="arrow">└──</span> <span class="new">setup.sh (VPS bootstrap)</span>
+
+<span class="active">Development flow:</span>
+  Harrison opens terminal
+  <span class="arrow">→</span> <span class="new">cd ~/trading-system && claude</span>
+  <span class="arrow">→</span> <span class="new">Claude Code reads CLAUDE.md (instant full context)</span>
+  <span class="arrow">→</span> <span class="new">Writes/edits code with full project awareness</span>
+  <span class="arrow">→</span> <span class="new">Runs backtests locally or via QC API</span>
+  <span class="arrow">→</span> <span class="new">git push → VPS pulls latest</span>
+
+<span class="active">VPS deployment flow:</span>
+  <span class="new">git push from Mac</span>
+  <span class="arrow">→</span> <span class="new">ssh root@172.93.181.209 "cd ~/trading-system && git pull"</span>
+  <span class="arrow">→</span> <span class="new">OpenClaw picks up changes automatically</span></div>
+  </div>
+
+  <div class="callout">
+    <strong>The CLAUDE.md is the key.</strong> This file auto-loads every time you run <code>claude</code> in the repo directory. It should contain: what the project is, the Option 4 architecture summary, what's been built, what's broken, what to work on next, and links to the detailed docs. Think of it as the TEMPO_PROJECT_STATE.md but optimized for Claude Code's auto-loading. No more "read the strategy doc" — it already knows.
+  </div>
+</div>
+
+<!-- ============ SECTION 4: HOW GITHUB TIES IT TOGETHER ============ -->
+<div class="section">
+  <div class="section-title">4. How the GitHub Repo Connects Everything</div>
+
+  <div class="gh-flow">
+    <div class="gh-step">
+      <div class="gh-num">1</div>
+      <div class="gh-text"><strong>Single source of truth.</strong> All code, strategy docs, configs, and knowledge base live in one repo. No more scattered files across <code>~/Downloads</code>.</div>
+    </div>
+    <div class="gh-step">
+      <div class="gh-num">2</div>
+      <div class="gh-text"><strong>Claude Code auto-context.</strong> <code>CLAUDE.md</code> at the root gives Claude Code instant project awareness. Every session starts informed, not blank.</div>
+    </div>
+    <div class="gh-step">
+      <div class="gh-num">3</div>
+      <div class="gh-text"><strong>Mac → VPS sync.</strong> <code>git push</code> from Mac, <code>git pull</code> on VPS. No more scp, no more browser file chunking, no more failed uploads.</div>
+    </div>
+    <div class="gh-step">
+      <div class="gh-num">4</div>
+      <div class="gh-text"><strong>Version history.</strong> Every change tracked. If a brain update breaks the backtest, roll back instantly. No more "which version was working?"</div>
+    </div>
+    <div class="gh-step">
+      <div class="gh-num">5</div>
+      <div class="gh-text"><strong>Any Claude instance can help.</strong> Give any Claude (Cowork, claude.ai, Code) the GitHub URL and it has full context. No more handoff documents.</div>
+    </div>
+    <div class="gh-step">
+      <div class="gh-num">6</div>
+      <div class="gh-text"><strong>OpenClaw auto-pull.</strong> Set a Heartbeat task: "pull latest from GitHub every hour." Development changes flow to production automatically.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION 5: COMPARISON TABLE ============ -->
+<div class="section">
+  <div class="section-title">5. Tool Comparison: Cowork vs. Claude Code vs. Full Stack</div>
+
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>Capability</th>
+        <th>Cowork (Current)</th>
+        <th>Claude Code + GitHub</th>
+        <th>Full Option 4</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Session memory</td>
+        <td><span class="cross">✗</span> Resets every session</td>
+        <td><span class="check">✓</span> CLAUDE.md auto-loads</td>
+        <td><span class="check">✓</span> VPS files + vector DB</td>
+      </tr>
+      <tr>
+        <td>SSH / SCP access</td>
+        <td><span class="cross">✗</span> Blocked by sandbox</td>
+        <td><span class="check">✓</span> Native terminal access</td>
+        <td><span class="check">✓</span> On the VPS itself</td>
+      </tr>
+      <tr>
+        <td>Run Python scripts</td>
+        <td><span class="warn">⚠</span> Sandboxed VM only</td>
+        <td><span class="check">✓</span> Full Mac environment</td>
+        <td><span class="check">✓</span> VPS + Mac</td>
+      </tr>
+      <tr>
+        <td>Git operations</td>
+        <td><span class="cross">✗</span> No repo access</td>
+        <td><span class="check">✓</span> Full git workflow</td>
+        <td><span class="check">✓</span> Auto-sync</td>
+      </tr>
+      <tr>
+        <td>Deploy to VPS</td>
+        <td><span class="cross">✗</span> Can't connect</td>
+        <td><span class="check">✓</span> ssh + git push</td>
+        <td><span class="check">✓</span> Auto-deploy</td>
+      </tr>
+      <tr>
+        <td>Run backtests</td>
+        <td><span class="warn">⚠</span> Browser-only QC</td>
+        <td><span class="check">✓</span> QC API or local</td>
+        <td><span class="check">✓</span> Automated</td>
+      </tr>
+      <tr>
+        <td>Autonomous 24/7</td>
+        <td><span class="cross">✗</span> Only when open</td>
+        <td><span class="cross">✗</span> Only when running</td>
+        <td><span class="check">✓</span> OpenClaw + Heartbeat</td>
+      </tr>
+      <tr>
+        <td>Telegram integration</td>
+        <td><span class="cross">✗</span> No</td>
+        <td><span class="cross">✗</span> No</td>
+        <td><span class="check">✓</span> Full bidirectional</td>
+      </tr>
+      <tr>
+        <td>Credit efficiency</td>
+        <td><span class="cross">✗</span> ~50% wasted on context</td>
+        <td><span class="check">✓</span> ~85% productive</td>
+        <td><span class="check">✓</span> ~95% + prompt caching</td>
+      </tr>
+      <tr>
+        <td>Best for</td>
+        <td>Research, docs, browser tasks</td>
+        <td><strong>Writing code, building system</strong></td>
+        <td><strong>Production operation</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ SECTION 6: RECOMMENDED NEXT STEPS ============ -->
+<div class="section">
+  <div class="section-title">6. Recommended Action Plan (In Order)</div>
+
+  <div class="gh-flow">
+    <div class="gh-step">
+      <div class="gh-num" style="background:#3fb950;">1</div>
+      <div class="gh-text"><strong>Create the GitHub repo (10 min).</strong> From your Mac terminal:
+        <div class="flow" style="margin-top:8px;"><span class="new">mkdir -p ~/trading-system && cd ~/trading-system
+git init
+# Copy existing files from ~/Downloads:
+cp -r ~/Downloads/tempo_extracted ./docs/extraction/
+cp ~/Downloads/qc_tempo_brain_v2.py ./strategies/
+cp ~/Downloads/tempo_extracted/tempo_rules_v3_complete.md ./docs/brains/TEMPO.md
+cp ~/Downloads/Option4_Hybrid_Handoff_Document.docx ./docs/
+cp ~/Downloads/TEMPO_PROJECT_STATE.md ./
+# Create the CLAUDE.md (Claude Code auto-context file)
+# Create GitHub repo:
+gh repo create trading-system --private
+git add . && git commit -m "Initial commit" && git push -u origin main</span></div>
+      </div>
+    </div>
+
+    <div class="gh-step">
+      <div class="gh-num" style="background:#3fb950;">2</div>
+      <div class="gh-text"><strong>Create CLAUDE.md (5 min).</strong> This is the file Claude Code reads automatically. It should contain: project summary, architecture overview, current state, what's broken, what to build next, and file locations. I can generate this for you right now.</div>
+    </div>
+
+    <div class="gh-step">
+      <div class="gh-num" style="background:#3fb950;">3</div>
+      <div class="gh-text"><strong>Switch to Claude Code for building (immediate).</strong> Open terminal: <code>cd ~/trading-system && claude</code>. Tell it to fix the V3 brain. It'll read CLAUDE.md, understand the full context, and start coding — with native SSH, git, and Python access.</div>
+    </div>
+
+    <div class="gh-step">
+      <div class="gh-num" style="background:#d29922;">4</div>
+      <div class="gh-text"><strong>Run VPS setup (30 min).</strong> From Mac terminal: <code>ssh root@172.93.181.209</code>, then <code>git clone</code> the repo and run <code>setup.sh</code>. This installs everything on the VPS.</div>
+    </div>
+
+    <div class="gh-step">
+      <div class="gh-num" style="background:#8b949e;">5</div>
+      <div class="gh-text"><strong>Keep Cowork for what it's good at.</strong> Research, document creation, browser-based tasks (QuantConnect UI, web research). Don't use it for coding or VPS management — that's Claude Code's job.</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Bottom line:</strong> The GitHub repo is the missing piece that connects your Mac, VPS, Claude Code, and Cowork. Once it exists, context is permanent, deployment is <code>git push</code>, and you stop paying credits for Claude to re-learn your project.
+  </div>
+</div>
+
+</body>
+</html>

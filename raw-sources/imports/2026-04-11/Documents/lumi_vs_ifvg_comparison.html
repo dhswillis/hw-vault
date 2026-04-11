@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IFVG vs Lumi — Core Logic Comparison</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; padding: 32px; }
+  h1 { color: #58a6ff; font-size: 24px; margin-bottom: 8px; }
+  .subtitle { color: #8b949e; font-size: 14px; margin-bottom: 32px; }
+  .section-title { color: #f0883e; font-size: 18px; font-weight: 600; margin: 32px 0 16px; border-bottom: 1px solid #30363d; padding-bottom: 8px; }
+
+  table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+  th { background: #161b22; color: #58a6ff; padding: 12px 16px; text-align: left; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #30363d; }
+  th:first-child { width: 18%; }
+  th:nth-child(2), th:nth-child(3) { width: 41%; }
+  td { padding: 12px 16px; border-bottom: 1px solid #21262d; vertical-align: top; font-size: 14px; line-height: 1.5; }
+  td:first-child { color: #f0883e; font-weight: 600; font-size: 13px; }
+  tr:hover td { background: #161b22; }
+
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-right: 4px; }
+  .tag-ifvg { background: #1f3a5f; color: #58a6ff; }
+  .tag-lumi { background: #2d1f3a; color: #bc8cff; }
+  .tag-same { background: #1f3a2d; color: #7ee787; }
+  .tag-diff { background: #3a2d1f; color: #f0883e; }
+  .tag-key { background: #3a1f1f; color: #f85149; }
+
+  .highlight { color: #f0883e; font-weight: 600; }
+  .dim { color: #8b949e; }
+  .green { color: #7ee787; }
+  .red { color: #f85149; }
+  .blue { color: #58a6ff; }
+  .purple { color: #bc8cff; }
+
+  .flow-box { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; margin: 16px 0; }
+  .flow-box h3 { color: #58a6ff; margin-bottom: 12px; font-size: 15px; }
+  .flow-step { display: flex; align-items: flex-start; margin: 8px 0; }
+  .flow-num { background: #1f3a5f; color: #58a6ff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; margin-right: 12px; flex-shrink: 0; margin-top: 2px; }
+  .flow-num.lumi { background: #2d1f3a; color: #bc8cff; }
+  .flow-arrow { color: #30363d; margin: 4px 0 4px 8px; font-size: 16px; }
+
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .stat-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; }
+  .stat-card h4 { font-size: 13px; color: #8b949e; margin-bottom: 8px; }
+  .stat-val { font-size: 28px; font-weight: 700; }
+  .stat-sub { font-size: 12px; color: #8b949e; margin-top: 4px; }
+
+  .verdict { background: #1f3a2d; border: 1px solid #238636; border-radius: 8px; padding: 20px; margin: 24px 0; }
+  .verdict h3 { color: #7ee787; margin-bottom: 8px; }
+  .verdict p { color: #c9d1d9; line-height: 1.6; }
+
+  .note { background: #1c1917; border-left: 3px solid #f0883e; padding: 12px 16px; margin: 16px 0; font-size: 13px; color: #d4a574; }
+</style>
+</head>
+<body>
+
+<h1>Tempo IFVG vs Lumi — Core Logic Comparison</h1>
+<p class="subtitle">Side-by-side analysis of entry logic, trade management, and structural differences &bull; 283 trading days (Mar 2025 – Feb 2026)</p>
+
+<!-- ════════════════════════════════════════════ -->
+<div class="section-title">Entry Flow: Step by Step</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+  <div class="flow-box">
+    <h3><span class="tag tag-ifvg">IFVG</span> Tempo IFVG Entry Sequence</h3>
+    <div class="flow-step"><div class="flow-num">1</div><div>Build key levels: PDH/PDL, Asia H/L, London H/L, AM H/L, 1H swings (lookback=3)</div></div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step"><div class="flow-num">2</div><div>Detect sweep on <strong>1-min bar</strong>: wick past level + close back inside</div></div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step"><div class="flow-num">3</div><div>Wait for <strong>Inverse FVG</strong>: FVG forms WITH sweep momentum (within 20 bars)</div></div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step"><div class="flow-num">4</div><div>Candle <strong>CLOSES THROUGH</strong> the FVG → <span class="highlight">market order entry</span> at close price</div></div>
+  </div>
+  <div class="flow-box">
+    <h3><span class="tag tag-lumi">LUMI</span> Lumi Entry Sequence</h3>
+    <div class="flow-step"><div class="flow-num lumi">1</div><div>Build HTF levels from <strong>60-min</strong> bars: FVGs, OBs, swing points (lookback=2)</div></div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step"><div class="flow-num lumi">2</div><div>Detect sweep on <strong>60-min bar</strong>: wick past level + close back inside</div></div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step"><div class="flow-num lumi">3</div><div>Confirm <strong>MSS</strong> (market structure shift) on 3-min bars</div></div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step"><div class="flow-num lumi">4</div><div>Find <strong>Order Block</strong> on 3-min (displacement candle, body ≥ 3pts)</div></div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step"><div class="flow-num lumi">5</div><div>Find <strong>FVG</strong> on 3-min (gap ≥ 2pts, in reversal direction)</div></div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step"><div class="flow-num lumi">6</div><div><span class="highlight">Limit order</span> at FVG edge → waits for price to come back</div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<div class="section-title">Core Logic Comparison</div>
+
+<table>
+  <thead>
+    <tr><th>Dimension</th><th><span class="tag tag-ifvg">IFVG</span> Tempo IFVG</th><th><span class="tag tag-lumi">LUMI</span> Lumi Traders</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>What is the "FVG"?</td>
+      <td><strong>Inverse</strong> FVG — gap forms <em>with</em> the sweep direction (bullish FVG after sweep high), then price <strong>closes back through it</strong>. The "inversion" IS the entry signal.</td>
+      <td><strong>Regular</strong> FVG — gap forms in the <em>reversal</em> direction after the sweep. Price is expected to <strong>pull back into the FVG edge</strong> for entry. The FVG is a zone, not a confirmation event.</td>
+    </tr>
+    <tr>
+      <td>Sweep timeframe</td>
+      <td><strong>1-minute</strong> bars — any single-minute candle can sweep a level. Catches micro-sweeps that last seconds.</td>
+      <td><strong>60-minute</strong> bars — only completed hourly candles count. Filters to larger, more significant sweeps.</td>
+    </tr>
+    <tr>
+      <td>HTF levels</td>
+      <td>Session-based: <span class="dim">PDH/PDL, Asia H/L, London H/L, AM H/L</span> + structural: <span class="dim">1H swings (lb=3)</span><br><span class="dim">Dedup: 2pts</span></td>
+      <td>Structural only: <span class="dim">60-min FVGs, 60-min OBs, 60-min swings (lb=2)</span><br><span class="dim">Dedup: 3pts</span><br>No session-based levels (no PDH/PDL, no Asia/London)</td>
+    </tr>
+    <tr>
+      <td>Entry confirmation</td>
+      <td><strong>Single event</strong>: candle closes through the IFVG. That's it — one confirmation step.</td>
+      <td><strong>Three-step chain</strong>: MSS confirmed → Order Block found → FVG formed. All three must occur in sequence within 30 bars.</td>
+    </tr>
+    <tr>
+      <td>Entry type</td>
+      <td><strong>Market order</strong> at candle close. Price is already moving. You chase the confirmation.</td>
+      <td><strong>Limit order</strong> at FVG edge. You wait for price to retrace to your level. Better fill, but may not fill at all.</td>
+    </tr>
+    <tr>
+      <td>LTF bar size</td>
+      <td><strong>1-minute</strong> for everything (sweep + FVG + entry all on same timeframe)</td>
+      <td><strong>3-minute</strong> for OB/FVG/MSS detection (after 60-min sweep triggers the search)</td>
+    </tr>
+    <tr>
+      <td>FVG gap filter</td>
+      <td><strong>3–20 pts</strong> (tight range, small gaps OK)</td>
+      <td><strong>2–40 pts</strong> (wider range, accepts larger gaps)</td>
+    </tr>
+    <tr>
+      <td>FVG direction</td>
+      <td>FVG forms <strong>WITH</strong> sweep (bullish FVG after sweep high), then price breaks <strong>AGAINST</strong> it</td>
+      <td>FVG forms <strong>AGAINST</strong> sweep (bearish FVG after sweep high) — a direct reversal signal</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ════════════════════════════════════════════ -->
+<div class="section-title">Stop Loss & Risk</div>
+
+<table>
+  <thead>
+    <tr><th>Dimension</th><th><span class="tag tag-ifvg">IFVG</span></th><th><span class="tag tag-lumi">LUMI</span></th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Stop type <span class="tag tag-key">KEY</span></td>
+      <td><strong>Soft stop</strong> — only exits if a 1-min candle <em>closes</em> past the IFVG edge. Wicks through the stop are ignored. This is the primary edge; switching to hard stops drops WR from 72% to ~50%.</td>
+      <td><strong>Hard stop</strong> — exits the instant price ticks past the swing extreme + 1pt. No forgiveness for wicks.</td>
+    </tr>
+    <tr>
+      <td>Stop reference</td>
+      <td><strong>IFVG edge</strong> (soft) + sweep wick ± 1pt (emergency hard). Risk = entry to IFVG edge ≈ gap size.</td>
+      <td><strong>Swing high/low</strong> from 5 bars before sweep on 3-min chart, plus 1pt buffer.</td>
+    </tr>
+    <tr>
+      <td>Typical risk</td>
+      <td>~3–20 pts (tied to FVG gap size). Small gaps = small risk.</td>
+      <td>~5–50 pts (tied to swing distance). Can be much wider.</td>
+    </tr>
+    <tr>
+      <td>Risk filter</td>
+      <td>Skip if risk &lt; 3 or &gt; 60 pts</td>
+      <td>Skip if risk &lt; 5 or &gt; 50 pts</td>
+    </tr>
+    <tr>
+      <td>Emergency stop</td>
+      <td>Hard stop at sweep wick ± 1pt (tick-based). Safety net only — rarely hit after B/E.</td>
+      <td>None — the swing stop IS the only stop.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ════════════════════════════════════════════ -->
+<div class="section-title">Trade Management & Targets</div>
+
+<table>
+  <thead>
+    <tr><th>Dimension</th><th><span class="tag tag-ifvg">IFVG</span></th><th><span class="tag tag-lumi">LUMI</span></th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Target structure</td>
+      <td><strong>Session-aware partials</strong>:<br>
+        London: 100% runner to session end<br>
+        NYAM: 30% at TP1 (17pts), 70% runner<br>
+        Lunch/PM: 55% at TP1, 35% at TP2 (35pts), 10% runner</td>
+      <td><strong>Fixed R-multiple</strong>: 3R from entry (risk × 3). All-or-nothing, no partials.<br><span class="dim">(Standalone backtest used 2R — v14 engine uses 3R)</span></td>
+    </tr>
+    <tr>
+      <td>Breakeven</td>
+      <td><strong>Yes</strong> — after TP1 hit (or +17pts in London), stop becomes hard at entry + 1pt. Converts losers to breakeven.</td>
+      <td><strong>No</strong> B/E mechanism. Trade runs to stop, target, or EOD.</td>
+    </tr>
+    <tr>
+      <td>Position scaling</td>
+      <td>Partials: exits chunks at TP1/TP2, holds runner. Weighted PnL.</td>
+      <td>Single position: full in, full out. No scaling.</td>
+    </tr>
+    <tr>
+      <td>EOD flatten</td>
+      <td>3:55 PM ET — all runners close</td>
+      <td>3:55 PM ET — same</td>
+    </tr>
+    <tr>
+      <td>Max trades/day</td>
+      <td><strong>Unlimited</strong> — concurrent sweeps, ~6–12 trades/day</td>
+      <td><strong>3 max</strong> (sequential only, 2-bar cooldown between trades)</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ════════════════════════════════════════════ -->
+<div class="section-title">Session & Timing</div>
+
+<table>
+  <thead>
+    <tr><th>Dimension</th><th><span class="tag tag-ifvg">IFVG</span></th><th><span class="tag tag-lumi">LUMI</span></th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Entry window</td>
+      <td>3:00 AM – 3:30 PM ET (London through NY PM)</td>
+      <td>3:00 AM – 3:30 PM ET (same in v14 engine)<br><span class="dim">Original Lumi spec: 8 AM – 4 PM EST</span></td>
+    </tr>
+    <tr>
+      <td>Strongest session</td>
+      <td>NYAM (9:30–11:30 ET) — highest WR and volume</td>
+      <td>NY Lunch (11:30–1 PM ET) — best PF in backtest</td>
+    </tr>
+    <tr>
+      <td>Swept-level memory</td>
+      <td>Yes — level can only be swept once per day (dedup by price ± 0.5pt)</td>
+      <td>Yes — level can only be swept once per day (dedup by price ± 5pt)</td>
+    </tr>
+    <tr>
+      <td>Cooldown</td>
+      <td>None — new sweep can trigger immediately</td>
+      <td>2 × 60-min bars between exit and next sweep</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ════════════════════════════════════════════ -->
+<div class="section-title">Backtest Results (283 days, same data)</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <h4><span class="tag tag-ifvg">IFVG</span> All Sessions</h4>
+    <div class="stat-val red">-1,456 pts</div>
+    <div class="stat-sub">1,536 trades &bull; 6.4/day &bull; 53.5% WR &bull; PF 0.88 &bull; Cal -0.5</div>
+  </div>
+  <div class="stat-card">
+    <h4><span class="tag tag-lumi">LUMI</span> v14 Engine</h4>
+    <div class="stat-val green">+403 pts</div>
+    <div class="stat-sub">359 trades &bull; 1.6/day &bull; 29.5% WR &bull; PF 1.07 &bull; Cal 0.4</div>
+  </div>
+</div>
+
+<div class="note">
+  <strong>Why IFVG underperforms here:</strong> The v14 audit runs IFVG across ALL sessions without the Mean60 bias filter or max-consecutive-loss cap. The production config (M60 filter ON, max 2 losses) boosts WR to ~72% and Calmar to 50+. This comparison uses raw, unfiltered engines for both strategies to isolate signal quality.
+</div>
+
+<div class="note">
+  <strong>Why Lumi WR is 29.5% here vs 62% standalone:</strong> The v14 Lumi engine uses <strong>3R target + swing hard stops</strong>. The standalone backtest used <strong>FVG+10pt stop</strong> (tighter stop = tighter target = more winners). Same entry logic, different trade management produces completely different WR.
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<div class="section-title">Correlation</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <h4>Daily PnL Pearson r</h4>
+    <div class="stat-val green">+0.046</div>
+    <div class="stat-sub">Essentially zero — completely uncorrelated</div>
+  </div>
+  <div class="stat-card">
+    <h4>Trade Overlap</h4>
+    <div class="stat-val blue">~31%</div>
+    <div class="stat-sub">of IFVG trades occur near a Lumi trade (20pt / 10min window) — half same direction, half opposite</div>
+  </div>
+</div>
+
+<div class="verdict">
+  <h3>Portfolio Verdict</h3>
+  <p>The two strategies are <strong>uncorrelated</strong> (r = 0.046) because they detect fundamentally different market events. IFVG catches fast micro-sweeps on 1-min bars and enters on momentum (candle closes through FVG). Lumi waits for larger hourly sweeps, requires a three-step confirmation chain (MSS → OB → FVG), and enters passively at a limit level. Even when they trade on the same day near the same price, they agree on direction only ~50% of the time — essentially coin-flip overlap. This makes Lumi a strong diversification add to the Tempo portfolio.</p>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<div class="section-title">The Two Key Philosophical Differences</div>
+
+<table>
+  <thead>
+    <tr><th style="width:10%">#</th><th style="width:45%"><span class="tag tag-ifvg">IFVG</span></th><th style="width:45%"><span class="tag tag-lumi">LUMI</span></th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="highlight">1</span></td>
+      <td><strong>Confirmation-first</strong>: "I'll enter AFTER price proves the reversal by closing through the FVG. I pay worse fills but I know the move is happening."</td>
+      <td><strong>Anticipation-first</strong>: "I'll place a limit at the FVG edge and wait for price to come to me. I get better fills but the move might never materialize."</td>
+    </tr>
+    <tr>
+      <td><span class="highlight">2</span></td>
+      <td><strong>Survive with soft stops</strong>: "Wicks will try to stop me out but I only exit on a candle CLOSE past my stop. The edge IS in the stop type — 50% of 'losers' never actually close past my stop."</td>
+      <td><strong>Survive with structure</strong>: "I need MSS + OB + FVG all confirmed before I even place my order. The edge IS in the filter chain — most sweeps never produce all three confirmations."</td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
