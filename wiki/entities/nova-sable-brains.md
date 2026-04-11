@@ -6,51 +6,122 @@ sources:
   - raw-sources/trading/tempo/The_Unified_Brain_Architecture.docx
 related:
   - wiki/entities/tempo-trading-system.md
+  - wiki/summaries/unified-brain-architecture.md
   - wiki/summaries/tempo-cluster.md
   - wiki/concepts/bayesian-belief-engine.md
-tags: [trading, tempo, ai, architecture, stub]
+  - wiki/concepts/bar-sim-trailing-bug.md
+  - wiki/concepts/v10i-look-ahead-bug.md
+tags: [trading, tempo, ai, architecture, canonical]
 ---
 
 # Nova and Sable — the Unified Brain Researchers
 
-> **Stub.** This page is a cross-link target for [[tempo-cluster]]. The authoritative source is `raw-sources/trading/tempo/The_Unified_Brain_Architecture.docx`, which is a binary file and has not yet been fully ingested. Expand this page after the docx is converted.
+**Nova** and **Sable** are the two AI researcher personas in [[unified-brain-architecture|The Unified Brain Architecture]], the post-pivot project state for Harrison's NQ trading system. They are local model instances running **DeepSeek R1-Distill-Qwen-14B via Ollama**. They do not yet exist as running software — this entity page documents the spec from the 2026-04 architecture doc.
 
-## What they are (from the [[tempo-cluster|Tempo cluster summary]])
+## Role (not execution, but research)
 
-**Nova** and **Sable** are the two AI researcher personas in Harrison's "Unified Brain" architecture — the post-pivot project state documented in `The_Unified_Brain_Architecture.docx` (2026-04). They are local model instances running **DeepSeek R1-Distill-Qwen-14B via Ollama**.
+The previous version of the project plan assumed the brain would execute `v24` as a known-good strategy. The v2 architecture (April 2026) explicitly rejects that framing:
 
-## Architecture (high level)
+> "The brain's job is not to execute a proven strategy. There is no proven strategy. The brain's job is to FIND one."
 
-The Unified Brain replaces three earlier planning docs (The Partnership, AI Trading Show Blueprint, AIO System Blueprint). Key components:
+Nova and Sable are **researchers first**, executors second. They inherit the full research history (every dead end, every lesson, every correction) and their job is to propose, test, and evaluate new hypotheses without repeating known failures.
 
-- **Two AI researchers (Nova, Sable)** — local DeepSeek R1-Distill-Qwen-14B instances
-- **Persistent memory** — Mem0 (semantic) + SQLite (structured) + weekly LoRA fine-tuning
-- **Risk Officer** — hard-coded Python, no AI, no flexibility, non-negotiable limits
-- **Weekly tournament** — external AI advisor judging (Claude / Grok / ChatGPT APIs)
-- **Phase progression** — research-only → paper → micro live (1 MNQ) → scale
-- **Live YouTube show pipeline** — ElevenLabs + BocaLive avatars + FFmpeg compositor
-- **Monthly cost target** — $220–650
+## Personality split
 
-## Why this replaces prior planning
+Nova and Sable are intentionally asymmetric. They use the same base model but train on different reward weightings, creating a diversified "portfolio of research styles":
 
-The Unified Brain doc opens with a blunt honesty disclosure: "NOTHING from the backtesting research (V7–V11) is validated for live trading. BOS_FVG does not work. V7/V8 was killed by look-ahead bias. The V10t clean results are approximately breakeven after commissions. The research journal documents what was TESTED, not what WORKS. v24 (IFVG MTF cascade) is the ONLY strategy currently on NinjaTrader sim. It has not yet proven itself."
+| Dimension | **Nova (Partner A)** | **Sable (Partner B)** |
+|---|---|---|
+| **Archetype** | Methodical researcher | Aggressive researcher |
+| **Preference** | High WR, small trades, strong statistical backing | High R-multiple, willing to accept lower WR for bigger payoffs |
+| **Research style** | Systematic, full parameter sweeps, demands walk-forward validation + conservative simulation | Intuitive, structural patterns, willing to trade smaller samples if logic is sound |
+| **LoRA reward** | **Conservative:** 2× penalty on losses, 1× on wins | **Aggressive:** 2× bonus on big wins, 1× penalty on losses |
+| **Show persona** | The analyst — viewers trust her for education | The wild card — viewers watch her for entertainment |
+| **Voice (ElevenLabs)** | Clear, professional female | Energetic, expressive female |
 
-Nova and Sable exist because the prior approach — "keep mining, keep optimizing, trust the backtest" — has been explicitly abandoned as a dead-end. The researchers are meant to reason about *market state and methodology*, not re-run more backtests on suspect data.
+**Memories are NOT shared between them.** Each maintains independent Mem0 + SQLite stores. They learn different lessons from the same data, which is what makes the weekly tournament meaningful rather than a rubber-stamp of one model's output.
 
-## Anti-stupidity rules (baked into Mem0 seed)
+## Base model and infrastructure
 
-- **NEVER** test multi-TF candle alignment (look-ahead trap — see [[v10i-look-ahead-bug]])
-- **NEVER** test break-even stops (dead across 11 configs — see [[be-trail-mechanism]])
+- **Model:** DeepSeek R1-Distill-Qwen-14B
+- **Runtime:** Ollama on GPU VPS (RTX 3090, ~$80–150/month)
+- **Memory (semantic):** [Mem0](https://mem0.ai/) — vector-based memory that stores experiences as embeddings and supports similarity search
+- **Memory (structured):** SQLite — trade logs, research logs, corrections
+- **Fine-tuning:** Weekly LoRA runs on [RunPod](https://runpod.io/) A100, 2–4 hours per brain, ~$5–15 per run
+- **Voice synthesis:** ElevenLabs Flash v2.5 (75ms first-byte latency)
+- **Avatars:** BocaLive (trained face models with lip-sync)
+- **Video compositor:** FFmpeg
+
+## The research loop (both brains run this same loop)
+
+1. **OBSERVE** — ingest latest market data, review recent trade outcomes
+2. **RECALL** — query Mem0 for related patterns and past experiments
+3. **HYPOTHESIZE** — propose a testable idea (new signal, filter, parameter)
+4. **CHECK DEAD ENDS** — cross-reference against known failures; abort if redundant
+5. **DESIGN** — specify backtest parameters, sample period, success criteria
+6. **TEST** — run via `clean_backtest.py` on tick data, walk-forward validate
+7. **EVALUATE** — conservative sim, slippage stress, commission drag
+8. **RECORD** — log to Mem0 + SQLite (win or lose)
+9. **SHARE** — post findings to show dialogue + Discord, explain what was learned
+10. **REPEAT**
+
+**Implementation blocker (2026-04-10 discovery):** the research loop's step 6 references `clean_backtest.py`. That file has the [[bar-sim-trailing-bug|bar-sim trailing path-reconstruction bug]] — any trailing-stop hypothesis tested through it will produce inflated results. Before Phase 1 research begins, either:
+- `clean_backtest.py` must be replaced with a tick-level simulator, OR
+- The brains' anti-stupidity rules must be extended to disallow trailing stops as a hypothesis form, OR
+- All trailing-stop hypotheses must pass through a tick-level cross-validation step
+
+The Unified Brain doc was written before this bug was discovered. The Mem0 seed should be updated accordingly.
+
+## Anti-stupidity rules (hard constraints, can't be overridden)
+
+- **NEVER** test multi-TF candle alignment (known [[v10i-look-ahead-bug|look-ahead trap]])
+- **NEVER** test break-even stops (dead across 11 configs)
+- **NEVER** claim a strategy validated based on backtesting alone
+- **NEVER** re-test the 7 dead signals without a fundamentally new thesis
+- **ALWAYS** use conservative simulation for trailing strategies *(insufficient — see [[bar-sim-trailing-bug]] caveat above)*
 - **ALWAYS** walk-forward validate (4 quarters positive OOS)
 - **ALWAYS** apply realistic costs (0.5pt slippage + 0.5pt commission per side)
-- **Dead strategies baked in:** london_breakout, VP_POC_retest, fib_retracement, failed_breakout, sweep_reversal, double_BOS_momentum, VWAP_mean_reversion
+- **ALWAYS** show RT (R target) in every results table
 
-## Open questions (stub markers)
+## The tournament
 
-- Exact prompt templates for Nova vs Sable — what's the division of labor?
-- How does the weekly tournament scoring actually work? What does "winning" mean?
-- How does the Risk Officer interlock with Nova/Sable's proposed trades?
-- Is there live-sim integration yet, or is Phase 1 still research-only?
-- What's the relationship between Nova/Sable and the existing [[bayesian-belief-engine|Context Engine]]?
+Each week, Nova and Sable compete. Scoring adapts to the current phase:
 
-Expand this page after converting `The_Unified_Brain_Architecture.docx` to markdown via `textutil`.
+- **Research-only phase:** hypothesis quality, backtest rigor, did they avoid known dead ends, did walk-forward hold
+- **Paper trading phase:** paper P&L, signal quality vs backtest expectations, risk compliance
+- **Live trading phase:** real P&L, WR, max DD, consistency
+
+Tournament judging uses **external AI advisor APIs** — Claude, Grok, ChatGPT — to provide independent scores. No single AI system judges its own work. The winner gets higher capital allocation for the next week.
+
+## Phase progression (strict gating)
+
+Both brains start in research-only mode. Advancement is earned, not assumed:
+
+1. **Research only** — no orders, hypothesis-generation only. Exit: at least one brain produces a positive walk-forward OOS result.
+2. **Paper trading** — IBKR paper account, real-time decisions with simulated fills. Exit: paper P&L justifies real capital.
+3. **Micro live** — 1 MNQ ($2/point). Minimal real-money exposure. Exit: realized Sharpe and risk compliance.
+4. **Scale up** — NQ contracts ($20/point), size capped by tournament rank.
+
+## Relationship to the existing Context Engine
+
+The Unified Brain doc references the [[bayesian-belief-engine|Context Engine V2]] as "already built and working" with:
+- 46-feature market state vector
+- Bayesian session classifier at 68.6% accuracy
+- Strategy bridge
+- Volume profile + footprint analysis
+
+Nova and Sable should be able to query the Context Engine as a tool — i.e. the Engine computes the feature vector for a given moment, and the brain reasons about what to do with it. The relationship between the Engine's deterministic classifier and the brains' Mem0-based pattern-matching is **not fully specified** in the architecture doc — it's an open implementation question.
+
+## Status as of 2026-04-11
+
+**Spec only.** Nova and Sable do not exist as running software. Phase 1 (Weeks 1–3: brain + memory + research pipeline) has not begun. Harrison's `~/Documents/trading-system/CLAUDE.md` confirms that `v24 IFVG MTF cascade` is the only strategy currently on NinjaTrader sim, which is the reference point the brains will be benchmarked against once they exist.
+
+## See also
+
+- [[unified-brain-architecture]] — full summary of the architecture doc
+- [[tempo-trading-system]] — the Mac-side directory where the brain will be built
+- [[research-arc-map]] — Phase 5 "Unified Brain pivot" context
+- [[bar-sim-trailing-bug]] — an implementation blocker for the research pipeline
+- [[v10i-look-ahead-bug]] — hardcoded anti-pattern #1 in the Mem0 seed
+- [[bayesian-belief-engine]] — the existing Context Engine the brains will query
+- `~/Documents/trading-system/CLAUDE.md` — project-side directive

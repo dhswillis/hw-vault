@@ -10,6 +10,7 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 - [[wiki/concepts/bar-sim-trailing-bug]] — Structural reason trailing stops can't be backtested on 1-minute OHLC. Caused the BOS_FVG illusion.
 - [[wiki/concepts/maps-of-content]] — Curated editorial index notes for topic clusters; the Obsidian-community layer on top of Karpathy's flat `index.md`.
 - [[wiki/concepts/inbox-processing]] — Morning ritual for converting raw captures into structured wiki notes. Implemented as `/inbox`.
+- [[wiki/concepts/invalidation-rules]] — **Canonical.** The "do not forget" ledger. 15 rules distilled from every bug found across V7-V11 research. Read before citing any pre-April 2026 number.
 - [[wiki/concepts/ifvg]] — Inverted Fair Value Gap, Tempo's canonical entry signal. Close-through FVG on a pre-existing gap after a sweep.
 - [[wiki/concepts/smt]] — Smart Money Technique: NQ vs ES divergence. Primary Tempo confluence since Nov 2025.
 - [[wiki/concepts/dol-framework]] — Draw on Liquidity. Hierarchy of structural magnets — London H/L → data wicks → hourly → 50% range → PDH/PDL.
@@ -70,7 +71,7 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 
 ## Maps
 
-*(none yet — create with `/moc <topic>` once a topic cluster has 10+ pages. Candidates once a MOC is written: `tempo-moc`, `audit-history-moc`, `context-engine-moc`.)*
+- [[wiki/maps/audit-history-moc]] — **Canonical.** Every audit sorted by outcome (bugs found vs missed). Each audit links to what it invalidated and the rules it produced. Chronological invalidation chain.
 
 ## Projects (work)
 

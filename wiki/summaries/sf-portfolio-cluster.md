@@ -9,6 +9,7 @@ sources:
   - raw-sources/trading/sf-portfolio/DEEP_MINE_FINDINGS.md
   - raw-sources/trading/sf-portfolio/NQ_SF_Engulfing_Strategy_V2.docx
   - raw-sources/trading/sf-portfolio/NQ_Portfolio_Trading_System.docx
+  - ~/Documents/strategies/03-sf-portfolio/python/final_table_260d.py
 related:
   - wiki/concepts/vwap-double-counting-bug.md
   - wiki/concepts/bar-sim-trailing-bug.md
@@ -17,8 +18,9 @@ related:
   - wiki/summaries/v5-strategy-bug-audit.md
   - wiki/summaries/nq-playbook.md
   - wiki/summaries/research-journal.md
+  - wiki/summaries/wickfade-complete.md
   - wiki/syntheses/tempo-three-layers.md
-tags: [trading, sf-portfolio, sweep-fail, cluster-summary, layer-2-cleaner]
+tags: [trading, sf-portfolio, sweep-fail, cluster-summary, tick-validated]
 ---
 
 # SF Portfolio Cluster — Summary
