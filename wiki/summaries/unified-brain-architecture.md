@@ -5,6 +5,7 @@ type: summary
 sources:
   - raw-sources/trading/tempo/The_Unified_Brain_Architecture.docx
 related:
+  - wiki/summaries/tempo-rules-v3
   - wiki/entities/nova-sable-brains.md
   - wiki/entities/tempo-trading-system.md
   - wiki/concepts/bayesian-belief-engine.md

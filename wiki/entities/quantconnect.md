@@ -30,7 +30,7 @@ Located in `~/Documents/trading-system/.local/config.json` under the `quantconne
 
 ## Relation to other data sources
 
-QC provides OHLCV bars (1s, 1m, 5m, 15m, 1D) and trade data for NQ futures — enough for Layer 1 (price structure) of the [[tempo-context-engine-spec|Context Engine]]. It does NOT provide tick-level aggressor-side data needed for Layer 2 (volume profile) or Layer 3 (footprint) features — that comes from [[databento|Databento]].
+QC provides OHLCV bars (1s, 1m, 5m, 15m, 1D) and trade data for NQ futures — enough for Layer 1 (price structure) of the [[tempo-context-engine-spec|Context Engine]]. It does NOT provide tick-level aggressor-side data needed for Layer 2 ([[volume-profile|volume profile]]) or Layer 3 (footprint) features — that comes from [[databento|Databento]].
 
 ## Workflow
 

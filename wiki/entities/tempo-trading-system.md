@@ -34,7 +34,7 @@ Runs 2000 strategy variants through [[quantconnect|QuantConnect]] overnight, col
 
 ## What it will do (Context Engine)
 
-The [[tempo-context-engine-spec|Context Engine]] is the planned intelligence layer. Before each session, it predicts the [[session-type-taxonomy|session type]] (trend/range/expansion/compression/news-shock) using price structure, volume profile, order flow, and news context, then selects the best strategy configuration for that environment via a [[bayesian-belief-engine|Bayesian belief update]]. Intra-session checkpoints refine the prediction as evidence arrives.
+The [[tempo-context-engine-spec|Context Engine]] is the planned intelligence layer. Before each session, it predicts the [[session-type-taxonomy|session type]] (trend/range/expansion/compression/news-shock) using price structure, [[volume-profile|volume profile]], order flow, and news context, then selects the best strategy configuration for that environment via a [[bayesian-belief-engine|Bayesian belief update]]. Intra-session checkpoints refine the prediction as evidence arrives.
 
 ## Core signals
 

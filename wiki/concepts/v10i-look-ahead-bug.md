@@ -5,6 +5,7 @@ type: concept
 sources:
   - raw-sources/COMPREHENSIVE_MINING_REPORT.md
 related:
+  - wiki/concepts/vwap-double-counting-bug
   - wiki/concepts/mtf-alignment.md
   - wiki/concepts/bos-fvg.md
   - wiki/summaries/comprehensive-mining-report-v2.md

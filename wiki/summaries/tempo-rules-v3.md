@@ -5,6 +5,7 @@ type: summary
 sources:
   - raw-sources/trading/tempo/tempo_rules_v3_complete.md
 related:
+  - wiki/summaries/unified-brain-architecture
   - wiki/concepts/ifvg.md
   - wiki/concepts/smt.md
   - wiki/concepts/dol-framework.md

@@ -5,6 +5,8 @@ type: summary
 sources:
   - raw-sources/trading/RESEARCH_JOURNAL.md
 related:
+  - wiki/summaries/strategy-mining-report-312d
+  - wiki/summaries/comprehensive-mining-report-v2
   - wiki/concepts/bos-fvg.md
   - wiki/concepts/bar-sim-trailing-bug.md
   - wiki/concepts/v10i-look-ahead-bug.md

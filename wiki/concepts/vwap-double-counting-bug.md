@@ -5,6 +5,7 @@ type: concept
 sources:
   - raw-sources/V5_Strategy_Bug_Audit_2026-03-23.md
 related:
+  - wiki/concepts/v10i-look-ahead-bug
   - wiki/entities/ninjatrader-v5.md
   - wiki/summaries/v5-strategy-bug-audit.md
 tags: [trading, bug, ninjatrader, vwap, live-divergence, critical]

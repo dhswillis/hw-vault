@@ -18,6 +18,7 @@ sources:
   - raw-sources/trading/tempo/Tempo_IBKR_Migration_Plan.docx
   - raw-sources/trading/tempo/TEMPO_PROJECT_STATE.md
 related:
+  - wiki/summaries/tempo-ifvg-research
   - wiki/concepts/ifvg.md
   - wiki/concepts/smt.md
   - wiki/concepts/bos-fvg.md

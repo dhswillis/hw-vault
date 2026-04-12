@@ -5,6 +5,7 @@ type: summary
 sources:
   - raw-sources/trading/context-engine/NQ_PLAYBOOK.md
 related:
+  - wiki/summaries/strategy-mining-report-312d
   - wiki/concepts/bos-fvg.md
   - wiki/concepts/bar-sim-trailing-bug.md
   - wiki/concepts/be-trail-mechanism.md

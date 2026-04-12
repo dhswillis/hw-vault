@@ -7,6 +7,7 @@ sources:
   - raw-sources/trading/tempo/TEMPO_V14_CORRECTIONS.md
   - raw-sources/trading/tempo/TEMPO_PROJECT_STATE.md
 related:
+  - wiki/concepts/wick-fade
   - wiki/concepts/smt.md
   - wiki/concepts/dol-framework.md
   - wiki/concepts/bpr.md

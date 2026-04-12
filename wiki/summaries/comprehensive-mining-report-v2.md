@@ -4,6 +4,7 @@ updated: 2026-04-10
 type: summary
 sources: [raw-sources/COMPREHENSIVE_MINING_REPORT.md]
 related:
+  - wiki/summaries/research-journal
   - wiki/concepts/bos-fvg.md
   - wiki/concepts/mtf-alignment.md
   - wiki/concepts/v10i-look-ahead-bug.md

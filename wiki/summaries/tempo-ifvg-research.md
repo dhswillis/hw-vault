@@ -5,6 +5,7 @@ type: summary
 sources:
   - raw-sources/trading/tempo/TEMPO_IFVG_RESEARCH.md
 related:
+  - wiki/summaries/tempo-cluster
   - wiki/concepts/ifvg.md
   - wiki/concepts/smt.md
   - wiki/concepts/tempo-v14-corrections.md

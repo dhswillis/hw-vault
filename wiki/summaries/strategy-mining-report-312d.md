@@ -4,6 +4,8 @@ updated: 2026-04-10
 type: summary
 sources: [raw-sources/STRATEGY_MINING_REPORT.md]
 related:
+  - wiki/summaries/research-journal
+  - wiki/summaries/nq-playbook
   - wiki/concepts/bos-fvg.md
   - wiki/concepts/mtf-alignment.md
   - wiki/concepts/v10i-look-ahead-bug.md

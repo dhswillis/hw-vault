@@ -6,6 +6,7 @@ sources:
   - raw-sources/trading/sweep/WickFade_Complete_Findings.docx
   - raw-sources/trading/sweep/15S_Wick_Fade_Findings.docx
 related:
+  - wiki/concepts/ifvg
   - wiki/summaries/wickfade-complete.md
   - wiki/summaries/15s-wick-fade.md
   - wiki/concepts/bar-sim-trailing-bug.md
