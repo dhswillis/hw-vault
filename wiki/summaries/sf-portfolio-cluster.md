@@ -40,16 +40,75 @@ tags: [trading, sf-portfolio, sweep-fail, cluster-summary, tick-validated]
 | `NQ_SF_Engulfing_Strategy_V2.docx` | (binary) | Engulfing-family strategy spec. Requires `textutil` conversion |
 | `NQ_Portfolio_Trading_System.docx` | (binary) | Overall portfolio system doc. Requires `textutil` conversion |
 
-## The SF Portfolio's edge (why it's cleaner than BOS_FVG)
+## The SF Portfolio's edge (cleaner than BOS_FVG — and tick-level)
 
-The SF cluster's core finding — **+2.26 R/day to +3.34 R/day across 260 days, zero look-ahead verified** — survives the 2026-04-10 [[bar-sim-trailing-bug]] audit for a structural reason: **the SF portfolio does not use trailing stops**. The legs all use:
+The SF cluster's core finding — **+2.26 R/day to +3.34 R/day across 260 days, zero look-ahead verified** — survives the 2026-04-10 [[bar-sim-trailing-bug]] audit for two structural reasons that are both confirmed:
 
+### 1. The simulator is tick-level (confirmed 2026-04-11 by code-read)
+
+The production script `~/Documents/strategies/03-sf-portfolio/python/final_table_260d.py` (and its sibling scripts) loads raw Databento tick data:
+
+```python
+df = db.DBNStore.from_file(str(fp)).to_df()
+pr = df['price'].values  # individual tick prices
+mi = (ts.dt.hour * 60 + ts.dt.minute).values  # minute-of-day per tick
+```
+
+The trade management functions (`trade_f`, `trade_be5`, `trade_es`) iterate through individual ticks:
+
+```python
+def trade_f(pr, mi, n, ei, d, ep, stp, tgt_r, flat):
+    stop = ep - d * stp
+    risk = stp
+    for j in range(ei + 1, n):      # <-- one iteration per tick
+        p = pr[j]
+        m = mi[j]
+        if m >= flat:  pnl = d*(p-ep) - CM;  return pnl/risk, ...
+        if d == 1 and p <= stop:  return (-risk - CM) / risk, 'loss'
+        if d == -1 and p >= stop: return (-risk - CM) / risk, 'loss'
+        if d * (p - ep) / risk >= tgt_r: return (tgt_r*risk - CM) / risk, 'win'
+```
+
+The `build_bars` helper exists only for **signal detection** (finding the sweep-fail pattern from a prior bar's wick). It does not touch trade management. This means the SF portfolio was tick-level all along — it was never a bar-sim simulation in the BOS_FVG sense.
+
+### 2. No trailing stops anywhere
+
+The legs all use:
 - **Fixed stops in points** (5pt, 20pt, 25pt, 40pt — depending on session)
 - **Fixed R-multiple targets** (1.0R, 1.5R, 2.0R)
-- **B/E management at fixed R thresholds** (not intra-bar trailing)
+- **B/E management at fixed R thresholds** (the RUNNER leg uses B/E at +5R, not intra-bar trailing)
 - **Session-flat rules** (flatten at specific minute-of-day values)
 
-All of these are bar-sim-safe by construction. A fixed-R target either reaches the target or doesn't; a fixed B/E trigger either reaches the trigger or doesn't. The path reconstruction ambiguity that kills BOS_FVG trailing results is absent here. The SF portfolio is the closest thing the Layer 2 mining corpus has to a "defensible" research track.
+Even if this *were* a bar-level simulator, fixed stops and fixed targets would be bar-sim-safe by construction. Combined with the tick-level iteration above, there is no layer where the [[bar-sim-trailing-bug]] can apply.
+
+## 2026-04-11 Sanity check (22 days sampled across the year)
+
+A cut-down version of `final_table_260d.py` (4 core legs on 22 sampled weekdays using the same Databento tick data) produced:
+
+| Leg | n | WR | avg R | R/day (sample) | R/day (published 260d) |
+|---|---:|---:|---:|---:|---:|
+| RUNNER | 12 | **0.0%** | −0.933 | **−0.509** | **+1.053** |
+| SF_PRE | 9 | 55.6% | +0.376 | +0.154 | +0.131 |
+| SF_NY1 | 13 | 30.8% | −0.256 | −0.151 | +0.115 |
+| SF_LL15 | 14 | 57.1% | +0.123 | +0.078 | +0.085 |
+| **Combined** | | | | **−0.428** | **+1.384** |
+
+**The gap is almost entirely in the RUNNER leg.** SF_PRE and SF_LL15 hit their published numbers within sampling variance. SF_NY1 is within a standard deviation of its published number. But the RUNNER produced 0 winners in 12 sampled trades, compared to the published 16% WR implying ~2 expected wins.
+
+**This is not a bug — it's the RUNNER's fat-tail distribution.** Binomial math: at a true 16% WR, the probability of getting 0 wins in 12 trials is `(0.84)^12 ≈ 11.5%`. Slightly unlucky but well within normal variance. And because the RUNNER contributes 76% of total R/day to the published portfolio, an unlucky RUNNER sample dominates the short-window result.
+
+**The important conclusion: the SF portfolio requires the full 260-day sample (or more) before its edge is statistically visible.** Any short-window cross-validation is unreliable. This is a property of the underlying strategy (16% WR, ~6:1 R:R), not a property of the backtester.
+
+## Calibrated assessment
+
+Previous (pre-2026-04-11) assessment in this summary said "no tick-level cross-validation has been done" — **that was wrong**. The simulator has been tick-level all along. The correct caveats are different:
+
+1. **Tick-level: YES.** Code-read confirms individual tick iteration in trade management. Not a bar-sim pattern.
+2. **Look-ahead: 6 named bugs found and fixed** (see below). The "zero look-ahead verified" claim in `FINAL_PORTFOLIO_SPEC.md` is at least internally credible.
+3. **Walk-forward OOS: not reported.** The 260-day window is one contiguous period. No walk-forward split is documented for the 12-leg or 13-leg portfolio. Walk-forward is the missing discipline.
+4. **Multiple-comparison correction: not applied.** The 13-leg composite is the result of selecting legs from a larger candidate pool. Without Bonferroni-style correction on the leg-selection process, some portion of the combined R/day may be survivor bias from the selection step.
+5. **Cross-engine validation: not done.** The NinjaTrader V5 side had its own bugs ([[v5-strategy-bug-audit]], the VWAP double-counting bug in particular) that would move the number. The Python and NT sides have not been reconciled post-bug-fix.
+6. **Short-sample unreliability (2026-04-11 finding):** 22-day sanity check gave −0.428 R/day vs published +1.384 R/day, explained by the RUNNER leg's 16% WR variance. Any cross-validation under ~150 days on the RUNNER is too noisy to be informative.
 
 ## The 8 bugs found and fixed (per FINAL_PORTFOLIO_SPEC and auto-memory)
 
@@ -97,9 +156,14 @@ The reduced portfolio (best 8 legs, drops STOP_NY, ALATE, 4HO, 1H_CONT) produces
 - **Max DD 16.4 R**
 - **47/54 winning weeks (87%), 13/13 winning months (100%)**
 
-This is the headline number Harrison's memory refers to as "SF portfolio" current state. It has not been independently audited at tick level yet — the claim of "zero look-ahead" is based on the 8-bug fix list above, not on an independent tick-level rerun like the one done for BOS_FVG in 2026-04-10.
+This is the headline number Harrison's memory refers to as "SF portfolio" current state. Post-2026-04-11 audit status: **tick-level simulator verified, structurally clean on exit mechanics, but walk-forward OOS and cross-engine validation are still missing**.
 
-**Status:** Claimed-clean Layer 2 research. The *structural* reasons to trust it (fixed targets, not trailing) are solid. The *audited* status is less solid — no tick-level cross-validation has been done, and no Bonferroni correction across the 13-leg selection has been published. Treat as "probably defensible but not yet verified" rather than "validated."
+**Status:** Defensible Layer 2 research, significantly cleaner than the BOS_FVG/V10 track, but not yet *validated* in the strongest sense of the word. Gaps to close:
+1. Walk-forward split (e.g. 3-month train / 1-month OOS rolling) on the leg-selection process, not just the backtest
+2. Bonferroni correction across the leg candidate pool
+3. Cross-validation against NinjaTrader engine-native execution (post-V5 bug fixes)
+4. Slippage stress test at 1pt and 2pt per side
+5. Fill-rate audit on the LIMIT-entry legs (e.g. VWPM) to confirm the 55 trades/day is reachable with live fills
 
 ## V8 Mining Synthesis (separately tagged suspect)
 

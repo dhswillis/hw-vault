@@ -85,3 +85,13 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-11 14:45] memory | saved feedback_user_corrections_authoritative.md — user mid-session edits are ground truth; re-thread downstream rather than argue
 
 ## [2026-04-11 14:45] privacy | extended .gitignore to exclude personal/legal/ and raw-sources/claude-data/ from git tracking
+
+## [2026-04-11 16:00] ingest | The_Unified_Brain_Architecture.docx → wiki/summaries/unified-brain-architecture.md (full 440-line conversion via textutil); nova-sable-brains entity fully expanded from stub
+
+## [2026-04-11 16:00] ingest | 15S_Wick_Fade_Findings.docx → wiki/summaries/15s-wick-fade.md (tick-validated, 260d, 43% WR, flip dead)
+
+## [2026-04-11 16:00] ingest | WickFade_Complete_Findings.docx → wiki/summaries/wickfade-complete.md (tick-validated 5m variant, 10/10 walk-forward OOS, identified bar-sim trailing bug in March 2026)
+
+## [2026-04-11 16:00] concept | wiki/concepts/wick-fade.md — family concept page for both wick-fade variants; linked from sweep-cluster and research-arc-map
+
+## [2026-04-11 16:00] audit | SF portfolio simulator code-read confirms tick-level trade management (trade_f/trade_be5/trade_es iterate individual ticks, not OHLC bars). 22-day sanity check: −0.428 R/day vs published +1.384 R/day — gap entirely in RUNNER leg (0/12 wins vs expected ~2 at 16% WR, p=11.5%). Conclusion: fat-tail variance, not a bug. sf-portfolio-cluster.md updated with corrected tick-level assessment. Sanity script saved to results/archive/sf-portfolio-tick-audit-2026-04-11/

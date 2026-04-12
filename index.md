@@ -7,7 +7,8 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 ## Concepts
 
 - [[wiki/concepts/bos-fvg]] — **DEAD (2026-04-10).** BOS_FVG is NOT validated. Bar-sim trailing inflated prior results by +0.29 R/trade; tick replay shows +0.001 avgR.
-- [[wiki/concepts/bar-sim-trailing-bug]] — Structural reason trailing stops can't be backtested on 1-minute OHLC. Caused the BOS_FVG illusion.
+- [[wiki/concepts/wick-fade]] — **TICK-VALIDATED family.** 5m and 15s fade variants. 10/10 walk-forward OOS positive. Fixed stop + target, bar-sim-safe. Rare Layer 2 survivor.
+- [[wiki/concepts/bar-sim-trailing-bug]] — Structural reason trailing stops can't be backtested on 1-minute OHLC. Caused the BOS_FVG illusion. Wick-fade docs flagged the same bug in March.
 - [[wiki/concepts/maps-of-content]] — Curated editorial index notes for topic clusters; the Obsidian-community layer on top of Karpathy's flat `index.md`.
 - [[wiki/concepts/inbox-processing]] — Morning ritual for converting raw captures into structured wiki notes. Implemented as `/inbox`.
 - [[wiki/concepts/invalidation-rules]] — **Canonical.** The "do not forget" ledger. 15 rules distilled from every bug found across V7-V11 research. Read before citing any pre-April 2026 number.
@@ -28,7 +29,7 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 ## Entities
 
 - [[wiki/entities/tempo-methodology]] — Tempo the educator. 281 transcribed recaps, 88% WR on 400+ trades, 30+ copy-trade accounts, $42k single day (2026-01-29).
-- [[wiki/entities/nova-sable-brains]] — Nova + Sable, the two DeepSeek R1 AI researchers in the Unified Brain Architecture. **Stub** — needs docx conversion.
+- [[wiki/entities/nova-sable-brains]] — Nova (methodical) + Sable (aggressive), DeepSeek R1 researchers in the Unified Brain. Spec only, not yet running.
 - [[wiki/entities/tempo-trading-system]] — The overall NQ futures trading system at `~/Documents/trading-system/`. Research + backtest + planned Context Engine.
 - [[wiki/entities/quantconnect]] — Backtest/execution platform. Project `28083727`. Runs the Tempo batch variants.
 - [[wiki/entities/databento]] — Tick-level data vendor. Source for volume profile + footprint. Key saved on VPS, not yet integrated live.
@@ -46,7 +47,7 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 - [[wiki/summaries/tempo-project-state]] — 2026-02-09 project state master doc. File inventory, architecture, standing corrections.
 - [[wiki/summaries/tempo-ifvg-research]] — 2026-03-08 tick-level IFVG research. 74.7% WR baseline, 83% WR with SMT + reaction-quality. The cleanest Layer 2 doc in the cluster.
 - [[wiki/summaries/lumi-strategy-spec]] — Lumi engine from @LumiTraders. v14 audit tested at 20% WR, excluded from production.
-- [[wiki/summaries/unified-brain-architecture]] — The 2026-04 pivot doc. Nova + Sable AI researchers, Mem0 memory, weekly tournaments. **Stub** — needs docx conversion.
+- [[wiki/summaries/unified-brain-architecture]] — The 2026-04 Willis Holdings pivot doc. Nova + Sable AI researchers, Mem0 memory, weekly tournaments, hard-coded Risk Officer, phase-gated progression. Replaces the entire mining-as-validation strategy.
 - [[wiki/summaries/nq-playbook]] — V10 flagship findings doc. **Suspect** — headline +1.141 avgR / Cal 263.6 is bar-sim artifact per [[bos-fvg-failure-consolidated]].
 - [[wiki/summaries/research-journal]] — V7 → V11 narrative journal. **Suspect** for same reasons as NQ Playbook.
 - [[wiki/summaries/mining-analysis]] — V7aa_b cross-tab of 2,600 signal × pattern × session × DOW × alignment combos. **Suspect** (V10i alignment bug).
@@ -55,8 +56,10 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 - [[wiki/summaries/comprehensive-mining-report-v2]] — V2 mining (34,323 trades, 258 days). BOS_FVG numbers now suspect due to [[bar-sim-trailing-bug]].
 - [[wiki/summaries/strategy-mining-report-312d]] — V1 mining (312d, 8,358 trades). V10i-contaminated "sniper tiers" flagged suspect.
 - [[wiki/summaries/nautilus-spec]] — NautilusTrader BOS_FVG spec. Published at +0.286 avgR — early red flag ignored until April audit.
-- [[wiki/summaries/sf-portfolio-cluster]] — SF (Sweep-Fail) portfolio track. +3.34 R/day claimed, 6 bugs fixed. **Structurally cleaner than BOS_FVG** (fixed targets).
-- [[wiki/summaries/sweep-cluster]] — Sweep-and-fade experimental cluster. Most variants dead or marginal; wick-fade docs still binary.
+- [[wiki/summaries/sf-portfolio-cluster]] — SF (Sweep-Fail) portfolio track. +3.34 R/day on 260d. **Tick-level simulator confirmed 2026-04-11.** RUNNER leg is fat-tailed (16% WR); needs full 260d for edge to show.
+- [[wiki/summaries/15s-wick-fade]] — 15-second wick fade, tick-level validated on 260d. 43% WR, $30.89/trade. Flip variant dead (0/216 configs); fade alone is real.
+- [[wiki/summaries/wickfade-complete]] — 5-minute WickFade, tick-level. +77–94 R/day, Calmar 2.12, **10/10 walk-forward OOS positive**. Strongest anti-overfit evidence in the corpus. Flagged the bar-sim trailing bug a month before the BOS_FVG audit.
+- [[wiki/summaries/sweep-cluster]] — Sweep-and-fade experimental cluster. Most variants dead or marginal.
 - [[wiki/summaries/transcript-mining-findings]] — Orderflow methodology synthesis from 7 educators, 30 transcripts. CLC framework, volume cluster pullbacks, POC reversal, footprint absorption.
 - [[wiki/summaries/v5-strategy-bug-audit]] — 2026-03-23 audit of V5 NinjaTrader strategies. Seven bugs, Bug 1 (VWAP double-counting) is the primary cause of ES VWPM live/backtest divergence.
 - [[wiki/summaries/tempo-context-engine-spec]] — Engineering spec v1.0 for the Tempo Context Engine. Session classifier, five feature layers, nine checkpoints, Bayesian belief updates, 5-phase build plan.
@@ -72,6 +75,8 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 ## Maps
 
 - [[wiki/maps/audit-history-moc]] — **Canonical.** Every audit sorted by outcome (bugs found vs missed). Each audit links to what it invalidated and the rules it produced. Chronological invalidation chain.
+- [[wiki/maps/tempo-moc]] — Full Tempo research arc. Layer 1 (canonical methodology) → Layer 2 (mining/backtests — mostly suspect) → Layer 3 (current implementation). Evolution timeline from Oct 2024 to present.
+- [[wiki/maps/bos-fvg-saga-moc]] — Case study: how BOS_FVG went from "97.9% WR sniper tier" to "63.5% WR core signal" to "DEAD at +0.001 avgR". Three contamination layers, three audits, four rules produced.
 
 ## Projects (work)
 
