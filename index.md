@@ -64,6 +64,7 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 - [[wiki/summaries/v5-strategy-bug-audit]] — 2026-03-23 audit of V5 NinjaTrader strategies. Seven bugs, Bug 1 (VWAP double-counting) is the primary cause of ES VWPM live/backtest divergence.
 - [[wiki/summaries/tempo-context-engine-spec]] — Engineering spec v1.0 for the Tempo Context Engine. Session classifier, five feature layers, nine checkpoints, Bayesian belief updates, 5-phase build plan.
 - [[wiki/summaries/tempo-quick-start-guide]] — How to start a Tempo session. `tempo` alias, file locations (Mac/VPS/GitHub/QC), credentials reference, memory document chain.
+- [[wiki/summaries/option4-hybrid-architecture]] — Option 4: Hybrid Full Stack architecture document. Links QC, NinjaTrader, and Context Engine into one pipeline.
 
 ## Syntheses
 
@@ -74,10 +75,20 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 
 ## Maps
 
-- [[wiki/maps/audit-history-moc]] — **Canonical.** Every audit sorted by outcome (bugs found vs missed). Each audit links to what it invalidated and the rules it produced. Chronological invalidation chain.
+- [[wiki/maps/root]] — **Start here.** Root Map of Content. Single entry point to the entire brain. Links every domain, top-10 concepts, vault health stats.
 - [[wiki/maps/tempo-moc]] — Full Tempo research arc. Layer 1 (canonical methodology) → Layer 2 (mining/backtests — mostly suspect) → Layer 3 (current implementation). Evolution timeline from Oct 2024 to present.
 - [[wiki/maps/bos-fvg-saga-moc]] — Case study: how BOS_FVG went from "97.9% WR sniper tier" to "63.5% WR core signal" to "DEAD at +0.001 avgR". Three contamination layers, three audits, four rules produced.
-- [[wiki/maps/import-triage-moc]] — Maps all 138 files in `raw-sources/imports/2026-04-11/` to their closest existing wiki page. 53 boilerplate, 8 legal (gitignored), 79 threaded to existing summaries/concepts.
+- [[wiki/maps/audit-history-moc]] — **Canonical.** Every audit sorted by outcome (bugs found vs missed). Each audit links to what it invalidated and the rules it produced. Chronological invalidation chain.
+- [[wiki/maps/context-engine-moc]] — Bayesian session classifier. Five feature layers, nine checkpoints. Not yet built.
+- [[wiki/maps/strategies-moc]] — All signal families: IFVG, Wick Fade (validated), Sweep Fade (dead), SF Portfolio (tick-confirmed), Lumi (excluded). Live status tracker.
+- [[wiki/maps/personal-moc]] — Personal domain. Legal (mediation docs), security (Proton recovery), cross-links to trading as personal project.
+- [[wiki/maps/work-moc]] — Haven Park Communities. Director of Asset Management. PE-backed MHC platform. Planned structure for when work docs arrive.
+- [[wiki/maps/automation-moc]] — Scheduled tasks, ingest pipelines, lint sweeps. How the brain maintains itself. Four live tasks: daily-note, weekly-rollup, weekly-lint, inbox-triage.
+- [[wiki/maps/import-triage-moc]] — Maps all 166 files in `raw-sources/imports/2026-04-11/` to their closest existing wiki page.
+
+## Architecture
+
+- [[BRAIN]] — Vault operating architecture. Six-layer knowledge pyramid, four core pipelines, automation schedule, hard rules.
 
 ## Projects (work)
 

@@ -95,3 +95,19 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-11 16:00] concept | wiki/concepts/wick-fade.md — family concept page for both wick-fade variants; linked from sweep-cluster and research-arc-map
 
 ## [2026-04-11 16:00] audit | SF portfolio simulator code-read confirms tick-level trade management (trade_f/trade_be5/trade_es iterate individual ticks, not OHLC bars). 22-day sanity check: −0.428 R/day vs published +1.384 R/day — gap entirely in RUNNER leg (0/12 wins vs expected ~2 at 16% WR, p=11.5%). Conclusion: fat-tail variance, not a bug. sf-portfolio-cluster.md updated with corrected tick-level assessment. Sanity script saved to results/archive/sf-portfolio-tick-audit-2026-04-11/
+
+## [2026-04-12 15:00] architecture | BRAIN.md written — six-layer knowledge pyramid (L0 raw → L1 summaries → L2 atomics → L3 syntheses → L4 MOCs → L5 operations); four pipelines (ingest, query, daily, lint); hard rules codified
+
+## [2026-04-12 15:00] moc | wiki/maps/root.md — root MOC built with full graph, domain maps (trading/personal/work), key concepts top-10, vault health dashboard
+
+## [2026-04-12 15:15] moc | wiki/maps/personal-moc.md — populated with mediation PDFs (×4), proton recovery kit, cross-links to trading MOC tree
+
+## [2026-04-12 15:15] moc | wiki/maps/work-moc.md — populated with Haven Park context, planned structure for asset mgmt/deals/people/projects
+
+## [2026-04-12 15:15] moc | wiki/maps/automation-moc.md — populated with four pipeline specs, scheduled task table, concept links (inbox-processing, maps-of-content)
+
+## [2026-04-12 15:20] wiring | option4-hybrid-architecture.md linked from strategies-moc.md under new "Architecture & infrastructure" section; last wiki orphan resolved
+
+## [2026-04-12 15:30] automation | 4 scheduled tasks created — daily-note (Mon-Fri 7am), weekly-rollup (Sun 5pm), weekly-lint (Sat 8pm), inbox-triage (Tue+Fri 6pm)
+
+## [2026-04-12 22:39] weekly | W15 review | 8 open actions, 0 stale
