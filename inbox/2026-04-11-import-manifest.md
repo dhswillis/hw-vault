@@ -1,3 +1,6 @@
+> ⚠️ This has been in inbox for 3 days. Needs human decision.
+> **Pending ingest:** 166 files copied to `raw-sources/imports/2026-04-11/` await Claude Code Ingest pass (summaries in `wiki/summaries/`). None have been processed yet.
+
 ---
 created: 2026-04-11
 updated: 2026-04-11

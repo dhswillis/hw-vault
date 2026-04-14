@@ -125,3 +125,7 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-14 04:30] wiring | deep cross-linking pass — went from 52 disconnected components to 1 single connected graph (283/283 files). Added: 37 raw-source wiki-links in summaries, 82 import-file links from cluster summaries, 138 concept-to-import cross-links across 21 wiki pages, 14 QC data directory links, template links from automation-moc. Daily notes (2026-04-10, 2026-04-11, 2026-04-12) filled with wiki-links. Weekly W15 wired with daily/MOC links. README.md connected. Final: 1149 wiki-link edges, 227 files with 2+ connections, 68 hub nodes (10+ connections), 104/109 import files multi-connected
 
 ## [2026-04-14 07:07] daily | daily note created | 0 open actions
+
+## [2026-04-14 18:18] inbox-triage | 2 items, 1 routed, 1 needs attention
+- Routed: `2026-04-11-vault-map-report.md` → `raw-sources/operations/` (completed inventory report, findings already acted on via import)
+- Needs attention: `2026-04-11-import-manifest.md` — 166 files in `raw-sources/imports/2026-04-11/` await Claude Code Ingest pass (0 of 166 summarized). Warning note added to file.
