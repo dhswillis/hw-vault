@@ -55,12 +55,11 @@ Market data → [Layer 1: Session classifier]
 - [[wiki/summaries/transcript-mining-findings]] — Orderflow methodology from 7 educators. CLC framework, volume cluster pullbacks, POC reversal, footprint absorption. Feeds Layers 2–3.
 - [[wiki/summaries/mining-analysis]] — V7aa_b cross-tab. **Suspect** (V10i bug). But session-type breakdowns may still inform the taxonomy.
 
-## Raw sources not yet summarized
+## Spec addenda (now summarized)
 
-These context-engine raw sources need Ingest:
-
-- `raw-sources/trading/context-engine/Tempo_Context_Engine_Spec_V1.1_Addendum.docx` — addendum v1.1
-- `raw-sources/trading/context-engine/Tempo_Context_Engine_Spec_V1.2_Addendum.docx` — addendum v1.2
+- [[wiki/summaries/tempo-context-engine-spec-v1-1-addendum]] — V1.1: 5 additions — multi-day regime, gap intelligence, opportunity score, confidence decay, transitions.
+- [[wiki/summaries/tempo-context-engine-spec-v1-2-addendum]] — V1.2: Volatility regime sizing + SMT divergence layer. 64 total features.
+- [[wiki/summaries/context-engine-cluster]] — Reference cards, trade type visual guide, data ingestion README.
 
 ## Build phases (from spec)
 

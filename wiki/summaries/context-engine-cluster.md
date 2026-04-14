@@ -34,3 +34,10 @@ Supplementary documentation for the Context Engine, supporting the main spec (V1
 ## Status / caveats
 
 Reference and operational docs. The Context Engine is not yet built (spec only) — see [[wiki/maps/context-engine-moc|Context Engine MOC]] for current status. These docs will become useful when implementation begins.
+
+## Source documents
+
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/context-engine/QUICK_REFERENCE]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/context-engine/TRADE_TYPES_VISUAL_GUIDE]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/context-engine/context-engine/QUICK_REFERENCE]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/context-engine/data_ingestion/README]]

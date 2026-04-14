@@ -95,3 +95,10 @@ Both findings were sitting in the sweep cluster unreinged until this session. Th
 - [[be-trail-mechanism]] — why BE stops hurt WickFade 5m
 - [[sf-portfolio-cluster]] — another Layer 2 track with fixed targets; wick fade and SF portfolio are the two defensible survivors
 - [[research-arc-map]] — where wick fade fits in the overall research arc
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/strategies/01-wick-fade/docs/WickFade_Strategy_Spec|WickFade Strategy Spec]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/WORKING_LOG|WORKING LOG]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/RESEARCH_LOG_20260304|RESEARCH LOG 20260304]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/wickfade_5m_findings_20260303|wickfade 5m findings 20260303]]

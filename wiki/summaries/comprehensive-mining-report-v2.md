@@ -83,3 +83,7 @@ Two distinct books, nearly uncorrelated:
 - `full_mine_v2_batches/batch_0-5.json` — 34,323 trades
 - `replicate_v10i_batches/` + `replicate_fixed_batches/` — V10i bug replication
 - Scripts: `build_portfolio.py`, `correlation_analysis.py`, `stress_test_v10i.py`
+
+## Source documents
+
+- [[raw-sources/COMPREHENSIVE_MINING_REPORT]]

@@ -97,3 +97,7 @@ If a future project wanted to build "orderflow strategy from scratch but not com
 - [[volume-profile]] — VCP and POC reversal map onto standard volume profile
 - [[session-type-taxonomy]] — CLC's "Context" layer maps onto this taxonomy
 - [[look-ahead-audit]] — the footprint absorption bug fixed in 2026-02
+
+## Source documents
+
+- [[raw-sources/trading/context-engine/TRANSCRIPT_MINING_FINDINGS]]

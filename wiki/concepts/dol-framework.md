@@ -49,3 +49,14 @@ The practical rule: before entering, identify the DOL. If you can't name the liq
 ## How DOL interacts with session targets
 
 DOL is about structure, not about the session-specific TP rules from [[ifvg]]. A London trade with TP rules "100% runner to +17pts B/E" still has to have a DOL — the runner is the vehicle for reaching the DOL, not a substitute for it. If the DOL is only +8pts away, the session rules force you to over-target and give back the move at B/E. This is part of why London underperforms on IFVG in backtests (see [[tempo-v14-corrections]]): the session rules don't adapt to how much room there actually is to the DOL.
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/README_EXCEL_ANALYSIS|README EXCEL ANALYSIS]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/CONTEXT|CONTEXT]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/START_HERE|START HERE]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/IFVG_OPTIMIZATION_REPORT|IFVG OPTIMIZATION REPORT]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/wickfade_5m_findings_20260303|wickfade 5m findings 20260303]]
+- [[raw-sources/imports/2026-04-11/Downloads/NY_Session_Reversal_System|NY Session Reversal System]]
+- [[raw-sources/imports/2026-04-11/Downloads/data/equity/readme|readme]]
+- [[raw-sources/imports/2026-04-11/Downloads/data/option/readme|readme]]

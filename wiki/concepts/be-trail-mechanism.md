@@ -70,3 +70,13 @@ In other words: the 100% WR isn't 309 "winners" — it's runners that all reach 
 - **Use fixed R targets** on low WR-gap signals (sweep family) — they benefit from binary big-payoff exits
 - **Pay attention to near-zero-win percentages** — the higher it is, the more the BE mechanism is doing (not the signal)
 - **Report both BE+Trail and fixed R=1.0** numbers so anyone reading can see which mechanism is contributing
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/BACKTEST_ISSUES_LOG|BACKTEST ISSUES LOG]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/RESEARCH_LOG_20260304|RESEARCH LOG 20260304]]
+- [[raw-sources/imports/2026-04-11/Downloads/NY_Session_Reversal_System|NY Session Reversal System]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_extracted/tempo_rules_from_videos|tempo rules from videos]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_pipeline/TEMPO_RULES_IMPLEMENTATION|TEMPO RULES IMPLEMENTATION]]
+- [[raw-sources/imports/2026-04-11/Downloads/trading-system/KNOWLEDGE_BASE|KNOWLEDGE BASE]]
+- [[raw-sources/imports/2026-04-11/Downloads/trading-system/docs/brains/TEMPO|TEMPO]]

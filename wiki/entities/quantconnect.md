@@ -49,3 +49,33 @@ The two-stage batch runner works in this order: Stage A screens across a 3-month
 ## Subscription
 
 QC subscription is the only recurring cost for the backtest pipeline — Databento tick data is purchased separately for Layer 2/3 features.
+
+## QC Data Directory
+
+QuantConnect data directory readmes (imported from local QC data cache):
+
+- [[raw-sources/imports/2026-04-11/Downloads/data/readme|Data root]]
+- [[raw-sources/imports/2026-04-11/Downloads/data/future/readme|Futures]]
+- [[raw-sources/imports/2026-04-11/Downloads/data/equity/readme|Equity]]
+- [[raw-sources/imports/2026-04-11/Downloads/data/equity/usa/readme|Equity USA]]
+- [[raw-sources/imports/2026-04-11/Downloads/data/forex/readme|Forex]]
+- [[raw-sources/imports/2026-04-11/Downloads/data/crypto/readme|Crypto]]
+- [[raw-sources/imports/2026-04-11/Downloads/data/cfd/readme|CFD]]
+- [[raw-sources/imports/2026-04-11/Downloads/data/option/readme|Options]]
+- [[raw-sources/imports/2026-04-11/Downloads/data/future/cme/margins/readme|CME margins]]
+- [[raw-sources/imports/2026-04-11/Downloads/data/future/cbot/margins/readme|CBOT margins]]
+- [[raw-sources/imports/2026-04-11/Downloads/data/future/nymex/margins/readme|NYMEX margins]]
+- [[raw-sources/imports/2026-04-11/Downloads/data/future/comex/margins/readme|COMEX margins]]
+- [[raw-sources/imports/2026-04-11/Downloads/data/future/ice/margins/readme|ICE margins]]
+- [[raw-sources/imports/2026-04-11/Downloads/data/future/cfe/margins/readme|CFE margins]]
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/CONTEXT|CONTEXT]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/CLAUDE_BOOTSTRAP|CLAUDE BOOTSTRAP]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/START_HERE|START HERE]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/batch-runner/CHECKLIST|CHECKLIST]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/batch-runner/DELIVERY_SUMMARY|DELIVERY SUMMARY]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/batch-runner/EXAMPLES|EXAMPLES]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/batch-runner/IMPLEMENTATION_NOTES|IMPLEMENTATION NOTES]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/batch-runner/INDEX|INDEX]]

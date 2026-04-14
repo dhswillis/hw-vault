@@ -24,3 +24,7 @@ BIP routing verified: BIP 2 (60-min) → 1H swings + Lumi HTF update, BIP 1 (3-m
 ## Status / caveats
 
 Post-fix audit — all items resolved. This is the code verification, not a performance audit. The strategy's actual results are in the portfolio cluster summaries.
+
+## Source documents
+
+- [[raw-sources/trading/sweep/PORTFOLIO_AUDIT_V2]]

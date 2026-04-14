@@ -64,3 +64,14 @@ Higher timeframes represent larger participants' directional commitment. When mu
 | V2 | 3-bar HH/HL trend pattern on completed bars only | CLEAN |
 
 Fix: `mask = tf_c.index + TF_DURATION[tf_label] <= entry_time` — only use bars that have fully closed before the entry timestamp.
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/README_EXCEL_ANALYSIS|README EXCEL ANALYSIS]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/01-wick-fade/docs/WickFade_Strategy_Spec|WickFade Strategy Spec]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/BACKTEST_ISSUES_LOG|BACKTEST ISSUES LOG]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/CONTEXT|CONTEXT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/04-bos-fvg/nautilus/nautilus-bt/CLAUDE|CLAUDE]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/04-bos-fvg/nautilus/nautilus-bt/MINING_SIGNAL_SPEC|MINING SIGNAL SPEC]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/COWORK_PROMPT|COWORK PROMPT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/tempo/scripts/AUDIT_PROMPT|AUDIT PROMPT]]

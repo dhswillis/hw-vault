@@ -24,3 +24,7 @@ The V8 synthesis is the most comprehensive BOS_FVG mining doc in the vault — 3
 ## Status / caveats
 
 **DEAD.** This entire document is invalidated by two contamination layers: the [[wiki/concepts/v10i-look-ahead-bug|V10i look-ahead bug]] (MTF alignment used forming bar closes) and the [[wiki/concepts/bar-sim-trailing-bug|bar-sim trailing bug]] (trailing stops produce phantom edge on 1-min OHLC). The "zero overfit" claim is meaningless when both train and test sets contain the same structural bias. See [[wiki/summaries/bos-fvg-failure-consolidated|BOS FVG Failure Consolidated]] for the definitive paired bar-vs-tick test that killed BOS_FVG.
+
+## Source documents
+
+- [[raw-sources/trading/sf-portfolio/V8_MINING_SYNTHESIS]]

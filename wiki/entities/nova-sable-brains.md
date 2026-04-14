@@ -125,3 +125,14 @@ Nova and Sable should be able to query the Context Engine as a tool — i.e. the
 - [[v10i-look-ahead-bug]] — hardcoded anti-pattern #1 in the Mem0 seed
 - [[bayesian-belief-engine]] — the existing Context Engine the brains will query
 - `~/Documents/trading-system/CLAUDE.md` — project-side directive
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/BACKTEST_ISSUES_LOG|BACKTEST ISSUES LOG]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/CONTEXT|CONTEXT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/PORTFOLIO_AUDIT_V1|PORTFOLIO AUDIT V1]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/START_HERE|START HERE]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/TOOLS|TOOLS]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/BOS_FVG_RESEARCH|BOS FVG RESEARCH]]
+- [[raw-sources/imports/2026-04-11/trading-system/CONTEXT|CONTEXT]]
+- [[raw-sources/imports/2026-04-11/trading-system/START_HERE|START HERE]]

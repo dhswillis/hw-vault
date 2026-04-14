@@ -107,7 +107,7 @@ These audits ran, cleaned up smaller issues, and **missed** the bar-sim trailing
 
 ### Backtest Integrity Audit V2 (February 2026)
 
-**Source:** `raw-sources/trading/audits/BACKTEST_INTEGRITY_AUDIT_V2.docx`
+**Source:** `raw-sources/trading/audits/BACKTEST_INTEGRITY_AUDIT_V2.docx` → [[wiki/summaries/backtest-integrity-audit-v2]]
 **Scope:** Broader sweep of the simulation pipeline after the V10i fix.
 **What it cleaned:** Various simulator bugs, intra-bar ordering tightening (the "conservative re-check" fix that only catches 0.5% of trades).
 **What it missed:** The bar-sim trailing bug requires paired bar-vs-tick replay to identify. The audit was run entirely at the bar level — it checked "is the bar simulator internally consistent?" (yes) instead of "does the bar simulator agree with tick replay?" (no, by +0.29 R/trade).
@@ -171,10 +171,30 @@ Mining Analysis grid ──────────┘       │
                               Rules 1, 12, 14 codified
 ```
 
+### IFVG V14 Tick-Level Audit (March 2026)
+
+**Source:** [[wiki/summaries/tempo-ifvg-audit-report]]
+**Scope:** 30-day post-fix validation of Tempo IFVG V14. US and London sessions.
+**Finding:** US +24.5 pts/day, London +10.9 pts/day. 4 EOD trades carry 139% of profit — concentration risk.
+**Status:** Clean audit, but the EOD concentration is a structural concern.
+
+### Portfolio Audit V2 — Tempo Portfolio NinjaTrader (March 2026)
+
+**Source:** [[wiki/summaries/portfolio-audit-v2-sweep]]
+**Scope:** Line-by-line code audit of TempoPortfoliov1.cs (1,539 lines) against spec.
+**Finding:** All 7 V1 bugs resolved (Lumi FVG inversions, entry prices, state management, unfilled limits).
+**Status:** Code verified clean. This is a code audit, not a performance audit.
+
+### Results & Validation Collection
+
+**Source:** [[wiki/summaries/results-and-validation-cluster]]
+**Scope:** 11 assorted result/audit files covering IFVG, WickFade, SF portfolio, and BOS_FVG.
+**Status:** Mixed trust levels — see cluster summary for per-file assessment.
+
 ## Related MOCs
 
-- **Tempo research MOC** *(to be created)* — organized by strategy component (IFVG, SMT, DOL, sweep) with the evolution timeline
-- **BOS_FVG saga MOC** *(to be created)* — the full invalidation story as a case study
+- [[wiki/maps/tempo-moc|Tempo MOC]] — organized by strategy component with the evolution timeline
+- [[wiki/maps/bos-fvg-saga-moc|BOS FVG Saga MOC]] — the full invalidation story as a case study
 - **[[tempo-three-layers]]** — the framework separating what Tempo teaches from what Harrison's mining found from what's actually implemented
 
 ## Open questions

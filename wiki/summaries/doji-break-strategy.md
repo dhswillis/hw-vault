@@ -23,3 +23,7 @@ Asia session mining complete — Asia outperforms US session.
 ## Status / caveats
 
 The B/E management dependency is a yellow flag — verify this isn't the same phantom B/E mechanism that killed BOS_FVG results. The difference is that doji break uses a simple 1-bar B/E shift (not trailing), which may be more realistic on tick data. Cross-check the simulation method.
+
+## Source documents
+
+- [[raw-sources/trading/sweep/DOJI_BREAK_STRATEGY]]

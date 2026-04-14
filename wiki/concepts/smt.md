@@ -55,3 +55,14 @@ The equivalent level on ES is *structural*, not price-identical. ES trades at a 
 - SMT is not mentioned in Harrison's mining research journal or `NQ_PLAYBOOK.md` — those docs are mining-era and predate the SMT elevation. Absence of SMT from the mining corpus is one of the structural reasons why mining-era BOS_FVG ≠ canonical IFVG (see [[bos-fvg-claim-vs-reality]]).
 - SMT requires **dual-feed market data** (simultaneous NQ + ES tick). Any backtester running on a single instrument cannot test SMT. This is a non-trivial infrastructure requirement for re-testing IFVG at the A+ tier.
 - SMT is a *structural* filter, not a *temporal* one, which means it should not be affected by the [[bar-sim-trailing-bug|bar-sim trailing bug]] that killed BOS_FVG. Filters that depend on intra-bar price sequencing are the suspect kind; SMT only requires completed-bar comparisons.
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/BACKTEST_ISSUES_LOG|BACKTEST ISSUES LOG]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/CONTEXT|CONTEXT]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/IFVG_AUDIT_RESULTS|IFVG AUDIT RESULTS]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/IFVG_AUDIT_RESULTS_V2|IFVG AUDIT RESULTS V2]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/IFVG_OPTIMIZATION_REPORT|IFVG OPTIMIZATION REPORT]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_extracted/tempo_rules_from_videos|tempo rules from videos]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_extracted/tempo_rules_summary|tempo rules summary]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_pipeline/TEMPO_RULES_IMPLEMENTATION|TEMPO RULES IMPLEMENTATION]]

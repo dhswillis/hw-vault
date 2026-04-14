@@ -107,3 +107,7 @@ Most of these made it into the BOS_FVG_10PT_AUDIT but not into clean_backtest.py
 - [[v10i-look-ahead-bug]] — the earlier bug documented in this journal's V10o section
 - [[look-ahead-audit]] — the foundation fixes from earlier in the project (swing confirmation, footprint)
 - [[tempo-three-layers]] — this doc is the canonical Layer 2 narrative
+
+## Source documents
+
+- [[raw-sources/trading/RESEARCH_JOURNAL]]

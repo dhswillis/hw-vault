@@ -68,7 +68,7 @@ All five of those are things Claude can do faster and more consistently than a h
 ## Common pitfalls
 
 - **Over-processing**: writing a full summary when a one-line reference would do. The inbox item's value is preserving the thought; polish comes later via `/ingest` or `/query`.
-- **Under-linking**: filing a note without adding `[[double brackets]]` for the concepts it mentions. The whole point of the vault is the link graph — an isolated note is barely better than a text file.
+- **Under-linking**: filing a note without adding wiki-links for the concepts it mentions. The whole point of the vault is the link graph — an isolated note is barely better than a text file. Always use wiki-link syntax for every concept mentioned.
 - **Classifier drift**: if the same type of item is getting misclassified repeatedly, update CLAUDE.md — don't just correct the output each time.
 - **"I'll sort it later"**: the later never comes. Set a weekly floor on inbox age.
 

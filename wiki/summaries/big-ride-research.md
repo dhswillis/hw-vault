@@ -24,3 +24,7 @@ Five entry techniques tested: open crossback, overnight fade, IB fade, VWAP cros
 ## Status / caveats
 
 Research exploratory — check whether any of these made it into the final portfolio. The wide trailing stop approach is [[wiki/concepts/bar-sim-trailing-bug|bar-sim vulnerable]] if tested on OHLC bars rather than ticks.
+
+## Source documents
+
+- [[raw-sources/trading/sweep/BIG_RIDE_RESEARCH]]

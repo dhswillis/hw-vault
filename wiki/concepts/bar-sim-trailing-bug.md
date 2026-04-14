@@ -96,3 +96,11 @@ Both in `/tmp/`, runnable with `~/Documents/trading-system/.venv/bin/python`:
 
 - `bos_fvg_bug_reproducer.py` — isolates Variant A (intra-bar ordering). Produces the 0.5% / +0.005 avgR delta.
 - `bos_fvg_bar_vs_tick.py` — paired bar-vs-tick sim on the same signals. Produces the +0.29 avgR delta and the +0.001 avgR tick result.
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/V17_AUDIT_PROMPT|V17 AUDIT PROMPT]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/IFVG_AUDIT_RESULTS|IFVG AUDIT RESULTS]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/IFVG_AUDIT_RESULTS_V2|IFVG AUDIT RESULTS V2]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/IFVG_OPTIMIZATION_REPORT|IFVG OPTIMIZATION REPORT]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/archive/bar-sim-pre-2026-04-10/README|README]]

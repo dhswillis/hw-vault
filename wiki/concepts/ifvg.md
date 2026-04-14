@@ -124,3 +124,14 @@ Stops of **5–8 pts are too tight** — get wicked out. 20–30 pts is the typi
 | Stop | Soft stop at opposite FVG edge (gap size) | Historically fixed R with BE+Trail |
 
 The two signals are related — both involve FVGs and liquidity structure — but the mining-era BOS_FVG implementation does not match Tempo's taught IFVG, and per the [[unified-brain-architecture|Unified Brain doc]] the BOS_FVG signal does not work live. See [[bos-fvg-claim-vs-reality]].
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/.plan|.plan]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/CONTEXT|CONTEXT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/COWORK_PROMPT|COWORK PROMPT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/PORTFOLIO_AUDIT_V1|PORTFOLIO AUDIT V1]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/tempo/scripts/AUDIT_PROMPT|AUDIT PROMPT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/tempo/scripts/AUDIT_RESULTS_20260329|AUDIT RESULTS 20260329]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/CLAUDE|CLAUDE]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/START_HERE|START HERE]]

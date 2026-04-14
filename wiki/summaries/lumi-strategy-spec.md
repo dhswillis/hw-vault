@@ -79,3 +79,7 @@ The v14 audit's recommendation: **exclude from production**, or test a Lumi-redu
 - [[tempo-v14-corrections]] — where Lumi was tested and found underperforming
 - [[tempo-ifvg-research]] — earlier doc that reported Lumi at 62% WR in an even more in-sample setting, before the v14 audit tightened
 - [[tempo-cluster]] — master cluster summary that categorizes Lumi as Layer 2 suspect
+
+## Source documents
+
+- [[raw-sources/trading/tempo/LUMI_STRATEGY_SPEC]]

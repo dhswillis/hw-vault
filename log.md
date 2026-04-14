@@ -111,3 +111,17 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-12 15:30] automation | 4 scheduled tasks created — daily-note (Mon-Fri 7am), weekly-rollup (Sun 5pm), weekly-lint (Sat 8pm), inbox-triage (Tue+Fri 6pm)
 
 ## [2026-04-12 22:39] weekly | W15 review | 8 open actions, 0 stale
+
+## [2026-04-13 00:00] ingest | batch docx ingest — 26 new summaries written from docx files: tempo-batch-cheatsheet, tempo-portfolio-v15, wickfade-strategy-findings, nq-sf-engulfing-strategy, ifvg-full-year-verification-memo, ifvg-optimization-report-v2, willis-holdings-strategy-audit, wickfade-5m-research-findings, autonomous-trading-system-progress-summary, openclaw-vps-setup-guide, video-ingestion-pipeline-guide, implementation-review, tempo-carmine-strategy-2026-02-16, tempo-strategy-analysis-2026-02-16, backtest-integrity-audit-v2, tempo-context-engine-spec-v1-1-addendum, tempo-context-engine-spec-v1-2-addendum, nq-portfolio-trading-system, nq-sf-engulfing-strategy-v2, tempo-ifvg-audit-report, tempo-ibkr-migration-plan, aio-system-blueprint, ai-trading-show-blueprint, ifvg-tp-optimization-report, unified-brain-options-and-growth, western-pines-utility-increase-notice
+
+## [2026-04-13 00:30] ingest | batch markdown ingest — 14 individual summaries: v8-mining-synthesis (DEAD), sweep-fade-research, conglomerate-ceo, fvg-entry-timing-analysis, sf-portfolio-state, new-signal-classes-research (suspect), tempo-ifvg-build-spec, deep-mine-findings (suspect), final-portfolio-spec, big-ride-research, doji-break-strategy, daily-range-research, portfolio-audit-v2-sweep
+
+## [2026-04-13 00:45] ingest | 9 cluster summaries covering remaining 123 files: trading-system-operations-cluster, keylevel-sweep-cluster, context-engine-cluster, tempo-pipeline-cluster, batch-runner-cluster, results-and-validation-cluster, infrastructure-boilerplate-cluster, personal-legal-cluster, remaining-imports-cluster
+
+## [2026-04-13 01:00] wiring | all new summaries linked from strategies-moc, audit-history-moc, context-engine-moc, personal-moc; index.md updated with 48 new entries
+
+## [2026-04-13 01:30] lint | manual lint pass — 6 broken wiki-links fixed (inbox-processing ×2: escaped example syntax; maps-of-content ×3: example syntax + dead forthcoming link; invalidation-rules ×1: bos-fvg-audit-findings → bos-fvg-10pt-audit). Final state: 0 broken links, 0 orphans, 282 .md files, 224 raw sources, 75 summaries, 19 concepts, 6 entities, 4 syntheses, 10 MOCs
+
+## [2026-04-14 04:30] wiring | deep cross-linking pass — went from 52 disconnected components to 1 single connected graph (283/283 files). Added: 37 raw-source wiki-links in summaries, 82 import-file links from cluster summaries, 138 concept-to-import cross-links across 21 wiki pages, 14 QC data directory links, template links from automation-moc. Daily notes (2026-04-10, 2026-04-11, 2026-04-12) filled with wiki-links. Weekly W15 wired with daily/MOC links. README.md connected. Final: 1149 wiki-link edges, 227 files with 2+ connections, 68 hub nodes (10+ connections), 104/109 import files multi-connected
+
+## [2026-04-14 07:07] daily | daily note created | 0 open actions

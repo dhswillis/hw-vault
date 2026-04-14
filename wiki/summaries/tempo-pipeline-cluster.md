@@ -35,3 +35,15 @@ Two groups of related documents:
 ## Status / caveats
 
 These are the intermediate artifacts that produced [[wiki/summaries/tempo-rules-v3|Tempo Rules V3]]. The V2 extraction intermediates are superseded by V3. The QC setup guides are still operationally relevant for the [[wiki/entities/quantconnect|QuantConnect]] project.
+
+## Source documents
+
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_pipeline/TEMPO_RULES_IMPLEMENTATION]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_pipeline/QC_SETUP_GUIDE]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_pipeline/README_QUANTCONNECT_IMPLEMENTATION]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_pipeline/DATA_SETUP_GUIDE]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_pipeline/upload_report]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_extracted/tempo_rules_summary]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_extracted/tempo_rules_from_videos]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_extracted/V2_IMPLEMENTATION_SUMMARY]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_extracted/README_V2]]

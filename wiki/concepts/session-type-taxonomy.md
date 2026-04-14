@@ -70,3 +70,10 @@ Rolling 60-day training window adapts to regime changes. Features that don't imp
 - Brier score < 0.35
 - Calibration within 10% across probability bins
 - Positive checkpoint lift at `OPEN_15MIN` and `OPEN_60MIN`
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/START_HERE|START HERE]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/trading_operator/logs/health_check|health check]]
+- [[raw-sources/imports/2026-04-11/trading-system/START_HERE|START HERE]]
+- [[raw-sources/imports/2026-04-11/trading-system/repo_inventory|repo inventory]]

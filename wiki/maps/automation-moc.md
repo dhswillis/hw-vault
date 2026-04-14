@@ -67,6 +67,27 @@ These are the operations that move knowledge between layers (L0→L5 per [[BRAIN
 - [[wiki/concepts/inbox-processing|Inbox Processing]] — How items flow from `inbox/` into the brain
 - [[wiki/concepts/maps-of-content|Maps of Content]] — The L4 navigational layer
 
+## Templates
+
+These templates drive the automation pipelines. Each one is used by its corresponding scheduled task or `/command`:
+
+- [[templates/daily|Daily note template]] — Used by `daily-note` task and `/daily` command
+- [[templates/weekly|Weekly review template]] — Used by `weekly-rollup` task and `/weekly` command
+- [[templates/meeting|Meeting note template]] — Used when logging meetings via `/meeting`
+- [[templates/decision|Decision log template]] — Used when recording decisions
+- [[templates/project|Project template]] — Used when creating new projects
+- [[templates/person|Person template]] — Used when adding people to `work/people/`
+- [[templates/moc|MOC template]] — Used by `/moc` command to create new Maps of Content
+
+### Prompt templates
+
+Reusable prompt snippets for common vault workflows:
+
+- [[templates/prompts/ingest|Ingest prompt]] — Paste into Claude Code to run the full ingest pipeline
+- [[templates/prompts/inbox-processing|Inbox processing prompt]] — Paste to run `/inbox` manually
+- [[templates/prompts/moc|MOC creation prompt]] — Paste to run `/moc` manually
+- [[templates/prompts/weekly-review|Weekly review prompt]] — Paste to run `/weekly` manually
+
 ## Related
 
 - [[wiki/maps/import-triage-moc|Import Triage]] — The current big ingest job

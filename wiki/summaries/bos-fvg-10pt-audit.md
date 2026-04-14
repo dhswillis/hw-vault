@@ -141,3 +141,7 @@ The BOS_FVG signal **may** still have value as a component in the broader Tempo 
 | `fvg_dst_wf_audit.py` | `/tmp/` | DST session fix + rolling walk-forward |
 | `fvg_stats_audit.py` | `/tmp/` | Bootstrap CIs + permutation tests + fill rate |
 | `fvg_alt_edges.py` | `/tmp/` | VWAP, opening range, time-of-day, size, trailing |
+
+## Source documents
+
+- [[raw-sources/trading/audits/BOS_FVG_10PT_AUDIT]]

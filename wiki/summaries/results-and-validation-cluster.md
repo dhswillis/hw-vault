@@ -45,3 +45,17 @@ Collected results and validation artifacts from across the trading system:
 ## Status / caveats
 
 Mixed trust levels. IFVG and WickFade results are generally trustworthy (tick-level). BOS_FVG research is **invalidated**. SF portfolio results should be cross-checked with [[wiki/summaries/sf-portfolio-cluster|SF Portfolio Cluster]].
+
+## Source documents
+
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/IFVG_AUDIT_RESULTS_V2]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/IFVG_AUDIT_RESULTS]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/VALIDATION_SUMMARY]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/FINAL_SUMMARY]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/RESEARCH_LOG_20260304]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/BOS_FVG_RESEARCH]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/wickfade_5m_findings_20260303]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/tempo/scripts/AUDIT_RESULTS_20260329]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/BACKTEST_ISSUES_LOG]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/NT_AUDIT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/01-wick-fade/docs/WickFade_Strategy_Spec]]

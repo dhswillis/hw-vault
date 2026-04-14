@@ -87,3 +87,10 @@ Every checkpoint writes a JSON record with the prior, likelihoods, posterior, ev
 The spec starts with multinomial naive Bayes explicitly because it's interpretable, trains incrementally, and outputs calibrated probabilities out of the box. An opaque neural classifier could match accuracy but wouldn't expose the likelihood table — and the whole point of checkpoint logging is post-hoc analysis of *which features moved the posterior which way*.
 
 If Bayesian is insufficient after the Phase 1-4 buildout, the architecture supports swapping in a more expressive classifier — but only after the baseline's calibration is measured.
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/START_HERE|START HERE]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/trading_operator/logs/health_check|health check]]
+- [[raw-sources/imports/2026-04-11/trading-system/START_HERE|START HERE]]
+- [[raw-sources/imports/2026-04-11/trading-system/repo_inventory|repo inventory]]

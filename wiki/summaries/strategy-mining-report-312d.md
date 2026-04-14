@@ -80,3 +80,7 @@ Don't cap — edge comes from big R winners, not frequent small wins. Uncapped b
 ## Why this summary is tagged "suspect-results"
 
 The near-100% WR claims in TIER S and TIER A use the same single-bar `close > open` alignment pattern that [[v10i-look-ahead-bug|V10i was later shown to contaminate]]. When V2 re-ran the data with completed-bar alignment and a 1.5pt risk floor, BOS_FVG dropped from 97.9% WR (this report) to 63.5% WR ([[comprehensive-mining-report-v2|V2]]). The signal is still real and the top performer — just not superhuman. Treat headline numbers in this document as upper bounds, not targets.
+
+## Source documents
+
+- [[raw-sources/STRATEGY_MINING_REPORT]]

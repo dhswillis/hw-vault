@@ -59,3 +59,14 @@ Without aggressor side, you have to proxy it from mid-to-bid/mid-to-ask inferenc
 ## Databento in prior Tempo work
 
 The Tempo memory mentions `~/trading_operator/data2/GLBX-20260213-YFP9CFN8HF/` — 312 days of Databento NQ trade data used for the mining reports. So Databento data has already been used offline for the [[strategy-mining-report-312d|V1 312d mine]] and the [[comprehensive-mining-report-v2|V2 cleaned rerun]]; it just hasn't been wired into the live Context Engine checkpoint runner yet.
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/EXCEL_STRATEGY_OVERVIEW|EXCEL STRATEGY OVERVIEW]]
+- [[raw-sources/imports/2026-04-11/Documents/README_EXCEL_ANALYSIS|README EXCEL ANALYSIS]]
+- [[raw-sources/imports/2026-04-11/Documents/V17_AUDIT_PROMPT|V17 AUDIT PROMPT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/01-wick-fade/docs/WickFade_Strategy_Spec|WickFade Strategy Spec]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/CONTEXT|CONTEXT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/04-bos-fvg/nautilus/nautilus-bt/CLAUDE|CLAUDE]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/WORKING_LOG|WORKING LOG]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/CLAUDE_BOOTSTRAP|CLAUDE BOOTSTRAP]]

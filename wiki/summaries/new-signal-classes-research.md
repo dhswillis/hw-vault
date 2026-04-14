@@ -23,3 +23,7 @@ Top three by priority: FVG Bifurcation (passive vs momentum entry, expected +2â€
 ## Status / caveats
 
 **Suspect.** Feb 2026 research predating the [[wiki/concepts/v10i-look-ahead-bug|V10i look-ahead bug]] and [[wiki/concepts/bar-sim-trailing-bug|bar-sim trailing bug]] discoveries. The V7-era studies that support these signals are contaminated. Expected R/day figures should not be trusted. The FVG Bifurcation concept is sound but needs re-validation on clean data.
+
+## Source documents
+
+- [[raw-sources/trading/NEW_SIGNAL_CLASSES_RESEARCH]]

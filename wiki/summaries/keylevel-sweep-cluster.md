@@ -35,3 +35,11 @@ Five documents covering the NinjaTrader implementation of the sweep fade researc
 ## Status / caveats
 
 Implementation cluster. The research backing this is in [[wiki/summaries/sweep-fade-research|Sweep Fade Research]]. The overall sweep-fade strategy status is tracked in [[wiki/summaries/sweep-cluster|Sweep Cluster]] — most variants ended up dead or marginal.
+
+## Source documents
+
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/NINJATRADER_BUILD_SPEC]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/WORKING_LOG]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/PORTFOLIO_AUDIT_V1]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/COWORK_PROMPT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/NINJATRADER_BUILD_PROMPT]]

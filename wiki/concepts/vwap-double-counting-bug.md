@@ -74,3 +74,14 @@ If you use `Calculate = Calculate.OnEachTick` in a NinjaTrader strategy, any acc
 ## Blast radius in Tempo
 
 All three V5 strategies used the same VWAP block without gating: `V5NQVWPMStrategy`, `V5ESVWPMStrategy`, `V5NQLF1170Strategy`. The audit recommends fixing Bug 1 **first** in the priority order because it's the root cause of live/backtest divergence across the whole SF portfolio.
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/V17_AUDIT_PROMPT|V17 AUDIT PROMPT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/BACKTEST_ISSUES_LOG|BACKTEST ISSUES LOG]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/NT_AUDIT|NT AUDIT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/NINJATRADER_BUILD_PROMPT|NINJATRADER BUILD PROMPT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/NINJATRADER_BUILD_SPEC|NINJATRADER BUILD SPEC]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/WORKING_LOG|WORKING LOG]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/START_HERE|START HERE]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/context-engine/TRADE_TYPES_VISUAL_GUIDE|TRADE TYPES VISUAL GUIDE]]

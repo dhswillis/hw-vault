@@ -38,4 +38,4 @@ git clone <url> ~/HW
 
 ## The operating manual
 
-Read `CLAUDE.md`. That's the schema Claude follows. When Claude does something you don't like, fix `CLAUDE.md` so it doesn't happen again.
+Read [[CLAUDE|CLAUDE.md]]. That's the schema Claude follows. When Claude does something you don't like, fix `CLAUDE.md` so it doesn't happen again. The system architecture is documented in [[BRAIN|BRAIN.md]] and navigable from the [[maps/root|Root MOC]].

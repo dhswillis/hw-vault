@@ -76,3 +76,14 @@ Audit protocol: recompute the claimed edge on an out-of-sample period, with alig
 ## Why "V10i" specifically
 
 The bug was identified during the V10i mining variant run. All V10a through V10n-era alignment results are retroactively invalidated. V10o onward uses the fixed logic.
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/V17_AUDIT_PROMPT|V17 AUDIT PROMPT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/BACKTEST_ISSUES_LOG|BACKTEST ISSUES LOG]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/CONTEXT|CONTEXT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/NT_AUDIT|NT AUDIT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/04-bos-fvg/nautilus/nautilus-bt/CLAUDE|CLAUDE]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/COWORK_PROMPT|COWORK PROMPT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/tempo/scripts/AUDIT_RESULTS_20260329|AUDIT RESULTS 20260329]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/CLAUDE|CLAUDE]]

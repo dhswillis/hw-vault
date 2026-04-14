@@ -24,3 +24,7 @@ Full 4-signal portfolio (adding midnight_cross and early_short pyramiding varian
 ## Status / caveats
 
 Trailing stop exits make this [[wiki/concepts/bar-sim-trailing-bug|bar-sim vulnerable]] — but the research uses tick data (299 days Databento), so verify the sim iterates ticks not bars. The pyramiding approach amplifies both edge and risk.
+
+## Source documents
+
+- [[raw-sources/trading/sweep/DAILY_RANGE_RESEARCH]]

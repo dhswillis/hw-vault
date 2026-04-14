@@ -21,3 +21,7 @@ Bifurcated entry strategy for FVG signals. Passive Fill regime: price retracing 
 ## Status / caveats
 
 Feb 2026 analysis. Conceptually sound but needs tick-level validation of the two-regime model. The entry timing distinction has implications for the [[wiki/concepts/ifvg|IFVG]] implementation — check whether later IFVG research (V15+) incorporated this.
+
+## Source documents
+
+- [[raw-sources/trading/FVG_ENTRY_TIMING_ANALYSIS]]

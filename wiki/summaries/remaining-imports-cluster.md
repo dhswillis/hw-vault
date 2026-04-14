@@ -41,3 +41,14 @@ tags: [summary, cluster, remaining-imports, mixed]
 ## Status / caveats
 
 Low-priority operational files and duplicates. The LumiTraders PDFs are the original source material that informed the existing Lumi summary. The Waymaker Capital document is the first work-domain raw source — should trigger populating the Work MOC when ingested properly.
+
+## Source documents
+
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/openclaw/IDENTITY]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/IDENTITY]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/batch-runner/SYSTEM_STATE]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/batch-runner/QUICKSTART]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/MOTIVEWAVE_SETUP]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/trading_operator/logs/20260217_045105_health_check]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/TOOLS]]
+- [[raw-sources/imports/2026-04-11/Downloads/NY_Session_Reversal_System]]

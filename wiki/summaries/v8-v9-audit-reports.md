@@ -86,3 +86,8 @@ The audits are **Layer 2 methodology documentation** — what the project was do
 - [[look-ahead-audit]] — the earlier signal-layer audit from Feb 2026
 - [[mining-analysis]] — the cross-tab companion to V8_MINING_SYNTHESIS
 - [[tempo-three-layers]] — Layer 2 framework that places these audits in context
+
+## Source documents
+
+- [[raw-sources/trading/audits/V8_Full_Audit_Report]]
+- [[raw-sources/trading/audits/V9_Full_Audit_Report]]

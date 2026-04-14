@@ -238,3 +238,7 @@ Notable: the `research/` directory and `memory/corrections.py` are what make the
 - [[bayesian-belief-engine]] — the Context Engine referenced as "already built and working"
 - [[tempo-cluster]] — master cluster
 - `~/Documents/trading-system/CLAUDE.md` — the project-side directive consistent with this doc
+
+## Source documents
+
+- [[raw-sources/trading/BRAIN_ARCHITECTURE]]

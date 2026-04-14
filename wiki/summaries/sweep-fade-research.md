@@ -26,3 +26,7 @@ Entry is limit-order style at the key level price when price sweeps through and 
 ## Status / caveats
 
 The trailing stop exit on three of four legs raises the [[wiki/concepts/bar-sim-trailing-bug|bar-sim trailing bug]] question. However, this research uses tick-by-tick simulation (not OHLC bars), so the bug may not apply. Verify whether the simulation iterates actual ticks or bar OHLC. See [[wiki/summaries/sweep-cluster|Sweep Cluster]] for the consolidated assessment.
+
+## Source documents
+
+- [[raw-sources/trading/sweep/SWEEP_FADE_RESEARCH]]

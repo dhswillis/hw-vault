@@ -72,3 +72,7 @@ Every one of these came from a bar-level trailing-stop simulation on 1-minute or
 - [[v10i-look-ahead-bug]] — the earlier alignment bug that V10 partially fixed
 - [[tempo-three-layers]] — this is Layer 2, contaminated by definition
 - [[comprehensive-mining-report-v2]] — the V2 mining rerun that uses this doc's signal definitions and inherits its contamination
+
+## Source documents
+
+- [[raw-sources/trading/context-engine/NQ_PLAYBOOK]]

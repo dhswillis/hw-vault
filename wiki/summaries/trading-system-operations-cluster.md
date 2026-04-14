@@ -41,3 +41,14 @@ This cluster covers the "how to use the system" layer — documents that tell a 
 ## Status / caveats
 
 Operational/contextual documents — low analytical value individually but important for system orientation. The START_HERE files contain duplicate content across three locations. The V2 rules are superseded by V3.
+
+## Source documents
+
+- [[raw-sources/trading/RESEARCH_NOTES]]
+- [[raw-sources/trading/TRADING_SYSTEM_START_HERE]]
+- [[raw-sources/imports/2026-04-11/trading-system/BACKTESTING_AUDIT]]
+- [[raw-sources/imports/2026-04-11/trading-system/CONGLOMERATE_SESSION_LOG]]
+- [[raw-sources/imports/2026-04-11/trading-system/SESSION_NOTES_FEB18]]
+- [[raw-sources/imports/2026-04-11/trading-system/repo_inventory]]
+- [[raw-sources/imports/2026-04-11/trading-system/SETUP]]
+- [[raw-sources/imports/2026-04-11/trading-system/START_HERE]]

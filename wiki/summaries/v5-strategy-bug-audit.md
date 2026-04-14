@@ -94,3 +94,7 @@ Primary cause: Bug 1 (VWAP tick counting). Secondary: Bug 7 (paused side trackin
 5. Bug 4 — PF display
 6. Bug 5 — virtual/real fill reconciliation
 7. Bug 7 — side tracking during trade
+
+## Source documents
+
+- [[raw-sources/V5_Strategy_Bug_Audit_2026-03-23]]

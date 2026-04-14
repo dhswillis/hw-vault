@@ -79,3 +79,7 @@ None of these explanations are airtight. The honest answer is: **Nautilus gives 
 - [[bos-fvg-failure-consolidated]] — the tick audit that closed the book on this strategy family
 - [[nq-playbook]] — the doc that headlined V10z as +1.141 avgR / Calmar 263.6
 - [[research-journal]] — the narrative doc that called Nautilus "different strategy surface" when it should have been called "red flag"
+
+## Source documents
+
+- [[raw-sources/trading/context-engine/NAUTILUS_SPEC]]

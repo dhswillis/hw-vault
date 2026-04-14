@@ -24,3 +24,8 @@ Runner signal (1H London PDH Sweep-Fail) is the highest-value single leg with st
 ## Status / caveats
 
 This is the spec that [[wiki/summaries/sf-portfolio-cluster|SF Portfolio Cluster]] validates at tick level. The +3.34 R/Day is the tick-confirmed number. The runner leg is fat-tailed — expect high variance on short evaluation windows.
+
+## Source documents
+
+- [[raw-sources/trading/sf-portfolio/FINAL_PORTFOLIO_SPEC]]
+- [[raw-sources/trading/sweep/TEMPO_PORTFOLIO_BUILD_SPEC]]

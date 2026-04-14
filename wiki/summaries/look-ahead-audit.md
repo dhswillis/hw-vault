@@ -73,3 +73,7 @@ The audit's scope was signal-layer look-ahead (is the signal using future data?)
 - [[research-journal]] — narrative context for how these bugs fit into the V7 → V11 arc
 - [[bos-fvg-failure-consolidated]] — the 2026-04-10 audit that follows this one's template
 - [[tempo-three-layers]] — Layer 2 methodology rules
+
+## Source documents
+
+- [[raw-sources/trading/audits/LOOK_AHEAD_AUDIT_2026-02-18]]

@@ -74,3 +74,7 @@ Each audit catches a different contamination source:
 - [[bos-fvg]] — the signal concept, now tagged `dead-strategy`
 - [[mining-reports-v1-v2-reconciliation]] — synthesis that tracks what survived what
 - [[unified-brain-architecture|Unified Brain doc]] — the current authoritative position on validated vs unvalidated strategies (all V7-V11 research unvalidated)
+
+## Source documents
+
+- [[raw-sources/trading/audits/BOS_FVG_AUDIT_FINDINGS]]

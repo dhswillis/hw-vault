@@ -25,3 +25,7 @@ Decision framework: <$500 autonomous, $500–$5K execute + flag, >$5K propose + 
 ## Status / caveats
 
 Vision document — most divisions are aspirational rather than operational. The Futures Trading division is the only one with real infrastructure. The content and real estate divisions reference the AI Trading Show and Haven Park respectively but lack implementation detail. See [[wiki/summaries/aio-system-blueprint|AIO Blueprint]] and [[wiki/summaries/unified-brain-architecture|Unified Brain]] for the current operational direction.
+
+## Source documents
+
+- [[raw-sources/trading/CONGLOMERATE_CEO]]

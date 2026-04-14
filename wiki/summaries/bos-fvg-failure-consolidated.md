@@ -79,3 +79,7 @@ They depend on Databento and numpy/pandas from the trading-system venv. Data dir
 ## Cross-reference
 
 This summary is the vault-side pointer to `~/Documents/trading-system/results/BOS_FVG_FAILURE_CONSOLIDATED.md`, which is the authoritative project-side file. The project CLAUDE.md's "Critical Corrections" section has been consistent with the failure position since March 2026; this doc and the concept-page updates bring the research journal and the vault in line with it. The auto-memory (`~/.claude/projects/-Users-harrisonwillis/memory/MEMORY.md`) has also been updated; see `bos_fvg_failure_20260410.md` in that directory.
+
+## Source documents
+
+- [[raw-sources/trading/audits/BOS_FVG_FAILURE_CONSOLIDATED]]

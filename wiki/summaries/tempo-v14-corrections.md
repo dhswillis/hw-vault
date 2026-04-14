@@ -78,3 +78,7 @@ However, the in-sample caveat still holds: 30 days is a small sample, no walk-fo
 - [[bar-sim-trailing-bug]] — why these numbers are not suspect the way BOS_FVG's are
 - [[tempo-ifvg-research]] — the companion research doc that runs the corrected spec with SMT and reaction-quality filters (83% WR)
 - [[tempo-three-layers]] — Layer 3 context for v14's role in the overall arc
+
+## Source documents
+
+- [[raw-sources/trading/tempo/TEMPO_V14_CORRECTIONS]]

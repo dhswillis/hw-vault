@@ -65,6 +65,54 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 - [[wiki/summaries/tempo-context-engine-spec]] — Engineering spec v1.0 for the Tempo Context Engine. Session classifier, five feature layers, nine checkpoints, Bayesian belief updates, 5-phase build plan.
 - [[wiki/summaries/tempo-quick-start-guide]] — How to start a Tempo session. `tempo` alias, file locations (Mac/VPS/GitHub/QC), credentials reference, memory document chain.
 - [[wiki/summaries/option4-hybrid-architecture]] — Option 4: Hybrid Full Stack architecture document. Links QC, NinjaTrader, and Context Engine into one pipeline.
+- [[wiki/summaries/tempo-batch-cheatsheet]] — QC batch backtesting quick reference for Tempo V3.34.
+- [[wiki/summaries/tempo-portfolio-v15]] — V15 IFVG + Lumi combined portfolio: +19.8 pts/day, Calmar 23.1 over 264 days.
+- [[wiki/summaries/wickfade-strategy-findings]] — WickFade optimization: trail on both legs was the biggest improvement.
+- [[wiki/summaries/wickfade-5m-research-findings]] — WickFade 5M: ~$3,500/day, flip timing artifact analysis.
+- [[wiki/summaries/nq-sf-engulfing-strategy]] — V1 Sweep & Fail Engulfing: zero losing weeks, 260 days.
+- [[wiki/summaries/nq-sf-engulfing-strategy-v2]] — V2 with Leppyrd ICT framework: 9-strategy portfolio.
+- [[wiki/summaries/ifvg-full-year-verification-memo]] — IFVG 244-day verification, code-audited, two look-ahead bugs fixed.
+- [[wiki/summaries/ifvg-optimization-report-v2]] — IFVG hard stop discovery: nearly triples $/day.
+- [[wiki/summaries/ifvg-tp-optimization-report]] — IFVG TP optimization: fixed 1.25R beats session-aware partials 2.3x.
+- [[wiki/summaries/willis-holdings-strategy-audit]] — March 2026 strategy status report. 4H fakeout is best single strategy.
+- [[wiki/summaries/autonomous-trading-system-progress-summary]] — Autonomous system build progress.
+- [[wiki/summaries/openclaw-vps-setup-guide]] — VPS setup for autonomous trading via OpenClaw + Telegram.
+- [[wiki/summaries/video-ingestion-pipeline-guide]] — Video → strategy extraction pipeline for 5 educators.
+- [[wiki/summaries/implementation-review]] — Multi-model agent system architecture assessment.
+- [[wiki/summaries/tempo-carmine-strategy-2026-02-16]] — Tempo + Carmine integrated analysis, 400 variants (suspect).
+- [[wiki/summaries/tempo-strategy-analysis-2026-02-16]] — Deep multivariate analysis, 9 stable strategies (suspect).
+- [[wiki/summaries/backtest-integrity-audit-v2]] — Full backtest integrity audit, 13 findings, 2 critical look-ahead.
+- [[wiki/summaries/tempo-context-engine-spec-v1-1-addendum]] — Context Engine V1.1: 5 high-value additions.
+- [[wiki/summaries/tempo-context-engine-spec-v1-2-addendum]] — Context Engine V1.2: volatility regime sizing + SMT divergence.
+- [[wiki/summaries/nq-portfolio-trading-system]] — 9-strategy NQ portfolio: ~987R/year, zero losing weeks.
+- [[wiki/summaries/tempo-ifvg-audit-report]] — IFVG V14 tick audit: US +24.5 pts/day, London +10.9.
+- [[wiki/summaries/tempo-ibkr-migration-plan]] — IBKR Python migration from QC.
+- [[wiki/summaries/aio-system-blueprint]] — All-in-one autonomous trading + broadcasting blueprint.
+- [[wiki/summaries/ai-trading-show-blueprint]] — AI Trading Show: Nova & Sable daily YouTube stream.
+- [[wiki/summaries/unified-brain-options-and-growth]] — Unified Brain deployment tiers: $180–$600+/mo.
+- [[wiki/summaries/western-pines-utility-increase-notice]] — Utility increase notice template for Western Pines.
+- [[wiki/summaries/v8-mining-synthesis]] — V8 mining synthesis: 26 scripts, 1,690 BOS_FVG trades (**DEAD** — invalidated).
+- [[wiki/summaries/sweep-fade-research]] — Key level sweep fade: +10.43 R/day tick-level, 100% winning weeks.
+- [[wiki/summaries/conglomerate-ceo]] — Willis Holdings conglomerate CEO vision: 11 AI divisions.
+- [[wiki/summaries/fvg-entry-timing-analysis]] — FVG passive fill vs momentum inversion entry regimes.
+- [[wiki/summaries/sf-portfolio-state]] — March 2026 portfolio state: 12-leg, +2.26 R/Day.
+- [[wiki/summaries/new-signal-classes-research]] — 7 new signal classes from V7 studies (suspect).
+- [[wiki/summaries/tempo-ifvg-build-spec]] — NinjaTrader IFVG build specification.
+- [[wiki/summaries/deep-mine-findings]] — Fib retracement deep mine: 96K trades, three breakthrough filters.
+- [[wiki/summaries/final-portfolio-spec]] — NQ+ES final spec: +3.34 R/Day, Calmar 53.1, zero look-ahead.
+- [[wiki/summaries/big-ride-research]] — HOD/LOD capture research, U-shaped timing distribution.
+- [[wiki/summaries/doji-break-strategy]] — Doji bracket orders: edge entirely in B/E management.
+- [[wiki/summaries/daily-range-research]] — Daily range capture: +11.3 pts/day with pyramiding.
+- [[wiki/summaries/portfolio-audit-v2-sweep]] — Tempo Portfolio NinjaTrader code audit: all 7 bugs fixed.
+- [[wiki/summaries/trading-system-operations-cluster]] — Operational backbone: onboarding, session logs, repo inventory.
+- [[wiki/summaries/keylevel-sweep-cluster]] — Key level sweep NinjaTrader build: spec, log, audit.
+- [[wiki/summaries/context-engine-cluster]] — Context Engine reference cards and visual guides.
+- [[wiki/summaries/tempo-pipeline-cluster]] — Tempo extraction → QC implementation pipeline docs.
+- [[wiki/summaries/batch-runner-cluster]] — Batch backtesting infrastructure: 6 operational docs.
+- [[wiki/summaries/results-and-validation-cluster]] — 11 results/audit files: IFVG, WickFade, SF, BOS_FVG.
+- [[wiki/summaries/infrastructure-boilerplate-cluster]] — 33 operational docs: CLAUDE.md, skills, prompts, configs.
+- [[wiki/summaries/personal-legal-cluster]] — 8 sensitive personal/legal documents (content not summarized).
+- [[wiki/summaries/remaining-imports-cluster]] — 14 miscellaneous: identity files, operational docs, trading PDFs.
 
 ## Syntheses
 

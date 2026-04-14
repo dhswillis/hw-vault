@@ -219,7 +219,7 @@ The [[unified-brain-architecture|Unified Brain doc]] hard-codes these into the r
 - V8 Full Audit Report — Rule 4 (phantom B/E)
 - V9 Full Audit Report — extends V8 findings
 - BACKTEST_INTEGRITY_AUDIT_V2 — various simulator cleanups
-- [[bos-fvg-audit-findings|BOS_FVG_AUDIT_FINDINGS.md]] — early BOS_FVG analysis, historical
+- [[bos-fvg-10pt-audit|BOS_FVG_AUDIT_FINDINGS.md]] — early BOS_FVG analysis, historical
 - [[bos-fvg-10pt-audit]] — Rules 5, 6, 7, 8 (P/D look-ahead, WF limitation, multiple comparison, outlier months)
 - [[bos-fvg-failure-consolidated]] — Rule 1, Rule 12, Rule 14 (bar-sim trailing, tick supersedes bar, Nautilus cross-check)
 - [[v5-strategy-bug-audit]] — Rule 9 (NT OnEachTick bar gating)
@@ -227,3 +227,10 @@ The [[unified-brain-architecture|Unified Brain doc]] hard-codes these into the r
 - [[unified-brain-architecture]] — Rule 15 (hard-coded anti-stupidity list)
 
 See [[maps/audit-history-moc|Audit History MOC]] for the chronological view.
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/results/IFVG_OPTIMIZATION_REPORT|IFVG OPTIMIZATION REPORT]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_extracted/tempo_rules_summary|tempo rules summary]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_pipeline/README_QUANTCONNECT_IMPLEMENTATION|README QUANTCONNECT IMPLEMENTATION]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_pipeline/TEMPO_RULES_IMPLEMENTATION|TEMPO RULES IMPLEMENTATION]]

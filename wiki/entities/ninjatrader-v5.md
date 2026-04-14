@@ -65,3 +65,14 @@ Per Tempo practice: **always create a new version file** (e.g., `SweepBreakv17.c
 ## Audit context
 
 The bug audit was triggered by the observable live/backtest divergence on ES VWPM. Fixes will ship in priority order (Bug 1 first, then Bug 3 for visibility, then Bug 2 for risk management).
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/.plan|.plan]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/01-wick-fade/docs/WickFade_Strategy_Spec|WickFade Strategy Spec]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/CONTEXT|CONTEXT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/NT_AUDIT|NT AUDIT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/04-bos-fvg/nautilus/nautilus-bt/CLAUDE|CLAUDE]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/COWORK_PROMPT|COWORK PROMPT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/NINJATRADER_BUILD_PROMPT|NINJATRADER BUILD PROMPT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/NINJATRADER_BUILD_SPEC|NINJATRADER BUILD SPEC]]

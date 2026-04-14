@@ -70,3 +70,9 @@ This is also why [[be-trail-mechanism|break-even at +17pts]] is non-negotiable f
 ## Interaction with session rules
 
 Setup grading is independent of session. An A+ London setup still takes the "100% runner to B/E at +17" treatment; an A+ NY AM setup still takes the 30%/70% trim. Grading determines *whether* you trade; session rules determine *how* you manage it. A B+ setup in a good session (NY AM) is preferable to an A setup in a bad session (NY PM) — tier and session are multiplicative, not additive.
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_pipeline/README_QUANTCONNECT_IMPLEMENTATION|README QUANTCONNECT IMPLEMENTATION]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_pipeline/TEMPO_RULES_IMPLEMENTATION|TEMPO RULES IMPLEMENTATION]]
+- [[raw-sources/imports/2026-04-11/Downloads/trading-system/docs/brains/TEMPO|TEMPO]]

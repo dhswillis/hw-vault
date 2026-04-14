@@ -24,3 +24,7 @@ The SF_1H_LON_RUN (runner) leg dominates at +1.053 R/Day — a single fat-tailed
 ## Status / caveats
 
 This is the pre-tick-level-audit state. The [[wiki/summaries/sf-portfolio-cluster|SF Portfolio Cluster]] has the updated assessment after tick-level verification. The RUNNER leg's fat-tailed nature means short evaluation windows can show large variance — the 22-day sanity check showed -0.428 R/Day vs published +1.384 (variance, not a bug).
+
+## Source documents
+
+- [[raw-sources/trading/sf-portfolio/PORTFOLIO_STATE_20260320]]

@@ -92,3 +92,14 @@ These feed into the [[bayesian-belief-engine|Bayesian belief update]] at each ch
 ## Build phase
 
 Volume profile integration is Phase 2 of the Context Engine build (Week 2-3). Requires purchasing Databento tick data for a training window (~$50-150 for Jul-Sep 2025). Before shipping, the team validates that adding Layer 2 features improves classification accuracy over Layer 1 baseline. If it doesn't improve accuracy, don't ship it — measure first.
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/V17_AUDIT_PROMPT|V17 AUDIT PROMPT]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/OVERNIGHT_MINE_PROMPT|OVERNIGHT MINE PROMPT]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/START_HERE|START HERE]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/context-engine/QUICK_REFERENCE|QUICK REFERENCE]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/context-engine/context-engine/QUICK_REFERENCE|QUICK REFERENCE]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/context-engine/context-engine/data_ingestion/README|README]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/context-engine/data_ingestion/README|README]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/trading_operator/logs/health_check|health check]]

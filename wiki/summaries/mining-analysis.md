@@ -64,3 +64,7 @@ Additionally, most of the combos use BOS_FVG trailing as the base, and inherit t
 - [[nq-playbook]] — the later consolidated version of the V10 research arc that succeeded this doc
 - [[research-journal]] — narrative context for the V7 → V11 era
 - [[tempo-three-layers]] — Layer 2 framework
+
+## Source documents
+
+- [[raw-sources/trading/context-engine/MINING_ANALYSIS]]

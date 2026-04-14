@@ -23,3 +23,7 @@ Top config: 1M L+S s0 lg>=5 c>=1 no_poison with BE0.3→1R — +7.26 R/day, 100%
 ## Status / caveats
 
 **Suspect.** Uses B/E management which may be vulnerable to the [[wiki/concepts/bar-sim-trailing-bug|bar-sim trailing bug]] depending on simulation method. The +7.26 R/day headline needs tick-level validation. Also check if EMA21 filter creates a subtle look-ahead when calculated on the entry bar.
+
+## Source documents
+
+- [[raw-sources/trading/sf-portfolio/DEEP_MINE_FINDINGS]]

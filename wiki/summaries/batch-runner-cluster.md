@@ -29,3 +29,12 @@ See [[wiki/summaries/tempo-batch-cheatsheet|Tempo Batch Cheatsheet]] for the use
 ## Status / caveats
 
 Operational infrastructure docs. The batch runner is actively running nightly on the VPS.
+
+## Source documents
+
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/batch-runner/DELIVERY_SUMMARY]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/batch-runner/IMPLEMENTATION_NOTES]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/batch-runner/CHECKLIST]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/batch-runner/README]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/batch-runner/INDEX]]
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/batch-runner/EXAMPLES]]

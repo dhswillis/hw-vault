@@ -49,7 +49,7 @@ See `templates/moc.md` for the canonical template. Key sections:
 
 ## Back-links (critical)
 
-Every page included in a MOC should carry a `[[maps/<topic>-moc]]` back-link in its `related:` frontmatter. That way:
+Every page included in a MOC should carry a `maps/<topic>-moc` back-link in its `related:` frontmatter. That way:
 
 - Obsidian's graph view shows the MOC as a hub node
 - Dataview queries can filter "which MOCs does this page belong to"
@@ -68,12 +68,12 @@ A good MOC:
 - Is opinionated — the author's judgment of what matters most
 
 A bad MOC:
-- Is just a flat list of `[[page]]` links with no annotation
+- Is just a flat list of wiki-links with no annotation
 - Duplicates the flat `index.md` for a subset
 - Never updates — stale MOCs are worse than no MOCs
 - Tries to cover everything (it's a map, not the territory)
 
 ## Related
 
-- Obsidian community background: see [[summaries/obsidian-best-practices-research]] (forthcoming)
+- Obsidian community background: researched during vault setup (2026-04-11); best practices integrated into CLAUDE.md and BRAIN.md
 - The Karpathy LLM Wiki pattern treats `index.md` as the primary navigation; MOCs are a layer added by the Obsidian community on top of that base

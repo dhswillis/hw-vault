@@ -90,3 +90,8 @@ These numbers are self-reported and not independently audited. They are consiste
 - [[tempo-three-layers]] — how this canonical Layer 1 source relates to the mining Layer 2 and implementation Layer 3
 - [[bos-fvg-claim-vs-reality]] — why BOS_FVG in the mining corpus is NOT this strategy
 - [[tempo-cluster]] — master cluster summary tying all Tempo raw-sources together
+
+## Source documents
+
+- [[raw-sources/trading/tempo/tempo_rules_v2_complete]]
+- [[raw-sources/trading/tempo/tempo_rules_v3_complete]]

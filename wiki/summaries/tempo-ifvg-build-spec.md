@@ -24,3 +24,7 @@ DST handling delegated to NinjaTrader's exchange timezone. Entry window, partial
 ## Status / caveats
 
 Build spec — describes intended behavior, not validated results. Cross-reference [[wiki/summaries/tempo-v14-corrections|V14 Corrections]] for bugs found in the actual NinjaTrader implementation that deviated from this spec.
+
+## Source documents
+
+- [[raw-sources/trading/tempo/TEMPO_IFVG_BUILD_SPEC]]

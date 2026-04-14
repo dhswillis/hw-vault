@@ -81,3 +81,14 @@ BOS_FVG is Harrison's own mining-era interpretation and does NOT match Tempo's I
 - Project state: `~/HW/raw-sources/trading/tempo/TEMPO_PROJECT_STATE.md` (543 lines)
 - V14 implementation audit: [[tempo-v14-corrections]]
 - V2 mining rerun on corrected logic: `~/HW/raw-sources/trading/tempo/TEMPO_IFVG_RESEARCH.md`
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/.plan|.plan]]
+- [[raw-sources/imports/2026-04-11/Documents/EXCEL_STRATEGY_OVERVIEW|EXCEL STRATEGY OVERVIEW]]
+- [[raw-sources/imports/2026-04-11/Documents/README_EXCEL_ANALYSIS|README EXCEL ANALYSIS]]
+- [[raw-sources/imports/2026-04-11/Documents/START_HERE|START HERE]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/03-sf-portfolio/docs/CONTEXT|CONTEXT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/COWORK_PROMPT|COWORK PROMPT]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/08-keylevel-sweep/keylevel_sweep_fade/PORTFOLIO_AUDIT_V1|PORTFOLIO AUDIT V1]]
+- [[raw-sources/imports/2026-04-11/Documents/strategies/tempo/scripts/AUDIT_RESULTS_20260329|AUDIT RESULTS 20260329]]

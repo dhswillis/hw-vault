@@ -90,3 +90,7 @@ The project state doc warns against collapsing these layers. A monolithic QC alg
 - [[tempo-cluster]] — master cluster summary
 - [[tempo-three-layers]] — how this project state doc fits into the three-layer framework (it's the closest thing to a Layer 1 / Layer 3 bridge — it describes canonical methodology and implementation architecture in one place)
 - [[tempo-trading-system]] — the Mac-side directory this doc orients new sessions toward
+
+## Source documents
+
+- [[raw-sources/trading/tempo/TEMPO_PROJECT_STATE]]

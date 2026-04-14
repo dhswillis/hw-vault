@@ -46,3 +46,9 @@ Tempo's anti-pattern list: **avoid going long or short into tight BPRs without S
 - Not an FVG itself — it's the *overlap* of two FVGs of opposite direction
 - Not a sweep zone — BPRs are structural; sweeps happen at liquidity, not necessarily at BPRs
 - Not a stop level — stops for BPR-origin trades still go at the [[ifvg|IFVG]] edge (soft stop), per Tempo's standard rule
+
+## Also referenced in
+
+- [[raw-sources/imports/2026-04-11/Documents/trading-system/batch-runner/SYSTEM_STATE|SYSTEM STATE]]
+- [[raw-sources/imports/2026-04-11/Downloads/tempo_extracted/tempo_rules_from_videos|tempo rules from videos]]
+- [[raw-sources/imports/2026-04-11/Downloads/trading-system/docs/brains/TEMPO|TEMPO]]
