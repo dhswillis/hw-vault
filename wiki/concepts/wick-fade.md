@@ -12,12 +12,12 @@ related:
   - wiki/concepts/bar-sim-trailing-bug.md
   - wiki/concepts/be-trail-mechanism.md
   - wiki/syntheses/research-arc-map.md
-tags: [trading, signal, nq, mean-reversion, canonical, tick-validated]
+tags: [trading, signal, nq, mean-reversion, unproven]
 ---
 
 # Wick Fade
 
-The mean-reversion family of NQ fade strategies that enter when price breaks a previous bar's wick (high/low) and bets on a snap-back. **One of the few Layer 2 signals in the Tempo research corpus that survives tick-level validation**, with walk-forward OOS confirmed across 10/10 months on the 5-minute variant.
+The mean-reversion family of NQ fade strategies that enter when price breaks a previous bar's wick (high/low) and bets on a snap-back. **Backtest-only — never deployed live or to sim.** The 15S flip variant is explicitly dead (0/216 configs profitable at tick level). The 5m variant claims 10/10 walk-forward OOS but 68% of its edge comes from the flip leg, and an independent test (Research Log March 4, 2026) found the same concept marginal at +0.29 R/day on full year data.
 
 ## The core bet
 
@@ -85,7 +85,13 @@ Both findings were sitting in the sweep cluster unreinged until this session. Th
 
 ## Production status
 
-**Not currently in production.** The WickFade 5m `WickFade5mV1.cs` NinjaTrader strategy was built during research but has not been deployed live or to sim. The project's current active sim strategy is `v24 IFVG MTF cascade` per [[tempo-trading-system|the trading system CLAUDE.md]]. Harrison's next actions per the WickFade Complete doc are: paper trade `WickFade5mV1.cs` on NT for 2–4 weeks, add 1–2pt slippage simulation, investigate portfolio combination with another non-trailing strategy.
+**UNPROVEN — never deployed.** WickFade 5m `WickFade5mV1.cs` was built but never paper-traded or sim-tested. The headline numbers (+77 R/day, 10/10 walk-forward) are backtest-only and contradicted by:
+
+1. The Research Log (March 4, 2026) tested the same wick reversion concept and found it **marginal** (+0.29 R/day on full year, degrading 5x from quick test)
+2. 68% of the 5m edge comes from the **flip** leg, and the 15S doc proved the flip is dead at tick level on that timeframe
+3. The strategy was never validated outside the original backtester
+
+The project's current live portfolio is IFVG + Lumi (V15). Wick Fade remains a research artifact.
 
 ## Cross-references
 

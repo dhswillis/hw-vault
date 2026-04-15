@@ -20,8 +20,8 @@ related:
 | Strategy | Status | Evidence | Summary |
 |---|---|---|---|
 | **IFVG (Tempo canonical)** | **SIM ONLY** | 74.7% WR baseline, 83% with SMT + reaction quality | [[wiki/summaries/tempo-ifvg-research]] |
-| **Wick Fade 5m** | **VALIDATED** | 10/10 walk-forward OOS positive, +77–94 R/day, Calmar 2.12 | [[wiki/summaries/wickfade-complete]] |
-| **Wick Fade 15s** | **VALIDATED** | 43% WR, $30.89/trade on 260d tick-level | [[wiki/summaries/15s-wick-fade]] |
+| **Wick Fade 5m** | **UNPROVEN** | Backtest only, never live/sim. 68% of edge from flip (flip debunked on 15S). Research Log: marginal. | [[wiki/summaries/wickfade-complete]] |
+| **Wick Fade 15s** | **FADE ONLY** | Flip dead (0/216 configs). Fade-only: 43% WR, $30.89/trade but never live-tested. | [[wiki/summaries/15s-wick-fade]] |
 | **SF Portfolio** | **TICK-CONFIRMED** | +3.34 R/day on 260d. RUNNER leg fat-tailed (16% WR) | [[wiki/summaries/sf-portfolio-cluster]] |
 | **BOS FVG** | **DEAD** | Bar: +0.359 avgR. Tick: +0.001 avgR. Invalidated. | [[wiki/summaries/bos-fvg-failure-consolidated]] |
 | **Sweep Fade** | **DEAD/MARGINAL** | Most variants dead. Some fade-only configs marginal. | [[wiki/summaries/sweep-cluster]] |
@@ -31,9 +31,9 @@ related:
 
 ### Wick Fade family
 
-The sole tick-validated survivors of the entire research arc. Fixed stop + fixed target — immune to [[wiki/concepts/bar-sim-trailing-bug|bar-sim trailing bug]].
+Backtest-only strategies, never deployed live or to sim. The 15S flip is explicitly dead (0/216 configs profitable at tick level). The 5m variant claims 10/10 walk-forward but 68% of its edge comes from the flip leg, and the Research Log (March 4, 2026) tested the same concept and found it marginal (+0.29 R/day full year). Fixed stop+target configs are bar-sim-safe but the headline numbers are unverified outside the original backtester.
 
-- [[wiki/summaries/wickfade-complete]] — 5-minute variant. Strongest anti-overfit evidence in the corpus.
+- [[wiki/summaries/wickfade-complete]] — 5-minute variant. Claims strong walk-forward but never live-tested.
 - [[wiki/summaries/wickfade-5m-research-findings]] — Earlier 5M research session with flip timing artifact analysis.
 - [[wiki/summaries/wickfade-strategy-findings]] — Optimization research. Trail on both legs was the biggest improvement.
 - [[wiki/summaries/15s-wick-fade]] — 15-second variant. Flip variant dead (0/216 configs); fade alone is real.
@@ -114,6 +114,6 @@ Before trusting ANY pre-April 2026 number, check [[wiki/concepts/invalidation-ru
 Per [[wiki/summaries/unified-brain-architecture]], the Unified Brain pivot means:
 
 1. Only sim-trade IFVG MTF cascade (v24+)
-2. Wick Fade and SF Portfolio are the only live-ready strategies
+2. IFVG + Lumi (V15) is the validated portfolio; Wick Fade and SF Portfolio are backtest-only candidates
 3. Context Engine ([[wiki/maps/context-engine-moc]]) provides the session filter
 4. Nova + Sable ([[wiki/entities/nova-sable-brains]]) handle research tournaments
