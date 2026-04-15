@@ -33,6 +33,8 @@ Personal second-brain vault following the Karpathy LLM Wiki pattern:
 - `templates/` — note templates (daily, weekly, project, meeting, moc, decision, person)
 - `templates/prompts/` — reusable prompt snippets for common workflows
 - `inbox/` — quick capture, triaged during `/inbox` or `/wrap-up`
+- `.claude/skills/` — kepano's official Obsidian Agent Skills (obsidian-markdown, obsidian-cli, obsidian-bases, json-canvas, defuddle)
+- `.claude/commands/` — custom slash commands (trade-review, person, meeting, dedup, ingest)
 
 ## Naming
 
