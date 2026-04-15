@@ -142,6 +142,8 @@ grep "^## \[" log.md | tail -20
 
 ## [2026-04-14 10:30] correction | Wick Fade status downgraded from VALIDATED to UNPROVEN. Evidence: (1) never deployed live or to sim — pure backtest, (2) 68% of 5m edge from flip leg which is dead on 15S at tick level (0/216 configs), (3) Research Log March 4 2026 tested same concept and found it marginal (+0.29 R/day full year, 5x degradation from quick test), (4) headline +77 R/day numbers unverified outside original backtester. Updated: strategies-moc, wick-fade concept (removed canonical/tick-validated tags), root-moc, tempo-trading project index, presentation
 
+## [2026-04-14 11:00] audit | full vault audit — strategy statuses verified across all 115 wiki pages. 0 contradictions remaining. 2 corrections made this session (Lumi EXCLUDED→LIVE, Wick Fade VALIDATED→UNPROVEN). Structural: 0 orphans, 0 stale pages, 115/115 frontmatter valid, index complete. 135 shorthand wikilinks noted (cosmetic, Obsidian resolves them). Report: wiki/lint-report.md
+
 ## [2026-04-14 18:18] inbox-triage | 2 items, 1 routed, 1 needs attention
 - Routed: `2026-04-11-vault-map-report.md` → `raw-sources/operations/` (completed inventory report, findings already acted on via import)
 - Needs attention: `2026-04-11-import-manifest.md` — 166 files in `raw-sources/imports/2026-04-11/` await Claude Code Ingest pass (0 of 166 summarized). Warning note added to file.
