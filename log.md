@@ -173,3 +173,5 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-12 13:30] update | ifvg-two-leg-portfolio — extended to 4-leg (added Leg C+D), Cal 419 at TP8/20, 89.7% DWR. Cost-robust.
 
 ## [2026-04-12 14:30] update | ifvg-two-leg-portfolio — extended to **4-leg** portfolio. Cal 419 @TP8/20, 89.7% DWR, Jan-Feb26 OOS 93% DWR. Cost-robust.
+
+## [2026-04-12 15:15] update | ifvg-two-leg-portfolio — complete TP sweep. Monotonic: TP5/15 Cal 433, TP8/20 Cal 419, TP17/35 Cal 62. Tighter TPs cap MDD. Recommended TP8/20 for production.
