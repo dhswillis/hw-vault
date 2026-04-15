@@ -141,3 +141,10 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-14 18:18] inbox-triage | 2 items, 1 routed, 1 needs attention
 - Routed: `2026-04-11-vault-map-report.md` → `raw-sources/operations/` (completed inventory report, findings already acted on via import)
 - Needs attention: `2026-04-11-import-manifest.md` — 166 files in `raw-sources/imports/2026-04-11/` await Claude Code Ingest pass (0 of 166 summarized). Warning note added to file.
+
+## [2026-04-14 23:30] dedup | 0 exact, 1 near, 4 superseded, 4 splits, 2 contradictions
+- Near-dup: summaries/tempo-v14-corrections.md ↔ concepts/tempo-v14-corrections.md (same filename, ~70% overlap)
+- Superseded: sf-portfolio-state.md, deep-mine-findings.md, v8-mining-synthesis.md (all covered by sf-portfolio-cluster.md); nq-sf-engulfing-strategy-v2.md partially superseded by sf-portfolio-cluster.md
+- Splits (healthy): tempo-cluster vs 7 individual summaries; sweep-cluster vs 3 individual summaries; audits-cluster vs 3 individual summaries; portfolio-audit-v2-sweep vs sweep-cluster
+- Contradictions: SWEEP_FADE_RESEARCH.md headline (+0.29 vs +10.43 R/day between sweep-cluster and sweep-fade-research — HIGH PRIORITY); BOS_FVG_FAILURE_CONSOLIDATED.md path mismatch (~/Documents vs raw-sources/)
+- Report: wiki/dedup-report.md
