@@ -11,12 +11,12 @@ related:
   - wiki/summaries/sweep-cluster.md
   - wiki/summaries/bos-fvg-failure-consolidated.md
   - wiki/syntheses/research-arc-map.md
-tags: [trading, wick-fade, tick-validated, canonical, walk-forward]
+tags: [trading, wick-fade, unproven, walk-forward]
 ---
 
 # WickFade Complete Findings — Summary
 
-> **TICK-LEVEL VALIDATED with 10/10 walk-forward OOS months positive.** The 5-minute variant of WickFade is the strongest defensible edge in the entire Layer 2 mining corpus — tick-level simulation, fixed stop + fixed target (no trailing bar-sim bug), clean walk-forward, position integrity verified, and it explicitly flags the **same bar-sim trailing bug** that killed BOS_FVG a month before the BOS_FVG audit was run.
+> **STATUS: UNPROVEN.** Backtest-only strategy, never deployed live or to sim. The doc claims 10/10 walk-forward OOS positive with +77 R/day, but: (1) 68% of the edge comes from the flip leg, which is proven dead on 15S (0/216 configs profitable at tick level), (2) the Research Log (March 4, 2026) tested the same wick reversion concept independently and found it marginal (+0.29 R/day on full year, degrading 5x from quick test), (3) headline numbers have never been validated outside the original backtester. The doc's contribution is identifying the [[bar-sim-trailing-bug]] a month before the BOS_FVG audit.
 
 ## What the source is
 

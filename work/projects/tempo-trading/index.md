@@ -17,7 +17,7 @@ Active trading project using the [[tempo-methodology|Tempo methodology]] on NQ f
 
 ## Current state
 
-- **Live portfolio:** [[ifvg|IFVG]] + [[lumi-strategy-spec|Lumi]] (V15 rewrite to spec, +19.8 pts/day combined, Calmar 23.1)
+- **Validated portfolio (backtest, not yet live):** [[ifvg|IFVG]] + [[lumi-strategy-spec|Lumi]] (V15 rewrite to spec, +19.8 pts/day combined, Calmar 23.1 on tick-level backtest)
 - **In development:** [[sf-portfolio-cluster|SF Portfolio]] (tick-level validated, NinjaTrader bar-gating fix applied)
 - **Unproven:** [[wick-fade|Wick Fade]] (backtest only, never live/sim, 68% of edge from debunked flip leg)
 - **Dead:** [[bos-fvg|BOS FVG]] (killed by [[bar-sim-trailing-bug]]), see [[maps/bos-fvg-saga-moc|full saga]]
