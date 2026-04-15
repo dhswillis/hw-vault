@@ -168,3 +168,4 @@ grep "^## \[" log.md | tail -20
 - Report: wiki/dedup-report.md
 
 ## [2026-04-15 07:07] daily | daily note created | 3 open actions
+## [2026-04-12 11:00] synthesis | ifvg-two-leg-portfolio-2026-04-12 — two-leg IFVG portfolio discovered; correlation -0.013 between with_1h_trend and counter_trend_1h subsets both filtered by body/gap
