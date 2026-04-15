@@ -26,6 +26,8 @@ related:
 | **BOS FVG** | **DEAD** | Bar: +0.359 avgR. Tick: +0.001 avgR. Invalidated. | [[wiki/summaries/bos-fvg-failure-consolidated]] |
 | **Sweep Fade** | **DEAD/MARGINAL** | Most variants dead. Some fade-only configs marginal. | [[wiki/summaries/sweep-cluster]] |
 | **Lumi** | **LIVE (V15)** | V15 rewrite to spec: +19.8 pts/day combined w/ IFVG, Calmar 23.1. V14 was broken (20% WR). | [[wiki/summaries/lumi-strategy-spec]], [[wiki/summaries/tempo-portfolio-v15]] |
+| **OR_FAIL (V13)** | **VALIDATED** | 89% WR, Calmar 22.9. DUAL_OR: 1,048 trades, 1.20 R/day. V13h bias audit passed. | [[wiki/concepts/or-fail]], [[wiki/summaries/trading-system-start-here]] |
+| **Doji Break** | **VALIDATED (Asia)** | Asia: 89% WR, Calmar 589. B/E is the edge. Walk-forward OOS better than IS. | [[wiki/concepts/doji-break]], [[wiki/summaries/trading-system-start-here]] |
 
 ## Validated strategies (the only ones that matter)
 

@@ -7,7 +7,9 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 ## Concepts
 
 - [[wiki/concepts/bos-fvg]] — **DEAD (2026-04-10).** BOS_FVG is NOT validated. Bar-sim trailing inflated prior results by +0.29 R/trade; tick replay shows +0.001 avgR.
-- [[wiki/concepts/wick-fade]] — **TICK-VALIDATED family.** 5m and 15s fade variants. 10/10 walk-forward OOS positive. Fixed stop + target, bar-sim-safe. Rare Layer 2 survivor.
+- [[wiki/concepts/wick-fade]] — **UNPROVEN.** Backtest-only, never live/sim. 68% of edge from debunked flip. Research Log: marginal.
+- [[wiki/concepts/or-fail]] — **VALIDATED.** V13 Opening Range Failure: 89% WR, Calmar 22.9. DUAL_OR: 1.20 R/day. V13h bias audit passed.
+- [[wiki/concepts/doji-break]] — **VALIDATED (Asia).** Doji bracket orders: Asia 89% WR, Calmar 589. B/E is the edge.
 - [[wiki/concepts/bar-sim-trailing-bug]] — Structural reason trailing stops can't be backtested on 1-minute OHLC. Caused the BOS_FVG illusion. Wick-fade docs flagged the same bug in March.
 - [[wiki/concepts/maps-of-content]] — Curated editorial index notes for topic clusters; the Obsidian-community layer on top of Karpathy's flat `index.md`.
 - [[wiki/concepts/inbox-processing]] — Morning ritual for converting raw captures into structured wiki notes. Implemented as `/inbox`.
@@ -113,6 +115,11 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 - [[wiki/summaries/infrastructure-boilerplate-cluster]] — 33 operational docs: CLAUDE.md, skills, prompts, configs.
 - [[wiki/summaries/personal-legal-cluster]] — 8 sensitive personal/legal documents (content not summarized).
 - [[wiki/summaries/remaining-imports-cluster]] — 14 miscellaneous: identity files, operational docs, trading PDFs.
+- [[wiki/summaries/trading-system-start-here]] — **Master context doc.** V7-V9 mining, V13 OR_FAIL production system, Doji Break, full infrastructure map. The most complete state snapshot.
+- [[wiki/summaries/brain-architecture]] — Ralph Loop + OpenClaw + Berman Trifecta brain architecture spec.
+- [[wiki/summaries/ifvg-optimization-report]] — March 9-10 strategy research: IFVG, Lumi, Leppyrd filters. FVG 7-10pt sweet spot, Mean60 bias doubles Calmar.
+- [[wiki/summaries/ifvg-full-year-verification]] — 244-day tick-level IFVG cascade verification. Code audit found 1 moderate bug (fixed). R4.0 LIMIT_MID best risk-adjusted.
+- [[wiki/summaries/waymaker-fund-1-pager]] — Waymaker Stable Income Fund Q1 2025. Defensive NNN lending fund, 10-12% target return. First work-domain document.
 
 ## Syntheses
 

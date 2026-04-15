@@ -17,7 +17,12 @@ Harrison is Director of Asset Management at Haven Park Communities. This is the 
 
 ## Current state
 
-No work-specific documents have been imported into the vault yet. The vault is currently 95%+ trading content. As work documents arrive (meeting notes, project plans, asset models, deal memos), they should be routed here.
+First work-domain documents arriving:
+
+- [[wiki/summaries/waymaker-fund-1-pager|Waymaker Stable Income Fund]] — Q1 2025 fund one-pager. Defensive NNN lending fund, 10-12% target return, $12B management experience, $5.2B in single-tenant NNN.
+- [[wiki/summaries/western-pines-utility-increase-notice|Western Pines Utility Increase]] — Utility increase notice template.
+
+More work documents expected as Harrison uses `/meeting` and `/person` commands to capture daily work context.
 
 ## Planned structure
 

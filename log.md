@@ -144,6 +144,18 @@ grep "^## \[" log.md | tail -20
 
 ## [2026-04-14 11:00] audit | full vault audit — strategy statuses verified across all 115 wiki pages. 0 contradictions remaining. 2 corrections made this session (Lumi EXCLUDED→LIVE, Wick Fade VALIDATED→UNPROVEN). Structural: 0 orphans, 0 stale pages, 115/115 frontmatter valid, index complete. 135 shorthand wikilinks noted (cosmetic, Obsidian resolves them). Report: wiki/lint-report.md
 
+## [2026-04-14 12:00] ingest | trading-system-start-here.md → wiki/summaries/trading-system-start-here.md; concepts: or-fail, doji-break. MAJOR FINDING: V13 OR_FAIL production system (89% WR, Calmar 22.9, DUAL_OR 1.20 R/day) was not in the wiki. Now captured.
+
+## [2026-04-14 12:05] ingest | brain-architecture.md → wiki/summaries/brain-architecture.md; Ralph Loop + OpenClaw + Berman Trifecta spec.
+
+## [2026-04-14 12:10] ingest | IFVG_OPTIMIZATION_REPORT.md → wiki/summaries/ifvg-optimization-report.md; March 9-10 IFVG/Lumi/Leppyrd filter research.
+
+## [2026-04-14 12:15] ingest | IFVG_Full_Year_Verification_Memo.docx → wiki/summaries/ifvg-full-year-verification.md; 244-day tick-level IFVG cascade verification with code audit.
+
+## [2026-04-14 12:20] ingest | Waymaker Capital Partners Fund 1-Pager → wiki/summaries/waymaker-fund-1-pager.md; first work-domain document. Work MOC updated.
+
+## [2026-04-14 12:25] wiring | strategies-moc updated with OR_FAIL (VALIDATED) and Doji Break (VALIDATED Asia). Index updated with 5 new summaries + 2 new concepts. Work MOC updated with Waymaker.
+
 ## [2026-04-14 18:18] inbox-triage | 2 items, 1 routed, 1 needs attention
 - Routed: `2026-04-11-vault-map-report.md` → `raw-sources/operations/` (completed inventory report, findings already acted on via import)
 - Needs attention: `2026-04-11-import-manifest.md` — 166 files in `raw-sources/imports/2026-04-11/` await Claude Code Ingest pass (0 of 166 summarized). Warning note added to file.
