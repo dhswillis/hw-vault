@@ -169,3 +169,5 @@ grep "^## \[" log.md | tail -20
 
 ## [2026-04-15 07:07] daily | daily note created | 3 open actions
 ## [2026-04-12 11:00] synthesis | ifvg-two-leg-portfolio-2026-04-12 — two-leg IFVG portfolio discovered; correlation -0.013 between with_1h_trend and counter_trend_1h subsets both filtered by body/gap
+
+## [2026-04-12 13:30] update | ifvg-two-leg-portfolio — extended to 4-leg (added Leg C+D), Cal 419 at TP8/20, 89.7% DWR. Cost-robust.

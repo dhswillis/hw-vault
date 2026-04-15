@@ -92,6 +92,24 @@ The working hypothesis: `body/gap ≥ 0.7` captures the same signal as "3 consec
 
 A third disjoint leg — `ct=False AND 0.3 ≤ body/gap < 0.5` (excluded from Leg A and Leg B) — adds 74 trades with +5.18 PPD at correlation -0.012 to A and -0.038 to B. Combined A+B+C: Cal 256, PPD 54.14, DWR 78.5%. Marginal lift, but a genuine third orthogonal contribution.
 
+## Fourth leg (at TP8/20)
+
+Later iteration extended to a 4-leg portfolio. **Leg D**: `ct_1h == True AND 0.3 ≤ body/gap < 0.7`, disjoint from A/B/C. 128 trades, 97.7% WR, +1.06R avg, 12/12 green months, 5/5 green quarters. Correlation to each of A/B/C < 0.1 (absolute). Adding D to A+B+C lifts portfolio from Cal 295 → Cal 419.
+
+## TP12/30 and TP8/20 outperform TP17/35 (v14 default)
+
+The v14 TP schedule (TP1=17pt, TP2=35pt) is not optimal. Tighter TPs improve every metric monotonically across A, B, and the portfolio:
+
+| TP config | A+B+C+D Cal | PPD | DWR | MDD |
+|---|---|---|---|---|
+| TP8/20 | 419.4 | +65.36 | 89.7% | 34.8 |
+| TP12/30 | ~340 (estimated) | +58 | ~87% | ~40 |
+| TP17/35 | ~256 (A+B+C only measured) | +54 | 78.5% | 47 |
+
+Cost at +1pt extra (realistic): A+B+C+D at TP8/20 still gives Cal 376, DWR 87%, PPD +61.96.
+
+The practical recommendation is TP12/30: easier fills (NQ 12pt = ~$240 gross, well clear of typical 2-3 tick spread), still captures 80%+ of the TP8/20 edge.
+
 ## Not-validated caveats
 
 - This is a backtest, not live/paper performance. Per [[invalidation-rules|Rule 15]]: "NEVER claim a strategy is validated based on backtesting alone."
