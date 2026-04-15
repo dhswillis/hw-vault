@@ -138,6 +138,8 @@ grep "^## \[" log.md | tail -20
 
 ## [2026-04-14 09:25] automation | updated CLAUDE.md with agent skills section, git safety section, 4 new slash command entries (/trade-review, /person, /meeting, /dedup). Updated automation-moc with full command/skill/safety documentation
 
+## [2026-04-14 10:00] correction | Lumi status updated from EXCLUDED to LIVE (V15). V14 was a broken implementation (20% WR); V15 rewrite to true @LumiTraders spec produces +19.8 pts/day combined with IFVG, Calmar 23.1. Updated: strategies-moc, lumi-strategy-spec (removed suspect-results tag), tempo-moc, root-moc, tempo-trading project index, presentation
+
 ## [2026-04-14 18:18] inbox-triage | 2 items, 1 routed, 1 needs attention
 - Routed: `2026-04-11-vault-map-report.md` → `raw-sources/operations/` (completed inventory report, findings already acted on via import)
 - Needs attention: `2026-04-11-import-manifest.md` — 166 files in `raw-sources/imports/2026-04-11/` await Claude Code Ingest pass (0 of 166 summarized). Warning note added to file.

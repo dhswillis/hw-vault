@@ -25,7 +25,7 @@ related:
 | **SF Portfolio** | **TICK-CONFIRMED** | +3.34 R/day on 260d. RUNNER leg fat-tailed (16% WR) | [[wiki/summaries/sf-portfolio-cluster]] |
 | **BOS FVG** | **DEAD** | Bar: +0.359 avgR. Tick: +0.001 avgR. Invalidated. | [[wiki/summaries/bos-fvg-failure-consolidated]] |
 | **Sweep Fade** | **DEAD/MARGINAL** | Most variants dead. Some fade-only configs marginal. | [[wiki/summaries/sweep-cluster]] |
-| **Lumi** | **EXCLUDED** | v14 audit: 20% WR. Not viable. | [[wiki/summaries/lumi-strategy-spec]] |
+| **Lumi** | **LIVE (V15)** | V15 rewrite to spec: +19.8 pts/day combined w/ IFVG, Calmar 23.1. V14 was broken (20% WR). | [[wiki/summaries/lumi-strategy-spec]], [[wiki/summaries/tempo-portfolio-v15]] |
 
 ## Validated strategies (the only ones that matter)
 
@@ -70,7 +70,8 @@ The sole tick-validated survivors of the entire research arc. Fixed stop + fixed
 - [[wiki/summaries/sweep-cluster]] — Sweep-and-fade: why most died.
 - [[wiki/summaries/sweep-fade-research]] — Full tick-level sweep fade research (+10.43 R/day) — needs bar-sim check on trailing exits.
 - [[wiki/summaries/keylevel-sweep-cluster]] — NinjaTrader build docs for the sweep strategy.
-- [[wiki/summaries/lumi-strategy-spec]] — Lumi: why 20% WR isn't viable.
+- [[wiki/summaries/lumi-strategy-spec]] — Lumi strategy spec. V14 had 20% WR (broken impl). V15 rewrite fixed it.
+- [[wiki/summaries/tempo-portfolio-v15]] — V15 IFVG + Lumi combined: +19.8 pts/day, Calmar 23.1, tick-validated.
 
 ## Additional research
 

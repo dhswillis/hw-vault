@@ -17,7 +17,7 @@ Active trading project using the [[tempo-methodology|Tempo methodology]] on NQ f
 
 ## Current state
 
-- **Live strategies:** [[ifvg|IFVG]] (V14 corrections applied), [[wick-fade|Wick Fade]] (5m variant, 10/10 walk-forward)
+- **Live strategies:** [[ifvg|IFVG]] (V14 corrections applied), [[wick-fade|Wick Fade]] (5m variant, 10/10 walk-forward), [[lumi-strategy-spec|Lumi]] (V15 rewrite to spec, +19.8 pts/day combined w/ IFVG)
 - **In development:** [[sf-portfolio-cluster|SF Portfolio]] (tick-level validated, NinjaTrader bar-gating fix applied)
 - **Dead:** [[bos-fvg|BOS FVG]] (killed by [[bar-sim-trailing-bug]]), see [[maps/bos-fvg-saga-moc|full saga]]
 - **System:** [[tempo-trading-system|Tempo Trading System]] with [[bayesian-belief-engine|Bayesian belief engine]] and [[tempo-context-engine-spec|Context Engine]]

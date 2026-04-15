@@ -42,7 +42,7 @@ related:
 - [[wiki/maps/bos-fvg-saga-moc|BOS FVG Saga]] — Case study in how a signal goes from "97.9% WR" to DEAD. Three contamination layers, three audits.
 - [[wiki/maps/audit-history-moc|Audit History]] — Every audit sorted by outcome. Bugs found, what they invalidated, rules produced. The quality-control backbone.
 - [[wiki/maps/context-engine-moc|Context Engine]] — The planned Bayesian session classifier. Five feature layers, nine checkpoints. Not yet built.
-- [[wiki/maps/strategies-moc|Strategies]] — All signal families: IFVG, Wick Fade (validated), Sweep Fade (dead/marginal), SF Portfolio (tick-confirmed), Lumi (excluded). Live status tracker.
+- [[wiki/maps/strategies-moc|Strategies]] — All signal families: IFVG, Wick Fade (validated), Sweep Fade (dead/marginal), SF Portfolio (tick-confirmed), Lumi (V15 live). Live status tracker.
 
 ### Research arc
 

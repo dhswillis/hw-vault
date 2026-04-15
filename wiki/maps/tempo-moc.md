@@ -54,7 +54,8 @@ Tempo is an NQ futures trading methodology created by educator "Tempo" (@tony31 
 
 ### IFVG research + Tempo IFVG (Layer 2 cleanest)
 - [[wiki/summaries/tempo-ifvg-research]] — Tick-level IFVG research. 74.7% WR baseline, 83% with SMT + reaction quality. **Cleanest Layer 2 doc** — uses close-through soft stops (bar-sim-safe by construction).
-- [[wiki/summaries/lumi-strategy-spec]] — Lumi engine (@LumiTraders). v14 audit: 20% WR, net negative. Excluded from production.
+- [[wiki/summaries/lumi-strategy-spec]] — Lumi engine (@LumiTraders). V14 broken (20% WR); **V15 rewrite fixed it** — combined IFVG+Lumi: +19.8 pts/day, Calmar 23.1.
+- [[wiki/summaries/tempo-portfolio-v15]] — V15 tick-level portfolio audit (IFVG + Lumi). The definitive combined result.
 
 ### Mining machinery + audits
 - [[wiki/summaries/mining-analysis]] — V7aa_b cross-tab of 2,600 combos. Suspect (V10i alignment).

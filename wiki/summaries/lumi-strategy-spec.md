@@ -8,7 +8,7 @@ related:
   - wiki/summaries/tempo-v14-corrections.md
   - wiki/summaries/tempo-ifvg-research.md
   - wiki/summaries/tempo-cluster.md
-tags: [trading, lumi, htf, suspect-results]
+tags: [trading, lumi, htf]
 ---
 
 # Lumi Strategy Spec — Summary
@@ -70,9 +70,9 @@ The 45-percentage-point WR gap between the Twitter-claimed 65% and the Python-au
 
 ## Disposition
 
-**Not currently in production portfolio.** The v14 audit's explicit finding is that **adding Lumi to the IFVG portfolio hurts it**: IFVG alone = +26.4 pts/day; IFVG + Lumi = +23.0 pts/day. Lumi introduces losing trades that aren't hedged by IFVG's structural opposite (per the [[tempo-ifvg-research|research doc]]'s claim of −0.004 correlation, but correlation isn't enough if one leg is negative).
+**V14 (broken): EXCLUDED.** The v14 audit found adding Lumi to the IFVG portfolio hurt it: IFVG alone = +26.4 pts/day; IFVG + Lumi = +23.0 pts/day at 20% WR. The v14 implementation had bugs (Lumi FVG inversions, entry price errors, missing state management).
 
-The v14 audit's recommendation: **exclude from production**, or test a Lumi-reduced subset (London-only or HTF_OB-only) in isolation to see if the real edge lives in one corner of the spec.
+**V15 (rewritten to spec): LIVE.** The V15 rewrite fixed the V14 bugs: Lumi engine rewritten to true @LumiTraders spec (HTF levels on M15/M30/H1/H4), MSS requirement removed (not in original spec), FVG soft stop replacing swing-extreme stops (risk drops from ~29pt to ~9pt), M15 source filtering applied. Combined IFVG + Lumi portfolio: **+19.8 pts/day, 1,208 trades, 264 days, Calmar 23.1** at tick level on Databento data. See [[tempo-portfolio-v15]] for full results.
 
 ## Cross-references
 
