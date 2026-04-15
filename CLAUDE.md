@@ -216,6 +216,26 @@ Quick-capture without classification. Drops a timestamped file in `inbox/` for l
 2. Do NOT attempt to classify or cross-link yet — that's what `/inbox` is for.
 3. Append to `log.md`: `## [YYYY-MM-DD HH:MM] capture | <slug>`.
 
+### /trade-review
+**Trigger:** user says `/trade-review` or "log today's trades".
+
+End-of-day trading review. Full spec in `.claude/commands/trade-review.md`. Creates a trade log entry, links to strategy wiki pages, checks against invalidation rules, updates daily note.
+
+### /person
+**Trigger:** user says `/person <name>` or mentions creating/updating a person file.
+
+Create or update a person file in `work/people/`. Full spec in `.claude/commands/person.md`. Extracts structured data, cross-links to projects and meetings.
+
+### /meeting
+**Trigger:** user says `/meeting <topic>` or "log a meeting".
+
+Capture a meeting — create note, extract decisions and actions, update person files, link to projects. Full spec in `.claude/commands/meeting.md`.
+
+### /dedup
+**Trigger:** user says `/dedup` or "check for duplicates".
+
+Scan wiki for duplicate or near-duplicate pages. Full spec in `.claude/commands/dedup.md`. Writes report to `wiki/dedup-report.md`. Does NOT auto-merge.
+
 ## Hard rules
 
 - **NEVER modify files in `raw-sources/`.** Read-only. Annotations go in `wiki/summaries/`.
@@ -241,6 +261,33 @@ Free-form tags are fine for domain (e.g. `trading`, `nq`, `ninjatrader`). Reserv
 - `Write` is faster than `Read → Edit` for files small enough to rewrite in full. Use it for `index.md`, `log.md` updates, and any single-page overwrite.
 - `Edit` is correct when (a) the file is large and only a small region changes, or (b) you need `replace_all` semantics. Edit requires a prior `Read`.
 - For non-markdown ingests, convert to text in `/tmp/` and read the converted file — don't try to read `.docx`, `.xlsx`, or compressed formats directly.
+
+## Agent skills (.claude/)
+
+**kepano's Official Obsidian Skills** are installed in `.claude/skills/`. These teach Claude Code how to use Obsidian-native features:
+
+- `obsidian-markdown` — Obsidian Flavored Markdown (wikilinks, embeds, callouts, properties)
+- `obsidian-cli` — Obsidian CLI for vault search, note management, task management, plugin dev
+- `obsidian-bases` — Obsidian Bases (.base files) for database-like views
+- `json-canvas` — JSON Canvas (.canvas) for visual mind maps and flowcharts
+- `defuddle` — Clean web page extraction (use instead of WebFetch for articles)
+
+**Custom slash commands** are in `.claude/commands/`:
+- `/trade-review` — end-of-day trading log with strategy cross-links
+- `/person` — create/update person files from mentions
+- `/meeting` — full meeting capture pipeline (notes, decisions, actions, person files)
+- `/dedup` — scan wiki for duplicate/overlapping pages
+- `/ingest` — wrapper for the CLAUDE.md ingest pipeline with all rules
+
+## Git safety
+
+A **pre-commit hook** (`.git/hooks/pre-commit`) validates:
+- YAML frontmatter syntax on all staged .md files
+- No tab indentation in frontmatter
+- No unclosed quotes
+- Warns if `log.md` has deleted lines (append-only rule)
+
+To bypass in emergencies: `git commit --no-verify`
 
 ## Obsidian best practices integrated
 

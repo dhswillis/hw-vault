@@ -59,8 +59,33 @@ These are the operations that move knowledge between layers (L0→L5 per [[BRAIN
 |---|---|---|---|
 | `daily-note` | Mon–Fri 7:00 AM | Create daily note from template | Active |
 | `weekly-rollup` | Sun 5:00 PM | Summarize week into `weekly/YYYY-Www.md` | Active |
-| `weekly-lint` | Sat 8:00 PM | Run lint sweep, write report | Active |
+| `weekly-lint` | Sat 8:00 PM | Run lint + dedup sweep, write report | Active |
 | `inbox-triage` | Tue + Fri 6:00 PM | Scan inbox for items >3 days old | Active |
+| `dedup-scan` | Wed 12:00 PM | Mid-week duplicate detection scan | Active |
+
+## Slash commands (.claude/commands/)
+
+Custom Claude Code commands that automate multi-step vault workflows:
+
+- `/trade-review` — End-of-day trading log: captures trades, links to strategy wiki pages, checks invalidation rules, updates daily note
+- `/person` — Create/update person files from mentions: extracts structured data, cross-links to projects and meetings
+- `/meeting` — Full meeting capture: notes, decisions, actions, person file updates, project back-links
+- `/dedup` — Duplicate detection scan: finds overlapping summaries, near-duplicate concepts, superseded pages
+- `/ingest` — Ingest pipeline wrapper: summary, concept/entity creation (rule of three), synthesis, cross-linking
+
+## Agent skills (.claude/skills/)
+
+[[CLAUDE|kepano's official Obsidian Agent Skills]] installed from [github.com/kepano/obsidian-skills](https://github.com/kepano/obsidian-skills):
+
+- `obsidian-markdown` — Obsidian Flavored Markdown syntax
+- `obsidian-cli` — Obsidian CLI for vault operations and plugin dev
+- `obsidian-bases` — Database-like views (.base files)
+- `json-canvas` — Visual mind maps and flowcharts (.canvas files)
+- `defuddle` — Clean web page extraction for ingests
+
+## Git safety
+
+A pre-commit hook validates YAML frontmatter on all staged .md files, catches tab indentation, unclosed quotes, and warns on log.md deletions (append-only rule).
 
 ## Concepts
 

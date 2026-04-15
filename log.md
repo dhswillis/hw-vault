@@ -126,6 +126,18 @@ grep "^## \[" log.md | tail -20
 
 ## [2026-04-14 07:07] daily | daily note created | 0 open actions
 
+## [2026-04-14 09:00] automation | installed kepano/obsidian-skills into .claude/skills/ (obsidian-markdown, obsidian-cli, obsidian-bases, json-canvas, defuddle)
+
+## [2026-04-14 09:10] automation | created 5 slash commands in .claude/commands/: trade-review, person, meeting, dedup, ingest
+
+## [2026-04-14 09:15] automation | installed git pre-commit hook (.git/hooks/pre-commit) for YAML frontmatter validation, tab detection, quote checking, log.md append-only enforcement
+
+## [2026-04-14 09:20] automation | created dedup-scan scheduled task (Wed 12pm) — mid-week duplicate detection scan
+
+## [2026-04-14 09:20] automation | updated weekly-lint task to include dedup detection alongside standard orphan/stale/broken checks
+
+## [2026-04-14 09:25] automation | updated CLAUDE.md with agent skills section, git safety section, 4 new slash command entries (/trade-review, /person, /meeting, /dedup). Updated automation-moc with full command/skill/safety documentation
+
 ## [2026-04-14 18:18] inbox-triage | 2 items, 1 routed, 1 needs attention
 - Routed: `2026-04-11-vault-map-report.md` → `raw-sources/operations/` (completed inventory report, findings already acted on via import)
 - Needs attention: `2026-04-11-import-manifest.md` — 166 files in `raw-sources/imports/2026-04-11/` await Claude Code Ingest pass (0 of 166 summarized). Warning note added to file.
