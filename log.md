@@ -171,3 +171,5 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-12 11:00] synthesis | ifvg-two-leg-portfolio-2026-04-12 — two-leg IFVG portfolio discovered; correlation -0.013 between with_1h_trend and counter_trend_1h subsets both filtered by body/gap
 
 ## [2026-04-12 13:30] update | ifvg-two-leg-portfolio — extended to 4-leg (added Leg C+D), Cal 419 at TP8/20, 89.7% DWR. Cost-robust.
+
+## [2026-04-12 14:30] update | ifvg-two-leg-portfolio — extended to **4-leg** portfolio. Cal 419 @TP8/20, 89.7% DWR, Jan-Feb26 OOS 93% DWR. Cost-robust.

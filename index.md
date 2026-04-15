@@ -127,7 +127,7 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 - [[wiki/syntheses/tempo-three-layers]] — The three-layer framework (canonical / mining / implementation) that every Tempo claim must be placed into before it can be evaluated.
 - [[wiki/syntheses/bos-fvg-claim-vs-reality]] — Deep dive on why BOS_FVG is not Tempo's IFVG and why "BOS_FVG is the core signal of Tempo" was a two-layer mistake.
 - [[wiki/syntheses/mining-reports-v1-v2-reconciliation]] — Cross-source analysis: why V1 claimed 97.9% WR while V2 shows 63.5%. Three corrections documented. **Note 2026-04-10**: even the V2 "honest" 63.5% WR is now invalidated for BOS_FVG — see [[bos-fvg-failure-consolidated]].
-- [[wiki/syntheses/ifvg-two-leg-portfolio-2026-04-12]] — Autonomous 8h backtest. Splits IFVG by 1H trend direction into two disjoint legs with correlation -0.013. Combined Cal 216, PPD +49, DWR 74%, 5/5 green quarters. `with_1h_trend` edge contradicts prior CT canon.
+- [[wiki/syntheses/ifvg-two-leg-portfolio-2026-04-12]] — Autonomous 8h backtest. Extended to **4-leg** IFVG portfolio (disjoint subsets by 1H trend × body/gap). At TP8/20: Cal 419, PPD +65, DWR 89.7%, 12/12 green months, 5/5 green quarters. OOS-clean Jan-Feb26: 93% DWR. Contradicts prior CT canon; `with_1h_trend` is baseline.
 
 ## Maps
 
