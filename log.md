@@ -185,3 +185,5 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-16 14:00] update | v26 Python port run. Limit-fill +10.64 PPD / Cal 50 ≈ V15 class of numbers. Tick-through -0.27 PPD. Entry fill assumption drives +11 PPD of apparent edge. Updated v26 summary with reconciliation.
 
 ## [2026-04-16 15:00] ingest | LumiStrategyV2 (NQ Apr 10) + LumiESStrategyV2 (ES, NEW) → lumi-strategy-v2-2026-04-10.md + lumi-es-strategy-v2-2026-04-10.md. Lumi extracted from TempoPortfolio to standalone. Swing stop + 1.75R replaces V15 FVG-soft-stop + 2R. ES port is brand new.
+
+## [2026-04-16 15:45] audit | Lumi V2 tick-through. 1102 signals → 723 filled (65%) → 36.8% WR, -0.065R, -0.21R/day. Limit-fill +0.45R edge collapses to -0.065R. Same pattern as v26 IFVG. Updated lumi-strategy-v2 summary.

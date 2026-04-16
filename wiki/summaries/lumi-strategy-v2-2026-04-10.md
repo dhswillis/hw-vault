@@ -84,9 +84,27 @@ V15 vault doc concluded "FVG soft stop is superior" because the 2R target stayed
 
 ## Limit-fill caveat (same as v26)
 
-The Python backtest's `simulate_trade` starts from `entry_price = fvg_entry` (or `ob_high` depending on entry method) and walks ticks forward for stop/target only. Entry is **assumed to fill** at the signal price. Real live performance requires price to trade through the limit level, which in Lumi's case is a mid-structure price (OB body or FVG boundary), generally closer to current price than IFVG's bar-extreme edges. Fill rate is probably better than IFVG, but the headline +0.45R is the ceiling.
+The Python backtest's `simulate_trade` starts from `entry_price = fvg_entry` (or `ob_high` depending on entry method) and walks ticks forward for stop/target only. Entry is **assumed to fill** at the signal price.
 
-Needs a tick-through variant to establish an honest floor. Not yet done for Lumi V2 (was done for IFVG v26 — see [[tempo-portfolio-v26]]).
+## Tick-through audit (2026-04-16)
+
+Re-ran the same signal generator with tick-through entry requirement: price must actually trade at or past the entry level within 15 minutes for a fill to count. Otherwise signal expires without a trade.
+
+| Method | Trades | WR | avg R | Total R | R/day |
+|---|---|---|---|---|---|
+| Limit-fill (vault/reported) | 1,102 | 56.3% | +0.45 | +493 | +1.9 |
+| **Tick-through (honest)** | **723 (65% fill rate)** | **36.8%** | **-0.065** | **-47** | **-0.21** |
+
+**The entire +0.45R edge is the limit-fill assumption.** Real fills (when they happen — 65% of the time) produce a small negative expectancy. The honest story: 35% of signals expire without a trade at all, and the 65% that do fill run ~breakeven-negative.
+
+**Does this mean Lumi doesn't work?** Not necessarily. My tick-through is pessimistic in two ways:
+1. NT depth-of-book can fill limits at prices that no tick actually prints at (e.g., limit buy fills when the best offer = limit price without a trade executing). My Python sim only considers executed trades.
+2. A 15-min fill window is arbitrary; some setups may fill later.
+
+But the gap between +0.45R (published) and -0.065R (ticks must print through) is large enough that a real live fill rate below ~85% of the published number would flip the strategy to breakeven or negative. **Needs paper-trade validation before scaling up.**
+
+Script: `/Users/harrisonwillis/Documents/trading-system/scripts/autonomous/lumi_tickfill_sim.py`
+Results: `autonomous_20260412/lumi_tickfill_swing.csv`
 
 ## Open questions
 
