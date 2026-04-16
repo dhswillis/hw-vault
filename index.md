@@ -68,7 +68,8 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 - [[wiki/summaries/tempo-quick-start-guide]] — How to start a Tempo session. `tempo` alias, file locations (Mac/VPS/GitHub/QC), credentials reference, memory document chain.
 - [[wiki/summaries/option4-hybrid-architecture]] — Option 4: Hybrid Full Stack architecture document. Links QC, NinjaTrader, and Context Engine into one pipeline.
 - [[wiki/summaries/tempo-batch-cheatsheet]] — QC batch backtesting quick reference for Tempo V3.34.
-- [[wiki/summaries/tempo-portfolio-v15]] — V15 IFVG + Lumi combined portfolio: +19.8 pts/day, Calmar 23.1 over 264 days.
+- [[wiki/summaries/tempo-portfolio-v15]] — V15 IFVG + Lumi combined portfolio: +19.8 pts/day, Calmar 23.1 over 264 days. **Superseded by v26.**
+- [[wiki/summaries/tempo-portfolio-v26]] — **Current live strategy (Apr 10 2026).** IFVG MTF cascade: 6 components (15S/30S/1M × long/short), ReactionScore≥3 gate, fixed R targets, dynamic position sizing. Supersedes v15. No formal audit yet — v16–v25 undocumented gap.
 - [[wiki/summaries/wickfade-strategy-findings]] — WickFade optimization: trail on both legs was the biggest improvement.
 - [[wiki/summaries/wickfade-5m-research-findings]] — WickFade 5M: ~$3,500/day, flip timing artifact analysis.
 - [[wiki/summaries/nq-sf-engulfing-strategy]] — V1 Sweep & Fail Engulfing: zero losing weeks, 260 days.
@@ -127,7 +128,7 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 - [[wiki/syntheses/tempo-three-layers]] — The three-layer framework (canonical / mining / implementation) that every Tempo claim must be placed into before it can be evaluated.
 - [[wiki/syntheses/bos-fvg-claim-vs-reality]] — Deep dive on why BOS_FVG is not Tempo's IFVG and why "BOS_FVG is the core signal of Tempo" was a two-layer mistake.
 - [[wiki/syntheses/mining-reports-v1-v2-reconciliation]] — Cross-source analysis: why V1 claimed 97.9% WR while V2 shows 63.5%. Three corrections documented. **Note 2026-04-10**: even the V2 "honest" 63.5% WR is now invalidated for BOS_FVG — see [[bos-fvg-failure-consolidated]].
-- [[wiki/syntheses/ifvg-two-leg-portfolio-2026-04-12]] — Autonomous 8h backtest. Extended to **4-leg** IFVG portfolio (disjoint subsets by 1H trend × body/gap). At TP8/20: Cal 419, PPD +65, DWR 89.7%, 12/12 green months, 5/5 green quarters. OOS-clean Jan-Feb26: 93% DWR. Contradicts prior CT canon; `with_1h_trend` is baseline.
+- [[wiki/syntheses/ifvg-two-leg-portfolio-2026-04-12]] — Autonomous 8h backtest. **SUPERSEDED 2026-04-16**: tested wrong baseline (v14 logic, limit-fill assumed). Real strategy is v26 MTF cascade. Honest tick-through on v14: ~60% WR, Cal 7, +13 PPD — not 89.7%/419. See [[tempo-portfolio-v26]] for what's actually live.
 
 ## Maps
 
