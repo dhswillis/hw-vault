@@ -177,3 +177,5 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-12 15:15] update | ifvg-two-leg-portfolio — complete TP sweep. Monotonic: TP5/15 Cal 433, TP8/20 Cal 419, TP17/35 Cal 62. Tighter TPs cap MDD. Recommended TP8/20 for production.
 
 ## [2026-04-15 17:03] dedup | 1 exact, 1 near, 4 superseded, 4 splits (healthy), 2 contradictions, 2 minor flags. New since last scan: ifvg-full-year-verification-memo.md exact dupe found. Sweep-fade +0.29 vs +10.43 contradiction and tempo-v14-corrections near-dupe still unresolved. Report: wiki/dedup-report.md
+
+## [2026-04-16 07:08] daily | daily note created | 3 open actions
