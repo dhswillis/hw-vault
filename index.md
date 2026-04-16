@@ -70,6 +70,8 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 - [[wiki/summaries/tempo-batch-cheatsheet]] — QC batch backtesting quick reference for Tempo V3.34.
 - [[wiki/summaries/tempo-portfolio-v15]] — V15 IFVG + Lumi combined portfolio: +19.8 pts/day, Calmar 23.1 over 264 days. **Superseded by v26.**
 - [[wiki/summaries/tempo-portfolio-v26]] — **Current live strategy (Apr 10 2026).** IFVG MTF cascade: 6 components (15S/30S/1M × long/short), ReactionScore≥3 gate, fixed R targets, dynamic position sizing. Supersedes v15. No formal audit yet — v16–v25 undocumented gap.
+- [[wiki/summaries/lumi-strategy-v2-2026-04-10]] — **Current Lumi NQ strategy (Apr 10 2026).** Standalone (extracted from TempoPortfolio). Swing stop (avg 39pt risk), 1.75R target. 1,102 trades, 56% WR, +0.45R avg, PF 2.29 in limit-fill backtest. Supersedes V15 Lumi spec.
+- [[wiki/summaries/lumi-es-strategy-v2-2026-04-10]] — **New: Lumi ES port (Apr 10 2026).** Same methodology as NQ Lumi but retuned for ES (TargetR=2.0, MinSweep=0.5, FVGMin=0.25). No Python audit yet.
 - [[wiki/summaries/wickfade-strategy-findings]] — WickFade optimization: trail on both legs was the biggest improvement.
 - [[wiki/summaries/wickfade-5m-research-findings]] — WickFade 5M: ~$3,500/day, flip timing artifact analysis.
 - [[wiki/summaries/nq-sf-engulfing-strategy]] — V1 Sweep & Fail Engulfing: zero losing weeks, 260 days.

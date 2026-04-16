@@ -1,6 +1,6 @@
 ---
 created: 2026-04-11
-updated: 2026-04-11
+updated: 2026-04-16
 type: summary
 sources:
   - raw-sources/trading/tempo/LUMI_STRATEGY_SPEC.md
@@ -8,10 +8,13 @@ related:
   - wiki/summaries/tempo-v14-corrections.md
   - wiki/summaries/tempo-ifvg-research.md
   - wiki/summaries/tempo-cluster.md
-tags: [trading, lumi, htf]
+  - wiki/summaries/lumi-strategy-v2-2026-04-10.md
+tags: [trading, lumi, htf, superseded]
 ---
 
-# Lumi Strategy Spec — Summary
+> **⚠️ SUPERSEDED 2026-04-16.** This page documents the V15-era Lumi spec (FVG soft stop + 2R target). The current production strategy is [[lumi-strategy-v2-2026-04-10|LumiStrategyV2]] (Apr 10, 2026) which uses a **swing stop** (avg risk 39pt) and **1.75R target** — the opposite stop-logic decision from what this doc recommends. Also a new ES port exists ([[lumi-es-strategy-v2-2026-04-10]]) that didn't exist at V15 time. Read this for context on older reasoning; do NOT cite the V15 numbers as current performance.
+
+# Lumi Strategy Spec — Summary (V15-era, SUPERSEDED)
 
 ## What the source is
 

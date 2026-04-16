@@ -183,3 +183,5 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-16 13:30] update | tempo-portfolio-v26 summary created. Vault was missing v16-v26; only v14 and v15 had wiki pages. Current live is v26 (Apr 10). 2026-04-12 research tested v14 logic — wrong baseline. Flagged in index.md and v15 summary.
 
 ## [2026-04-16 14:00] update | v26 Python port run. Limit-fill +10.64 PPD / Cal 50 ≈ V15 class of numbers. Tick-through -0.27 PPD. Entry fill assumption drives +11 PPD of apparent edge. Updated v26 summary with reconciliation.
+
+## [2026-04-16 15:00] ingest | LumiStrategyV2 (NQ Apr 10) + LumiESStrategyV2 (ES, NEW) → lumi-strategy-v2-2026-04-10.md + lumi-es-strategy-v2-2026-04-10.md. Lumi extracted from TempoPortfolio to standalone. Swing stop + 1.75R replaces V15 FVG-soft-stop + 2R. ES port is brand new.
