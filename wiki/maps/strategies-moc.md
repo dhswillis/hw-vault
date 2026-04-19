@@ -52,6 +52,8 @@ Extracted from TempoPortfolio between v19 and v23. Now runs standalone on both N
 
 **Open work**: Lumi needs a market-entry tick-level test comparable to what was done for IFVG (`market_vs_limit_summary.json`). The +0.45R headline assumes limit fills. V3 does not change the signal chain — the tick-through caveat still applies.
 
+**Overlay research (Apr 19 2026)**: [[lumi-overlay-research-2026-04-19]] — ES momentum alignment lifts WR from 56.5% to 63.9% (walk-forward validated). Leppyrd and SMT rejected. See `strategies/tempo/results/OVERLAY_RESEARCH_RESULTS.md`.
+
 ## Validated but not live
 
 - [[sf-portfolio-cluster]] — SF Portfolio: tick-confirmed at +3.34 R/Day. Not deployed to NT live.
