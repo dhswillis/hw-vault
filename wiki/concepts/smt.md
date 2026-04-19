@@ -1,6 +1,6 @@
 ---
 created: 2026-04-11
-updated: 2026-04-11
+updated: 2026-04-19
 type: concept
 sources:
   - raw-sources/trading/tempo/tempo_rules_v3_complete.md
@@ -55,6 +55,17 @@ The equivalent level on ES is *structural*, not price-identical. ES trades at a 
 - SMT is not mentioned in Harrison's mining research journal or `NQ_PLAYBOOK.md` — those docs are mining-era and predate the SMT elevation. Absence of SMT from the mining corpus is one of the structural reasons why mining-era BOS_FVG ≠ canonical IFVG (see [[bos-fvg-claim-vs-reality]]).
 - SMT requires **dual-feed market data** (simultaneous NQ + ES tick). Any backtester running on a single instrument cannot test SMT. This is a non-trivial infrastructure requirement for re-testing IFVG at the A+ tier.
 - SMT is a *structural* filter, not a *temporal* one, which means it should not be affected by the [[bar-sim-trailing-bug|bar-sim trailing bug]] that killed BOS_FVG. Filters that depend on intra-bar price sequencing are the suspect kind; SMT only requires completed-bar comparisons.
+
+## Intraday SMT Testing (Apr 2026)
+
+Tested intraday SMT divergence on 15m and 1H bars using 280 days of NQ + ES tick data as an overlay filter on [[lumi-overlay-research-2026-04-19|Lumi trades]]:
+
+- **1H SMT**: Zero divergences detected across 280 days. The swing lookback of 3 bars is too strict — intraday swings form and resolve within a single session, so the pattern rarely completes.
+- **15m SMT**: 222 signals across 280 days. Mild directional value (aligned 55.3% WR vs against 50.5% WR) but not strong enough to use as a standalone filter.
+
+**Takeaway**: Intraday SMT in its current implementation (swing-based) does not produce enough signal for filtering. The concept remains valid at the daily/multi-day level where swing structure has time to develop. A possible improvement would be using a smaller lookback (2 bars instead of 3) or using price-level divergence instead of swing-structure divergence.
+
+Engine: `trading-system/context-engine/features/smt.py` + `strategies/tempo/scripts/lumi_overlay_research.py`
 
 ## Also referenced in
 
