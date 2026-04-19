@@ -201,3 +201,6 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-18 12:00] ingest | LumiStrategyV3.cs → wiki/summaries/lumi-strategy-v3-2026-04-18.md. V2 NQ summary tagged superseded. strategies-moc updated (V3 replaces V2 in status board, key files table updated). Version gap v16-v25 note retained.
 
 ## [2026-04-18 23:30] lint | 14 issues found (2 orphans, 1 broken, 0 stale, 11 dupes) — meta-reports orphaned (expected); broken link to nonexistent ifvg-two-leg-portfolio-2026-04-12 in tempo-portfolio-v26.md; 5 carried-over dedup issues + 7 new near-dup title pairs (lumi v2/v3, ifvg opt v1/v2, sf-engulfing v1/v2, tempo-portfolio v15/v26, etc.); 52 raw sources lack summaries (mostly xlsx/html/config — 3 candidates worth ingesting). Report: wiki/lint-report.md.
+
+## [2026-04-19 02:00] ingest | lumi_overlay_research.py → wiki/summaries/lumi-overlay-research-2026-04-19.md; concepts leppyrd; updated smt
+## [2026-04-19 02:00] research | Lumi overlay: ES momentum alignment +7.4% WR (63.9%), walk-forward validated. Leppyrd, SMT, PDClose rejected.
