@@ -77,6 +77,8 @@ Extracted from TempoPortfolio between v19 and v23. Now runs standalone on both N
 | `strategies/tempo/results/fullyear_mix_results.txt` | 172-config sweep | Mar 28 |
 | `strategies/tempo/results/ifvg_15s30s_sweep_results_v2.json` | Latest 15S/30S sweep | Apr 7 |
 | `lumi_backtest_1.75r.py` | Current Lumi Python backtest | Apr 10 |
+| `strategies/tempo/scripts/lumi_overlay_research.py` | Lumi overlay research engine (NQ+ES tick) | Apr 19 |
+| `strategies/tempo/results/OVERLAY_RESEARCH_RESULTS.md` | Overlay research results (ES mom validated) | Apr 19 |
 | `strategies/tempo/LumiStrategyV3.cs` | **Current Lumi NQ (V3)** — v26 order patterns | Apr 18 |
 | `strategies/tempo/results/lumi_1.75r_results.json` | Lumi 1.75R results | Apr 10 |
 | `trading-system/results/IFVG_AUDIT_RESULTS_V2.md` | Production config 312d audit | Mar 9 |
