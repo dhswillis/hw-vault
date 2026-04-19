@@ -1,6 +1,6 @@
 ---
 created: 2026-04-11
-updated: 2026-04-18
+updated: 2026-04-19
 type: moc
 tags: [moc, strategies, trading]
 related:
