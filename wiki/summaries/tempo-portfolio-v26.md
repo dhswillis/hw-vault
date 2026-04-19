@@ -110,26 +110,17 @@ The `Cal 419` / 89.7% DWR number from 2026-04-12 was based on (a) limit-fill ass
 - **Per-component session asymmetry is not explained**: why 15S_short allowed in NY_Close but 15S_long only in NY_PreOpen/Lunch? This looks like empirical backtest fit — needs provenance.
 - **Fixed R targets may be arbitrary**: 15S=3R, 30S=2R, 1M=3R. Basis for these ratios is not documented.
 
-## 2026-04-16 Python backtest — limit-fill vs tick-through
+## Validated Python audit (canonical reference)
 
-Ported v26 logic to Python and ran tick-level sim on 283 days. Result:
+The **canonical validated audit** is [[ifvg-composite-audit-20260329]], which uses `composite_strategy.py` (607 lines) on tick-level Databento data:
 
-| Entry method | Trades | WR | avg R | PPD | Cal |
-|---|---|---|---|---|---|
-| Tick-through (price must trade at/past FVG edge) | 175 | 27.4% | -0.06 | -0.27 | -0.4 |
-| **Limit-fill (assume fill at edge)** | 260 | 73.1% | +1.08 | **+10.64** | 50.2 |
+- 6-component combined: **+7.55 R/day, 60% WR, 1,707 trades/247 days**
+- Market-entry variant (zero fill assumptions): **+17.9 PPD, 48% WR**
+- 3 bugs found and fixed during Mar 29 audit; Python↔C# cross-reference verified
 
-Same strategy. Only the entry-fill assumption changes, and it swings WR by 46pp and PPD by +11.
+v26 C# configs match `composite_strategy.py` OPTIMIZED_RULES exactly. v26 adds dynamic position sizing and v25 race-condition fixes.
 
-V15 vault number (+19.8 PPD, Cal 23) is also limit-fill by construction — the V15 audit doc says so explicitly: *"Slippage/commission: 0.50 pts per trade deducted. Limit entries assumed (FVG edge). Real slippage on NQ may be higher in volatile conditions."*
-
-My port's +10.6 reconciles to V15's +19.8 by adding back:
-- Lumi engine (+1.8 PPD in V15, not ported)
-- News-day exclusion (V15 cuts 35 days, likely the worst MDD days)
-- v14-style session partials (V15 uses them, v26 uses fixed R)
-- Subtle implementation differences (sweep timing, reaction scan start bar)
-
-**What this means for live**: real performance lives between the two bounds depending on NQ fill rate. Claim ceiling is ~+10-20 PPD; floor is ~0 PPD. The V15 headline number is NOT a live-performance prediction.
+**Note on a separate 2026-04-16 Python port**: An independent v26 port was built and tested, but used a different (broken) fill mechanic that searched for retraces after bar close. Its results (-0.27 PPD tick-through) were incorrect and have been superseded by the canonical March audit. The March `market_vs_limit_summary.json` already addressed the fill question properly and showed +17.9 PPD at market entry.
 
 ## Cross-references
 

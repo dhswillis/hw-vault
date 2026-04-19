@@ -187,3 +187,15 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-16 15:00] ingest | LumiStrategyV2 (NQ Apr 10) + LumiESStrategyV2 (ES, NEW) → lumi-strategy-v2-2026-04-10.md + lumi-es-strategy-v2-2026-04-10.md. Lumi extracted from TempoPortfolio to standalone. Swing stop + 1.75R replaces V15 FVG-soft-stop + 2R. ES port is brand new.
 
 ## [2026-04-16 15:45] audit | Lumi V2 tick-through. 1102 signals → 723 filled (65%) → 36.8% WR, -0.065R, -0.21R/day. Limit-fill +0.45R edge collapses to -0.065R. Same pattern as v26 IFVG. Updated lumi-strategy-v2 summary.
+
+## [2026-04-17 10:30] ingest | ifvg-composite-audit-20260329 — CANONICAL validated results ingested from existing work (composite_strategy.py, AUDIT_RESULTS_20260329.md, optimized_composite_results.txt, market_vs_limit_summary.json, IFVG_AUDIT_RESULTS_V2.md). These were the MISSING reference — 6-component IFVG at +7.55 R/day, 60% WR, market entry +17.9 PPD. Should have been in vault from the start.
+
+## [2026-04-17 12:26] daily | daily note created | 3 open actions
+
+## [2026-04-17 13:00] cleanup | Pruned vault and memory. Deleted superseded ifvg-two-leg-portfolio synthesis. Updated strategies-moc with current live status (v26 IFVG + Lumi V2 NQ/ES). Updated tempo-portfolio-v26 to point at canonical composite audit instead of broken tick-through. Cleaned MEMORY.md (removed stale entries, added "check existing work first" preference). Pruned autonomous_20260412 of misleading Cal-419 artifacts.
+
+## [2026-04-17 18:46] inbox-triage | 1 item, 0 routed, 0 need attention | Only file in inbox/ is 2026-04-11-import-manifest.md (stub tagged [inbox, processed], mtime 2026-04-15 04:09 ≈ 2.6 days old, under 3-day threshold). Original manifest already lives at raw-sources/operations/. No action this run; stub will cross threshold and be eligible to route on next triage. `.gitkeep` ignored.
+
+## [2026-04-18 12:00] build | LumiStrategyV3.cs (902 lines) — production-grade Lumi NQ built from v26 order patterns. Changes from V2: real unmanaged orders in BT+live, dynamic position sizing, IsExiting race condition fix, orphaned position safety sweep, strict MSS enforcement, circuit breakers (daily R limit + max consec loss), enriched order names, emergency exits on unexpected cancel. Signal chain unchanged from V2 (same tick-through caveat applies).
+
+## [2026-04-18 12:00] ingest | LumiStrategyV3.cs → wiki/summaries/lumi-strategy-v3-2026-04-18.md. V2 NQ summary tagged superseded. strategies-moc updated (V3 replaces V2 in status board, key files table updated). Version gap v16-v25 note retained.

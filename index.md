@@ -69,7 +69,8 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 - [[wiki/summaries/option4-hybrid-architecture]] — Option 4: Hybrid Full Stack architecture document. Links QC, NinjaTrader, and Context Engine into one pipeline.
 - [[wiki/summaries/tempo-batch-cheatsheet]] — QC batch backtesting quick reference for Tempo V3.34.
 - [[wiki/summaries/tempo-portfolio-v15]] — V15 IFVG + Lumi combined portfolio: +19.8 pts/day, Calmar 23.1 over 264 days. **Superseded by v26.**
-- [[wiki/summaries/tempo-portfolio-v26]] — **Current live strategy (Apr 10 2026).** IFVG MTF cascade: 6 components (15S/30S/1M × long/short), ReactionScore≥3 gate, fixed R targets, dynamic position sizing. Supersedes v15. No formal audit yet — v16–v25 undocumented gap.
+- [[wiki/summaries/ifvg-composite-audit-20260329]] — **CANONICAL validated results.** 6-component IFVG composite: +7.55 R/day, 60% WR, 1707 trades/247d. Market-entry variant: +17.9 PPD with zero fill assumptions. All bugs fixed. This is the reference.
+- [[wiki/summaries/tempo-portfolio-v26]] — **Current live NT strategy (Apr 10 2026).** IFVG MTF cascade matching composite_strategy.py configs. v26 adds dynamic sizing + v25 race condition fixes.
 - [[wiki/summaries/lumi-strategy-v2-2026-04-10]] — **Current Lumi NQ strategy (Apr 10 2026).** Standalone (extracted from TempoPortfolio). Swing stop (avg 39pt risk), 1.75R target. 1,102 trades, 56% WR, +0.45R avg, PF 2.29 in limit-fill backtest. Supersedes V15 Lumi spec.
 - [[wiki/summaries/lumi-es-strategy-v2-2026-04-10]] — **New: Lumi ES port (Apr 10 2026).** Same methodology as NQ Lumi but retuned for ES (TargetR=2.0, MinSweep=0.5, FVGMin=0.25). No Python audit yet.
 - [[wiki/summaries/wickfade-strategy-findings]] — WickFade optimization: trail on both legs was the biggest improvement.
@@ -130,7 +131,7 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 - [[wiki/syntheses/tempo-three-layers]] — The three-layer framework (canonical / mining / implementation) that every Tempo claim must be placed into before it can be evaluated.
 - [[wiki/syntheses/bos-fvg-claim-vs-reality]] — Deep dive on why BOS_FVG is not Tempo's IFVG and why "BOS_FVG is the core signal of Tempo" was a two-layer mistake.
 - [[wiki/syntheses/mining-reports-v1-v2-reconciliation]] — Cross-source analysis: why V1 claimed 97.9% WR while V2 shows 63.5%. Three corrections documented. **Note 2026-04-10**: even the V2 "honest" 63.5% WR is now invalidated for BOS_FVG — see [[bos-fvg-failure-consolidated]].
-- [[wiki/syntheses/ifvg-two-leg-portfolio-2026-04-12]] — Autonomous 8h backtest. **SUPERSEDED 2026-04-16**: tested wrong baseline (v14 logic, limit-fill assumed). Real strategy is v26 MTF cascade. Honest tick-through on v14: ~60% WR, Cal 7, +13 PPD — not 89.7%/419. See [[tempo-portfolio-v26]] for what's actually live.
+- ~~ifvg-two-leg-portfolio-2026-04-12~~ — **DELETED 2026-04-17.** Tested wrong baseline (v14 not v26), used broken fill mechanic. Superseded by [[ifvg-composite-audit-20260329]] which has the validated +7.55 R/day result.
 
 ## Maps
 

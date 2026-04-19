@@ -1,6 +1,6 @@
 ---
 created: 2026-04-16
-updated: 2026-04-16
+updated: 2026-04-18
 type: summary
 sources:
   - /Users/harrisonwillis/Documents/strategies/tempo/LumiStrategyV2.cs
@@ -11,12 +11,12 @@ related:
   - wiki/summaries/tempo-portfolio-v15.md
   - wiki/summaries/tempo-portfolio-v26.md
   - wiki/summaries/lumi-es-strategy-v2-2026-04-10.md
-tags: [trading, lumi, ninjatrader, live-strategy, current, nq]
+tags: [trading, lumi, ninjatrader, nq, superseded]
 ---
 
 # LumiStrategyV2 — Current Lumi (Apr 10, 2026, NQ)
 
-> **Current production Lumi strategy** for NQ. File: `/Users/harrisonwillis/Documents/strategies/tempo/LumiStrategyV2.cs` (22,542 bytes, Apr 10, 2026). Separate from [[tempo-portfolio-v26]] — Lumi was extracted out of TempoPortfolio between v19 and v23 and now runs as a standalone strategy.
+> **Superseded by [[lumi-strategy-v3-2026-04-18]].** Was the production Lumi strategy for NQ until Apr 18, 2026. File: `/Users/harrisonwillis/Documents/strategies/tempo/LumiStrategyV2.cs` (22,542 bytes, Apr 10, 2026). Separate from [[tempo-portfolio-v26]] — Lumi was extracted out of TempoPortfolio between v19 and v23 and now runs as a standalone strategy.
 
 ## What this supersedes
 
