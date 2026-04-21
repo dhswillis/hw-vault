@@ -214,3 +214,5 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-20 21:34] project-build | home-manager Customer Zero scaffold → ~/home/ (git-init, 9 repair files, 6 skills, CLAUDE.md operating manual). Kit reference implementation is now live.
 
 ## [2026-04-21 12:08] daily | daily note created | 16 open actions
+
+## [2026-04-21 23:04] inbox-triage | 1 items, 1 routed, 0 need attention
