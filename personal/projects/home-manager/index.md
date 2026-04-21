@@ -8,6 +8,7 @@ tags: [project, business, home-manager]
 links:
   - "[[personal/projects/home-manager/services-catalog]]"
   - "[[personal/projects/home-manager/home-repair-backlog]]"
+  - "[[personal/projects/home-manager/whitepaper-claude-code-kit]]"
 ---
 
 # Home Manager — Business Overview
@@ -100,4 +101,6 @@ _(none yet)_
 
 - [[personal/projects/home-manager/services-catalog]]
 - [[personal/projects/home-manager/home-repair-backlog]]
+- [[personal/projects/home-manager/whitepaper-claude-code-kit]] — companion product: a DIY kit that lets technical homeowners run the same playbook themselves with Claude Code
+- [[wiki/summaries/openclaw-install-audit-20260420]] — reference architecture (trading-side implementation of the same agent-host pattern)
 - [[wiki/entities/harrison-haven-park]] — day-job context (portfolio operator mindset informs the business)

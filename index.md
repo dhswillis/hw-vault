@@ -83,6 +83,7 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 - [[wiki/summaries/willis-holdings-strategy-audit]] — March 2026 strategy status report. 4H fakeout is best single strategy.
 - [[wiki/summaries/autonomous-trading-system-progress-summary]] — Autonomous system build progress.
 - [[wiki/summaries/openclaw-vps-setup-guide]] — VPS setup for autonomous trading via OpenClaw + Telegram.
+- [[wiki/summaries/openclaw-install-audit-20260420]] — **Point-in-time audit (2026-04-20)** of local OpenClaw install. Installed + configured, gateway stopped, Ollama not responding, 0 cron jobs. Revivable in 15 min.
 - [[wiki/summaries/video-ingestion-pipeline-guide]] — Video → strategy extraction pipeline for 5 educators.
 - [[wiki/summaries/implementation-review]] — Multi-model agent system architecture assessment.
 - [[wiki/summaries/tempo-carmine-strategy-2026-02-16]] — Tempo + Carmine integrated analysis, 400 variants (suspect).
@@ -156,7 +157,7 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 
 ## Projects (personal)
 
-*(none yet — `personal/projects/tempo-trading/` is the expected first entry)*
+- [[personal/projects/home-manager/index]] — Home Manager business. 13-service household-concierge concept. Customer Zero = Harrison's own house (9 open repair items). Includes companion [[personal/projects/home-manager/whitepaper-claude-code-kit|whitepaper]] on the Claude-Code-powered DIY kit.
 
 ## Inbox — pending ingest
 
