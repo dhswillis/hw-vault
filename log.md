@@ -205,3 +205,5 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-19 02:00] ingest | lumi_overlay_research.py → wiki/summaries/lumi-overlay-research-2026-04-19.md; concepts leppyrd; updated smt
 ## [2026-04-19 02:00] research | Lumi overlay: ES momentum alignment +7.4% WR (63.9%), walk-forward validated. Leppyrd, SMT, PDClose rejected.
 ## [2026-04-19 14:30] weekly | W16 review | 7 open actions, 0 stale
+
+## [2026-04-20 21:13] project-init | home-manager — kicked off business overview for a household-concierge service. Created personal/projects/home-manager/{index,services-catalog,home-repair-backlog}.md. Customer Zero = Harrison's own house (9 open repair items captured as case-study data).
