@@ -78,7 +78,12 @@ Not: cleaning-only, handyman-only, or ultra-luxury estate-manager (where client 
 
 ## Milestones
 
-- [ ] Write full services catalog with scope-in/scope-out for each of the 13 lines — [[personal/projects/home-manager/services-catalog]]
+- [x] Write full services catalog with scope-in/scope-out for each of the 13 lines — [[personal/projects/home-manager/services-catalog]]
+- [x] Draft the Claude-Code-kit whitepaper — [[personal/projects/home-manager/whitepaper-claude-code-kit]]
+- [x] Scaffold the Customer Zero implementation at `~/home/` (git-initialized, 9 repairs + 6 skills pre-seeded)
+- [ ] Run `intake` skill with principal to populate property.md + people.md
+- [ ] Source starting vendor bench (handyman, plumber, electrician, HVAC, roofer, cleaner, yard)
+- [ ] Close safety item — water heater vent cover
 - [ ] Complete Customer Zero repair backlog (timeline TBD)
 - [ ] Draft pricing tiers (3 options) with unit-economic model
 - [ ] Name + domain + LLC
@@ -102,5 +107,6 @@ _(none yet)_
 - [[personal/projects/home-manager/services-catalog]]
 - [[personal/projects/home-manager/home-repair-backlog]]
 - [[personal/projects/home-manager/whitepaper-claude-code-kit]] — companion product: a DIY kit that lets technical homeowners run the same playbook themselves with Claude Code
+- **Live implementation**: `~/home/` — Customer Zero scaffold is live. 9 repair items pre-seeded, 6 skills written, git-initialized. Open `~/home/` in Claude Code to start running it.
 - [[wiki/summaries/openclaw-install-audit-20260420]] — reference architecture (trading-side implementation of the same agent-host pattern)
 - [[wiki/entities/harrison-haven-park]] — day-job context (portfolio operator mindset informs the business)
