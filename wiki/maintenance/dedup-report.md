@@ -1,155 +1,163 @@
 ---
-created: 2026-04-14
-updated: 2026-04-15
+created: 2026-04-22
 type: report
-related: []
 tags: [maintenance, dedup]
 ---
 
-# Dedup Report — 2026-04-15
+# Dedup Report — 2026-04-22
 
-Scanned: `wiki/summaries/` (76 files), `wiki/concepts/` (21 files), `wiki/entities/` (6 files), `wiki/syntheses/` (5 files). Total: 108 wiki pages + 10 MOCs.
+Automated scan of `wiki/summaries/`, `wiki/concepts/`, `wiki/entities/`, `wiki/syntheses/` (120 files total). Methodology: frontmatter `sources:` overlap, basename similarity, and fuzzy text matching on first 3,000 body characters. Findings below are grouped by severity. **No files were merged** — these are recommendations only.
 
-Previous scan: 2026-04-14. This report supersedes it entirely.
+## Exact duplicates
 
----
+### 1. `summaries/ifvg-full-year-verification.md` vs `summaries/ifvg-full-year-verification-memo.md`
 
-## Exact Duplicates
+Two separate summaries describe the **same underlying source document**. The two `sources:` paths differ:
 
-### 1. `wiki/summaries/ifvg-full-year-verification-memo.md` ↔ `wiki/summaries/ifvg-full-year-verification.md`
+- `raw-sources/imports/2026-04-11/Documents/trading-system/ifvg-backtest/results/IFVG_Full_Year_Verification_Memo.docx`
+- `raw-sources/imports/2026-04-11/Documents/strategies/tempo/results/IFVG_Full_Year_Verification_Memo.docx`
 
-**Classification: EXACT DUPE (same source, memo is strict subset)**
+but the two `.docx` files are **binary identical** (MD5 `d57c022d0212a5bc4672e45a1c166b26`, 19,322 bytes). Both summaries cover the same 244-day IFVG MTF Cascade backtest memo, same bug descriptions, same audit findings.
 
-Both reference the same raw source: `IFVG_Full_Year_Verification_Memo.docx`. The memo version (created 2026-04-12, 19 lines) is a 100-word teaser. The verification version (updated 2026-04-14, 31 lines) is a substantive summary with R-target findings and key takeaway sections. Every fact in the memo appears in the verification page.
+Content differs slightly — the `-memo` version (2026-04-12) is terser and has tighter cross-linking; the un-suffixed version (2026-04-14) is more verbose on R-target findings.
 
-**Recommendation:** Delete `ifvg-full-year-verification-memo.md`. Update any inbound links (currently `ifvg-optimization-report-v2.md` `related:` field) to point to `ifvg-full-year-verification.md`.
+**Recommendation:** Merge into one summary. Keep the un-suffixed `ifvg-full-year-verification.md` (has more quantitative detail on R-targets and the Bug 1/Bug 2 distinction), fold in the callout quote from the memo version, then delete `ifvg-full-year-verification-memo.md`. Update inbound links — only `wiki/maps/tempo-moc.md` links to the memo version; redirect it.
 
----
+## Near duplicates
 
-## Near Duplicates
+### 2. `concepts/tempo-v14-corrections.md` vs `summaries/tempo-v14-corrections.md`
 
-### 2. `wiki/summaries/tempo-v14-corrections.md` ↔ `wiki/concepts/tempo-v14-corrections.md`
+Only pair in the vault with an **identical basename across two directories**. Both cover the same four C# NinjaTrader v14 bugs documented in `raw-sources/trading/tempo/TEMPO_V14_CORRECTIONS.md`.
 
-**Classification: NEAR DUPE — same filename, ~70% text overlap. Carried forward from 2026-04-14 report.**
+Content is **not redundant** — the concept page has standalone detail on each bug (sequence reversed, stop placement, entry price, emergency stop side), while the summary defers to the concept (`"see [[tempo-v14-corrections]] concept page for the full explanation"`) and adds the 30-day corrected backtest numbers. They serve different roles per CLAUDE.md conventions.
 
-Both cover the four v14 C# bugs and the 30-day corrected backtest. Both reproduce the same bug table and `| Slice | Trades | WR | Pts/day | Calmar |` results. The concept page adds ~500 words of deeper technical prose (fix logic, bug class comparison to [[bar-sim-trailing-bug]]). The summary front-loads source context and the "historical artifact" status.
+**Recommendation:** Keep both, but **rename** one to remove the basename collision. Options: rename the summary to `summaries/tempo-v14-corrections-audit-doc.md` (source-scoped), or rename the concept to `concepts/tempo-v14-bug-cluster.md`. Renaming the summary is lower blast-radius — one summary file, one forward link. This is cosmetic but the collision is confusing when grepping.
 
-**Recommendation (unchanged):** Merge into the concept page. The concept is more technically complete. Move the summary's status note into a "Status / caveats" section on the concept. Delete the summary. Update 7 inbound wikilinks.
+## Superseded pages
 
----
+### 3. `summaries/lumi-strategy-spec.md` → already forward-links to `summaries/lumi-strategy-v2-2026-04-10.md`
 
-## Superseded Pages
+The spec page already carries a `> **⚠️ SUPERSEDED 2026-04-16.**` callout pointing to v2. V2 is itself then superseded by `lumi-strategy-v3-2026-04-18.md` (also flagged in-line).
 
-### 3. `wiki/summaries/sf-portfolio-state.md` → superseded by `wiki/summaries/sf-portfolio-cluster.md`
+**Recommendation:** Add the `superseded` reserved tag (per CLAUDE.md tags vocabulary) to both `lumi-strategy-spec.md` and `lumi-strategy-v2-2026-04-10.md` frontmatter. Add `related: [lumi-strategy-v3-2026-04-18.md]` to the spec page so the chain is traversable in both directions. No content changes needed — the forward-links already exist in prose.
 
-**Carried forward from 2026-04-14.** `sf-portfolio-state.md` (March 20, 12 legs, +2.26 R/day) is a point-in-time snapshot. The cluster covers the same source file with significantly more detail including the tick-level verification and updated R/day assessment.
+### 4. `summaries/tempo-portfolio-v15.md` → superseded by `summaries/tempo-portfolio-v26.md`
 
-**Recommendation:** Add `superseded` tag and a banner pointing to `sf-portfolio-cluster.md` and `final-portfolio-spec.md` (March 21 upgrade, +3.34 R/day). Do not delete — useful as a search entry point.
+V26 states `> This is the current production NinjaTrader strategy. Supersedes [[tempo-portfolio-v15|v15]]`. Different source files, different research generations.
 
-### 4. `wiki/summaries/deep-mine-findings.md` → superseded by `wiki/summaries/sf-portfolio-cluster.md`
+**Recommendation:** Add `superseded` tag to `tempo-portfolio-v15.md` frontmatter. No merge — v15's historical numbers are still useful for the audit trail. Purely a tag cleanup.
 
-**Carried forward from 2026-04-14.** The cluster covers the same source under "Deep Mine Findings" with equivalent content. Individual summary has marginally more detail on three breakthrough filters.
+### 5. `summaries/nq-sf-engulfing-strategy.md` → `summaries/nq-sf-engulfing-strategy-v2.md`
 
-**Recommendation:** Tag `superseded`. Forward-link to cluster. Consider adding the three filter names to the cluster's DEEP_MINE section before tagging.
+V1 and V2 `.docx` files are distinct (different sizes and hashes). V2 refines the 9-strategy portfolio with explicit Leppyrd ICT framework integration.
 
-### 5. `wiki/summaries/v8-mining-synthesis.md` → partially superseded by `wiki/summaries/sf-portfolio-cluster.md`
+**Recommendation:** Add a `> **Superseded by [[nq-sf-engulfing-strategy-v2]].**` callout at the top of the V1 summary, plus `superseded` tag. Cross-link is currently weak — neither page mentions the other in the body.
 
-**Carried forward from 2026-04-14.** Cluster covers the same verdict (dead, V10i invalidated). Individual summary has unique tier breakdown and Monte Carlo methodology detail.
+### 6. `summaries/ifvg-optimization-report.md` → superseded by `summaries/ifvg-optimization-report-v2.md` (and further by `summaries/ifvg-tp-optimization-report.md`)
 
-**Recommendation:** Tag `superseded` but keep for methodology detail. Forward-link to cluster.
+V1 is a 312-day mining survey from March 9–10, 2026; V2 is a 30-day hard-stop-fix optimization that identified the FVG-edge hard stop and claims near-tripled $/day vs V1 baseline. V1's key claim (no hard stop) is directly contradicted by V2.
 
-### 6. `wiki/summaries/strategy-mining-report-312d.md` → superseded by `wiki/summaries/comprehensive-mining-report-v2.md`
+**Recommendation:** Add `superseded` tag to V1 and a `> **Superseded by [[ifvg-optimization-report-v2]]**` banner explaining the hard-stop finding. Link V1 from V2 in `related:`. Keep V1 — its 312-day baseline numbers are the reference for V2's gains, and the V8/V9 mining discussion belongs there.
 
-V1-era (312 days, V10i-contaminated) vs V2-era (258 days, corrected). The summary already self-references the V2 report and the reconciliation synthesis. Both tagged `suspect-results`.
+## Split candidates
 
-**Recommendation:** Keep as historical artifact. Add explicit banner: "HISTORICAL ARTIFACT — V1 era. See [[comprehensive-mining-report-v2]] for corrected version and [[mining-reports-v1-v2-reconciliation]] for comparison." The supersession chain is the point of the page.
+Pages that collectively cover the same topic from different angles and would benefit from a canonical page, a map of content, or a merge. **None require immediate merging** — each currently serves a distinct source — but the cluster is worth consolidating.
 
----
+### 7. WickFade family (four summaries + one concept page)
 
-## Split Candidates (Healthy — No Merge Needed)
+Files:
 
-### 7. `wiki/summaries/tempo-cluster.md` — parent of 7 individual summaries
+- `concepts/wick-fade.md` (canonical concept)
+- `summaries/15s-wick-fade.md` — 15-second variant, tick-validated
+- `summaries/wickfade-complete.md` — "Complete Findings", backtest only, tagged unproven
+- `summaries/wickfade-5m-research-findings.md` — 5-minute variant, profitable
+- `summaries/wickfade-strategy-findings.md` — best validated config
+- `summaries/sweep-fade-research.md` — key-level sweep fade, an adjacent variant
 
-14-source cluster. Seven sources now have dedicated individual summaries (tempo-v14-corrections, ifvg-tp-optimization-report, unified-brain-architecture, unified-brain-options-and-growth, tempo-ibkr-migration-plan, lumi-strategy-spec, tempo-project-state). Healthy architecture.
+Source docs are distinct (five different files, five different MD5s), so these are not duplicates per se. But together they describe overlapping mean-reversion research with conflicting conclusions (one says $7,452/day profitable, another says "STATUS: UNPROVEN"). The concept page already tries to reconcile this.
 
-**Recommendation:** Ensure cluster has wikilinks to all 7 individual summaries as navigation index.
+**Recommendation:** Create `wiki/maps/wickfade-moc.md`. Structure: orientation paragraph → canonical concept link → four variants with one-line verdicts (tick-validated vs bar-only vs pending) → links to `sweep-cluster.md` and the `bar-sim-trailing-bug` concept. This satisfies the rule of thumb from CLAUDE.md ("create a MOC when you notice yourself typing the same 5 cross-links in multiple wiki pages"). No deletions — all five summaries have unique source material.
 
-### 8. `wiki/summaries/sweep-cluster.md` — stale on 3 of 8 sources
+### 8. Mining report family (four summaries + one synthesis)
 
-Three files now have individual summaries (15s-wick-fade, wickfade-complete, sweep-fade-research). **The cluster's wick-fade paragraphs are materially stale** — they say "treat as unread, not ingested" but both were ingested 2026-04-12 and found tick-level validated.
+Files:
 
-**Recommendation:** Update cluster to link individual summaries and correct the stale wick-fade narrative.
+- `syntheses/mining-reports-v1-v2-reconciliation.md` (exists, does the reconciliation work)
+- `summaries/comprehensive-mining-report-v2.md`
+- `summaries/strategy-mining-report-312d.md` (the V1)
+- `summaries/mining-analysis.md` (V7aa_b cross-tab, tagged contaminated)
+- `summaries/v8-mining-synthesis.md`
+- `summaries/deep-mine-findings.md` (SF portfolio fib, separate arc)
+- `summaries/transcript-mining-findings.md` (not checked in detail, but name suggests overlap)
 
-### 9. `wiki/summaries/audits-cluster.md` — parent of 3 individual summaries
+The V1/V2 reconciliation synthesis already exists, which is the right move. The V8 synthesis and V7 mining-analysis are distinct research generations.
 
-Cluster covers 7 sources; three have dedicated summaries (look-ahead-audit, backtest-integrity-audit-v2, v8-v9-audit-reports). Cluster's contamination chronology table is unique value.
+**Recommendation:** No merges. Add all four mining summaries and both syntheses to a new `wiki/maps/mining-research-moc.md` so the research arc is navigable in one place. The `audit-history-moc.md` is adjacent but focuses on audits rather than mining reports. Separately, verify `transcript-mining-findings.md` is genuinely distinct (I did not compare it closely in this scan).
 
-**Recommendation:** Add wikilinks from cluster entries to individual summaries. Keep both layers.
+### 9. Brain architecture family
 
-### 10. `wiki/summaries/portfolio-audit-v2-sweep.md` ↔ `wiki/summaries/sweep-cluster.md`
+Files:
 
-Individual summary covers BIP routing and 7 fixed bugs in TempoPortfoliov1.cs — detail not in the cluster.
+- `summaries/brain-architecture.md` — sources `raw-sources/trading/BRAIN_ARCHITECTURE.md`
+- `summaries/unified-brain-architecture.md` — sources `The_Unified_Brain_Architecture.docx`
+- `summaries/unified-brain-options-and-growth.md` — sources `Unified_Brain_Options_and_Growth.docx`
 
-**Recommendation:** Keep both. Add `[[portfolio-audit-v2-sweep]]` link in cluster.
+All three source files are distinct. The `brain-architecture.md` (OpenClaw + Ralph Loop + Berman Trifecta, engineering spec) vs `unified-brain-architecture.md` (Willis Holdings v2.0 April 2026) appear to be **parallel architectures** — possibly two competing designs for the same brain system. Without re-reading both in full it's unclear whether they're siblings or one supersedes the other.
 
----
+**Recommendation:** Read both and write a 1-paragraph reconciliation at the top of the older one explaining the relationship. Likely candidate for a short synthesis page (`syntheses/brain-architectures-reconciliation.md`) if they truly disagree. Low priority — not actively harmful.
 
-## Contradictions Requiring Investigation
+### 10. Portfolio family
 
-### 11. SWEEP_FADE_RESEARCH headline number discrepancy — HIGH PRIORITY
+Files:
 
-**Carried forward from 2026-04-14. Still unresolved.**
+- `summaries/final-portfolio-spec.md` — NQ+ES Final Portfolio Spec, +3.34 R/Day
+- `summaries/nq-portfolio-trading-system.md` — NQ Portfolio Trading System, 9 strategies, ~987R/year
+- `summaries/sf-portfolio-cluster.md` — cluster summary covering both
+- `summaries/sf-portfolio-state.md` — March 2026 point-in-time state
+- `summaries/tempo-portfolio-v15.md`, `tempo-portfolio-v26.md` — distinct Tempo strategy line (separate arc)
 
-| Page | Created | Headline result |
+The first four are SF-portfolio arc; the Tempo portfolios are a different research line. The SF cluster already contains the individual summaries. `final-portfolio-spec.md` and `nq-portfolio-trading-system.md` describe different portfolio configurations (NQ+ES vs NQ-only) — not duplicates.
+
+**Recommendation:** No merges. The `sf-portfolio-cluster.md` already plays the organizing role for this family. Confirm that `sf-portfolio-state.md` has a `superseded` tag if the numbers have been replaced by a more recent state file (check `work/projects/` or a newer portfolio doc before tagging).
+
+### 11. Tempo IFVG research / build / audit chain
+
+Files:
+
+- `summaries/tempo-ifvg-research.md` — the foundational research doc (Mar 2026)
+- `summaries/tempo-ifvg-build-spec.md` — implementation spec
+- `summaries/tempo-ifvg-audit-report.md` — V14 post-emergency-fix validation
+- `summaries/ifvg-composite-audit-20260329.md` — canonical late-March composite audit
+- `summaries/ifvg-optimization-report.md` / `-v2.md` / `-tp-optimization-report.md` — optimization generations
+
+These are **not duplicates** — each documents a distinct artifact in the IFVG research → build → audit → optimization pipeline. The chain is already structured reasonably well, and `ifvg-composite-audit-20260329.md` is explicitly marked canonical.
+
+**Recommendation:** No merges. Ensure every page in this chain links forward to `ifvg-composite-audit-20260329.md` as the current canonical audit. `tempo-moc.md` probably already organizes this — verify on next MOC update.
+
+## Cluster/individual-summary overlap (informational)
+
+Not a dedup issue per CLAUDE.md conventions — clusters are editorial overviews, individual summaries are drill-downs — but worth noting where individual summary content may have been absorbed into a cluster such that the standalone value is low:
+
+| Cluster | Individual summary it contains | Overlap |
 |---|---|---|
-| `wiki/summaries/sweep-cluster.md` | 2026-04-11 | "+0.29 R/day, marginal" |
-| `wiki/summaries/sweep-fade-research.md` | 2026-04-12 | "+10.43 R/day, Calmar 361.8, 100% winning weeks" |
+| `sweep-cluster.md` | `sweep-fade-research.md` | Cluster lists SWEEP_FADE_RESEARCH.md as one of its 8 sources |
+| `audits-cluster.md` | `v8-v9-audit-reports.md` | Cluster's 7 sources include both V8 and V9 audit reports |
+| `tempo-cluster.md` | `tempo-ifvg-research.md`, `tempo-rules-v3.md`, `tempo-v14-corrections.md`, `unified-brain-architecture.md`, `tempo-ifvg-build-spec.md`, `tempo-ifvg-audit-report.md`, `tempo-project-state.md` | All contained — this is by design but the individual summaries carry the load-bearing detail |
 
-36x discrepancy on the same source file. Possible explanations: cluster was an 8-file batch (may have cited earlier/different configuration); individual summary was a focused single-file read. Per authority hierarchy, most recent ingest is higher-trust, but the magnitude warrants manual re-read of `raw-sources/trading/sweep/SWEEP_FADE_RESEARCH.md`.
+**Recommendation:** No action. This is the intended pattern. If an individual summary ever becomes redundant with its cluster, prefer retaining the individual summary and trimming the cluster to a source-list-with-links.
 
-**Recommendation:** Re-read the raw source. Update whichever summary is wrong. Add reconciliation note to both pages.
+## Summary of actions
 
-### 12. Source path mismatch — BOS_FVG_FAILURE_CONSOLIDATED.md
+- **1 merge** (pair #1 — exact duplicate, binary-identical source)
+- **1 rename** (pair #2 — basename collision across dirs)
+- **4 tag additions** (pairs #3, #4, #5, #6 — add `superseded` tag and forward-link callouts)
+- **2 new MOCs recommended** (wickfade, mining-research)
+- **0 file deletions** beyond the single merge target
 
-**Carried forward from 2026-04-14.**
+No issues found that require urgent intervention. The vault's existing superseded-callouts-in-prose pattern is working; the main gap is that the `superseded` reserved tag (per CLAUDE.md) is not being applied in frontmatter where prose already marks a page as outdated.
 
-`bos-fvg-failure-consolidated.md` and `research-arc-map.md` use `~/Documents/trading-system/results/BOS_FVG_FAILURE_CONSOLIDATED.md`. `audits-cluster.md` uses `raw-sources/trading/audits/BOS_FVG_FAILURE_CONSOLIDATED.md`. May be a copy vs symlink issue.
+## Scan caveats
 
-**Recommendation:** Verify whether both paths point to the same file. Standardize `sources:` references vault-wide.
-
----
-
-## Minor Flags
-
-### 13. `wiki/summaries/context-engine-cluster.md` — internal source duplication
-
-`sources:` array lists `QUICK_REFERENCE.md` at two different paths under `raw-sources/imports/`. Acknowledged in the summary text. Likely an import artifact.
-
-**Recommendation:** Verify the two files are identical. Remove duplicate from `raw-sources/` and `sources:` frontmatter.
-
-### 14. `suspect-results` pages — verify "Why tagged suspect" sections
-
-Six pages carry `suspect-results`: nq-playbook, research-journal, mining-analysis, strategy-mining-report-312d, wickfade-complete, sweep-fade-research. Each should have a clear "Why this is tagged suspect" section specifying which contamination applies, which numbers are affected, and which are safe to cite.
-
-**Recommendation:** Audit all 6 pages. Add/improve the suspect explanation section where missing or unclear.
-
----
-
-## Summary
-
-| Category | Count | Change from 2026-04-14 |
-|---|---|---|
-| Exact duplicates | 1 | +1 (ifvg-full-year-verification-memo) |
-| Near duplicates | 1 | 0 (tempo-v14-corrections, still unresolved) |
-| Superseded pages | 4 | +1 (strategy-mining-report-312d explicitly flagged) |
-| Split candidates (healthy) | 4 | 0 |
-| Contradictions | 2 | 0 (both still unresolved from last scan) |
-| Minor flags | 2 | 0 |
-| **Total findings** | **14** | **+2 net new** |
-
-**Priority actions for next session:**
-
-1. Delete `ifvg-full-year-verification-memo.md` (exact dupe)
-2. Merge `tempo-v14-corrections` summary into concept page
-3. Re-read `SWEEP_FADE_RESEARCH.md` raw source to resolve +0.29 vs +10.43 contradiction
-4. Update `sweep-cluster.md` stale wick-fade narrative
+- Automated text similarity (SequenceMatcher on normalized first 3,000 chars) was calibrated to flag `>60%` overlap but did not find any at that threshold — pages diverge in heading structure even when covering the same ground. The `split candidate` findings above are from manual review of suspect clusters, not from text-similarity alone.
+- `transcript-mining-findings.md` was not read in full; re-scan if it shows up in the next `/lint`.
+- Did not compare `work/` or `personal/` folders — scope was `wiki/` per the `/dedup` spec.

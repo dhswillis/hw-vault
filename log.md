@@ -232,3 +232,5 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-22 15:12] weekly | W17 review | 17 open actions, 2 stale
 
 ## [2026-04-22 15:17] lint | 153 issues found (0 orphans, 8 broken, 0 stale, 93 dupes; +52 missing summaries, 4 superseded)
+
+## [2026-04-22 15:19] dedup | 1 exact, 1 near, 4 superseded, 5 splits (wiki/maintenance/dedup-report.md)
