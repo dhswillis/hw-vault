@@ -224,3 +224,11 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-22 12:49] daily | daily note created | 16 open actions
 
 ## [2026-04-22 07:54] vault-org | moved lint-report + dedup-report to wiki/maintenance/; refreshed wiki/maps/root.md stats (was 26 summaries, now 88); added home-manager-moc.md; threaded home-manager into personal-moc; added Maintenance section to index.md. Rewrote path refs in BRAIN, CLAUDE, README, automation-moc, ingest-audit, dedup command spec.
+
+## [2026-04-22 15:12] daily | daily note re-run | 16 open actions (note already existed from 12:49 run, inbox empty, no changes needed)
+
+## [2026-04-22 15:14] inbox-triage | 0 items, 0 routed, 0 need attention (inbox empty, only .gitkeep present)
+
+## [2026-04-22 15:12] weekly | W17 review | 17 open actions, 2 stale
+
+## [2026-04-22 15:17] lint | 153 issues found (0 orphans, 8 broken, 0 stale, 93 dupes; +52 missing summaries, 4 superseded)
