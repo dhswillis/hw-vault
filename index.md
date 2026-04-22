@@ -84,6 +84,7 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 - [[wiki/summaries/autonomous-trading-system-progress-summary]] — Autonomous system build progress.
 - [[wiki/summaries/openclaw-vps-setup-guide]] — VPS setup for autonomous trading via OpenClaw + Telegram.
 - [[wiki/summaries/openclaw-install-audit-20260420]] — **Point-in-time audit (2026-04-20)** of local OpenClaw install. Installed + configured, gateway stopped, Ollama not responding, 0 cron jobs. Revivable in 15 min.
+- [[wiki/summaries/ingest-audit-20260421]] — **2026-04-21 programmatic audit** of 166-file import batch. All PDFs + DOCX already summarized (Harrison's priority complete). 49 residual files (boilerplate MD, xlsx, html, 1 pptx) triaged.
 - [[wiki/summaries/video-ingestion-pipeline-guide]] — Video → strategy extraction pipeline for 5 educators.
 - [[wiki/summaries/implementation-review]] — Multi-model agent system architecture assessment.
 - [[wiki/summaries/tempo-carmine-strategy-2026-02-16]] — Tempo + Carmine integrated analysis, 400 variants (suspect).

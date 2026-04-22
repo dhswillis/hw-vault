@@ -216,3 +216,7 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-21 12:08] daily | daily note created | 16 open actions
 
 ## [2026-04-21 23:04] inbox-triage | 1 items, 1 routed, 0 need attention
+
+## [2026-04-21 20:21] lint | fresh sweep | 3 broken links fixed, 30 rule-of-three violations addressed via MOC cross-links, 44 residual unsummarized raw sources catalogued. Report: wiki/lint-report.md.
+## [2026-04-21 20:21] ingest-audit | cross-referenced 166-file 2026-04-11 import batch against wiki/summaries/ — all PDFs + DOCX covered (priority complete), 49 residual lower-format files triaged. Audit: wiki/summaries/ingest-audit-20260421.md.
+## [2026-04-21 20:21] moc-update | threaded 30 under-linked summaries into 13 target files (tempo-moc, tempo-project-state, unified-brain-architecture, research-arc-map, sf-portfolio-cluster, tempo-ifvg-research, sweep-cluster, ifvg-opt-v2, nq-sf-engulfing-v2, wickfade-complete, personal-moc, import-triage-moc, nova-sable-brains). Rule-of-three gaps closed.

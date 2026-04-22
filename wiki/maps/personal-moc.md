@@ -1,6 +1,6 @@
 ---
 created: 2026-04-12
-updated: 2026-04-12
+updated: 2026-04-21
 type: moc
 tags: [moc, personal, life]
 related:
@@ -44,6 +44,10 @@ The following personal-domain raw sources need summaries:
 |---|---|---|
 | Mediation PDFs (×4) | Legal | Low — consolidate into one summary |
 | proton-recovery-kit.pdf | Security | Skip — sensitive, no analytical value |
+
+## Related summaries
+
+- [[wiki/summaries/personal-legal-cluster]] — 8 sensitive personal/legal documents cataloged without content ingest (privacy boundary).
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 created: 2026-04-11
-updated: 2026-04-11
+updated: 2026-04-21
 type: entity
 sources:
   - raw-sources/trading/tempo/The_Unified_Brain_Architecture.docx
@@ -125,6 +125,7 @@ Nova and Sable should be able to query the Context Engine as a tool — i.e. the
 - [[v10i-look-ahead-bug]] — hardcoded anti-pattern #1 in the Mem0 seed
 - [[bayesian-belief-engine]] — the existing Context Engine the brains will query
 - `~/Documents/trading-system/CLAUDE.md` — project-side directive
+- [[ai-trading-show-blueprint]] — the planned 2-hour daily YouTube live stream where Nova + Sable co-host NQ trading. The public-facing surface of this entity.
 
 ## Also referenced in
 

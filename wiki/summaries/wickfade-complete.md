@@ -1,6 +1,6 @@
 ---
 created: 2026-04-11
-updated: 2026-04-11
+updated: 2026-04-21
 type: summary
 sources:
   - raw-sources/trading/sweep/WickFade_Complete_Findings.docx
@@ -206,3 +206,4 @@ The WickFade 5m stop+target results are NOT affected by this — they don't use 
 - [[sweep-cluster]] — the cluster this doc was stranded in
 - [[sf-portfolio-cluster]] — another Layer 2 track that uses fixed targets and is comparatively clean
 - [[research-arc-map]] — Layer 2 clean, one of the few defensible tracks
+- [[wickfade-strategy-findings]] — earlier findings doc; provenance on which optimization ideas came first (trail-on-both-legs was the biggest improvement).

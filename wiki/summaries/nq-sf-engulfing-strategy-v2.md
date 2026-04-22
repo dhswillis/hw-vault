@@ -1,6 +1,6 @@
 ---
 created: 2026-04-12
-updated: 2026-04-12
+updated: 2026-04-21
 type: summary
 sources:
   - raw-sources/trading/sf-portfolio/NQ_SF_Engulfing_Strategy_V2.docx
@@ -26,3 +26,7 @@ tags: [summary, engulfing, sweep-fail, leppyrd-ict]
 ## Status / caveats
 
 Document is summary/refresh of the primary NQ Portfolio system. Emphasis on Leppyrd framework integration and why temporal diversification prevents consecutive losing weeks. No new components vs primary system doc; serves as engagement/architecture reference. Highest-concentration risk: ALATE-LEP 252R = 25% of portfolio. Lowest: NLATE-SF 50R. London strategies post-emergency-fix status unclear; cross-reference with [[wiki/summaries/tempo-ifvg-audit-report]].
+
+## Supersedes
+
+- [[nq-sf-engulfing-strategy]] — v1 of this doc. V2 adds the 9-strategy portfolio structure, Leppyrd ICT integration, and the 987R/year consolidated result. Retain v1 for historical provenance; cite v2 for current claims.
