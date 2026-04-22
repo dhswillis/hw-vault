@@ -1,6 +1,6 @@
 ---
 created: 2026-04-11
-updated: 2026-04-11
+updated: 2026-04-22
 type: moc
 tags: [moc, root, architecture]
 related:
@@ -54,6 +54,7 @@ related:
 ### Personal
 
 - [[wiki/maps/personal-moc|Personal]] — Goals, health, finance, personal projects. Tempo trading as a personal project lives here.
+- [[wiki/maps/home-manager-moc|Home Manager]] — Personal-business project (kicked off 2026-04-20). Household-concierge service + Claude-Code DIY kit. Customer Zero = Harrison's own house.
 
 ### Work
 
@@ -90,7 +91,8 @@ These are the most-linked nodes in the graph — the brain's load-bearing ideas.
 
 ## Vault health
 
-- **305 files** | 264 have inbound links | 26 orphans (mostly .gitkeep placeholders)
-- **224 raw sources** (58 original + 166 imported) | **26 summaries written** | ~200 sources pending ingest
-- **17 concepts** | **6 entities** | **4 syntheses** | **4+ MOCs**
-- Last lint: pending — see [[wiki/maps/automation-moc|Automation]] for schedule.
+- **131 wiki pages** (88 summaries, 22 concepts, 6 entities, 4 syntheses, 11 MOCs, 2 meta-reports)
+- **224 raw sources** (58 original + 166 imported) | **all 12 PDFs + 17 DOCX covered** | 44 residual unsummarized (xlsx/html/boilerplate per [[wiki/maintenance/lint-report|lint]])
+- **Last lint:** 2026-04-21 — 3 broken links fixed, 30 rule-of-three violations closed via MOC cross-links.
+- **Last ingest audit:** 2026-04-21 — see [[wiki/summaries/ingest-audit-20260421]]. Priority (PDFs/DOCX) complete.
+- See [[wiki/maps/automation-moc|Automation]] for the maintenance schedule.

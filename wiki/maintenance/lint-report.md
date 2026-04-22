@@ -3,7 +3,7 @@ created: 2026-04-21
 updated: 2026-04-21
 type: report
 related:
-  - wiki/dedup-report.md
+  - wiki/maintenance/dedup-report.md
 tags: [maintenance, lint, audit]
 ---
 
@@ -19,8 +19,8 @@ Zero real orphans. Both meta-reports are expected non-graph nodes.
 
 | Page | Status |
 |---|---|
-| `wiki/lint-report.md` | expected orphan (this file) |
-| `wiki/dedup-report.md` | expected orphan (meta-report) |
+| `wiki/maintenance/lint-report.md` | expected orphan (this file) |
+| `wiki/maintenance/dedup-report.md` | expected orphan (meta-report) |
 
 No action. Both are intentionally excluded from the orphan rule per BRAIN.md §hard-rule-3 convention.
 
@@ -138,7 +138,7 @@ No evidence of history rewrite. Append-only rule holds.
 2. **Repair the malformed wikilink** at `wiki/summaries/tempo-quick-start-guide.md:61` — `[[|github_ssh_identity]]` has an empty target. Rewrite as plain text since `github_ssh_identity` is an auto-memory file, not a vault page.
 3. **Close the rule-of-three gap on 30 summary pages** by adding at least one cross-link from the appropriate MOC (most mapped to `tempo-moc.md`, `tempo-project-state.md`, `unified-brain-architecture.md`, `sf-portfolio-cluster.md`, or `research-arc-map.md`). See §5 table for per-page targets.
 4. **Promote the two operations-folder sources** into summaries: `raw-sources/operations/2026-04-11-vault-map-report.md` and `2026-04-11-import-manifest.md`. These capture vault-level state that does not yet have a wiki page.
-5. **Execute carry-over dedup actions** from `wiki/dedup-report.md`: delete `ifvg-full-year-verification-memo.md`, merge `tempo-v14-corrections` concept + summary, apply `superseded` tag to `ifvg-optimization-report.md`, `nq-sf-engulfing-strategy.md`, `tempo-portfolio-v15.md`, `sf-portfolio-state.md`, `deep-mine-findings.md`, `v8-mining-synthesis.md`, `strategy-mining-report-312d.md`.
+5. **Execute carry-over dedup actions** from `wiki/maintenance/dedup-report.md`: delete `ifvg-full-year-verification-memo.md`, merge `tempo-v14-corrections` concept + summary, apply `superseded` tag to `ifvg-optimization-report.md`, `nq-sf-engulfing-strategy.md`, `tempo-portfolio-v15.md`, `sf-portfolio-state.md`, `deep-mine-findings.md`, `v8-mining-synthesis.md`, `strategy-mining-report-312d.md`.
 
 ## Scan metadata
 

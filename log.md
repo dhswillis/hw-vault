@@ -222,3 +222,5 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-21 20:21] moc-update | threaded 30 under-linked summaries into 13 target files (tempo-moc, tempo-project-state, unified-brain-architecture, research-arc-map, sf-portfolio-cluster, tempo-ifvg-research, sweep-cluster, ifvg-opt-v2, nq-sf-engulfing-v2, wickfade-complete, personal-moc, import-triage-moc, nova-sable-brains). Rule-of-three gaps closed.
 
 ## [2026-04-22 12:49] daily | daily note created | 16 open actions
+
+## [2026-04-22 07:54] vault-org | moved lint-report + dedup-report to wiki/maintenance/; refreshed wiki/maps/root.md stats (was 26 summaries, now 88); added home-manager-moc.md; threaded home-manager into personal-moc; added Maintenance section to index.md. Rewrote path refs in BRAIN, CLAUDE, README, automation-moc, ingest-audit, dedup command spec.

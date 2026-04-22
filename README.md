@@ -8,7 +8,7 @@ Open this folder in Claude Code (`cd ~/HW && claude`). Claude reads `CLAUDE.md` 
 
 - **Ingest** — drop a file into `raw-sources/` and say `ingest that`. Claude reads it, writes a summary, updates the wiki and `index.md`, logs it.
 - **Query** — ask a question. Claude consults `index.md` first, drills into relevant wiki pages, answers with citations, and files reusable answers to `wiki/syntheses/`.
-- **/lint** — health-check the wiki (contradictions, orphans, stale claims). Report lands in `wiki/lint-report.md`.
+- **/lint** — health-check the wiki (contradictions, orphans, stale claims). Report lands in `wiki/maintenance/lint-report.md`.
 - **/daily** — create today's daily note from `templates/daily.md`, prefilled with carried-forward open actions.
 - **/wrap-up** — end-of-session: extract decisions and action items, triage `inbox/`, append to `log.md`, commit and push.
 

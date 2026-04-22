@@ -22,7 +22,7 @@ Scan the wiki for duplicate or near-duplicate content and produce a dedup report
    - **Superseded**: one page's `sources:` is a strict subset of another's
    - **Split candidate**: two pages cover different aspects of the same source (should be merged)
 
-4. **Write** the report to `wiki/dedup-report.md`:
+4. **Write** the report to `wiki/maintenance/dedup-report.md`:
    ```markdown
    ---
    created: YYYY-MM-DD

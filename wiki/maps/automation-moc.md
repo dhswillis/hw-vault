@@ -47,7 +47,7 @@ These are the operations that move knowledge between layers (L0→L5 per [[BRAIN
 
 ### 4. Lint Pipeline (L0–L5 → diagnostic)
 
-**What:** Scan for orphans, contradictions, stubs, stale claims (>90d), raw sources without summaries, broken links. Write report to `wiki/lint-report.md`.
+**What:** Scan for orphans, contradictions, stubs, stale claims (>90d), raw sources without summaries, broken links. Write report to `wiki/maintenance/lint-report.md`.
 
 **Trigger:** Scheduled Saturday at 8:00 PM local, or `/lint` command.
 

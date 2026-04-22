@@ -6,7 +6,7 @@ sources:
   - raw-sources/imports/2026-04-11/ (recursive, 166 files)
 related:
   - wiki/maps/import-triage-moc.md
-  - wiki/lint-report.md
+  - wiki/maintenance/lint-report.md
 tags: [audit, ingest, triage]
 ---
 

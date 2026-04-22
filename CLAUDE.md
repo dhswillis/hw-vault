@@ -145,7 +145,7 @@ Always set `updated` when you modify a file. Never backdate `created`.
    - Orphan pages (no inbound `[[links]]`)
    - Concepts mentioned in prose but without their own page
    - Stale claims (pages with `updated` &gt; 90 days, or sources no longer in `raw-sources/`)
-2. Write the report to `wiki/lint-report.md` (overwrite previous).
+2. Write the report to `wiki/maintenance/lint-report.md` (overwrite previous).
 3. Append to `log.md`: `## [YYYY-MM-DD HH:MM] lint | N issues found`.
 
 ### /daily
@@ -234,7 +234,7 @@ Capture a meeting — create note, extract decisions and actions, update person 
 ### /dedup
 **Trigger:** user says `/dedup` or "check for duplicates".
 
-Scan wiki for duplicate or near-duplicate pages. Full spec in `.claude/commands/dedup.md`. Writes report to `wiki/dedup-report.md`. Does NOT auto-merge.
+Scan wiki for duplicate or near-duplicate pages. Full spec in `.claude/commands/dedup.md`. Writes report to `wiki/maintenance/dedup-report.md`. Does NOT auto-merge.
 
 ## Hard rules
 

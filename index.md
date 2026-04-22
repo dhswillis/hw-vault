@@ -138,6 +138,7 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 ## Maps
 
 - [[wiki/maps/root]] — **Start here.** Root Map of Content. Single entry point to the entire brain. Links every domain, top-10 concepts, vault health stats.
+- [[wiki/maps/home-manager-moc]] — Home Manager personal-business project. Service tier + DIY kit. Customer Zero = Harrison's own house.
 - [[wiki/maps/tempo-moc]] — Full Tempo research arc. Layer 1 (canonical methodology) → Layer 2 (mining/backtests — mostly suspect) → Layer 3 (current implementation). Evolution timeline from Oct 2024 to present.
 - [[wiki/maps/bos-fvg-saga-moc]] — Case study: how BOS_FVG went from "97.9% WR sniper tier" to "63.5% WR core signal" to "DEAD at +0.001 avgR". Three contamination layers, three audits, four rules produced.
 - [[wiki/maps/audit-history-moc]] — **Canonical.** Every audit sorted by outcome (bugs found vs missed). Each audit links to what it invalidated and the rules it produced. Chronological invalidation chain.
@@ -159,6 +160,11 @@ Catalog of every wiki page, one line each. Updated on every `ingest` and any tim
 ## Projects (personal)
 
 - [[personal/projects/home-manager/index]] — Home Manager business. 13-service household-concierge concept. Customer Zero = Harrison's own house (9 open repair items). Includes companion [[personal/projects/home-manager/whitepaper-claude-code-kit|whitepaper]] on the Claude-Code-powered DIY kit.
+
+## Maintenance
+
+- [[wiki/maintenance/lint-report]] — latest vault lint sweep (orphans, broken links, stale, rule-of-three, unsummarized raw sources).
+- [[wiki/maintenance/dedup-report]] — latest duplicate/near-duplicate scan. Does not auto-merge.
 
 ## Inbox — pending ingest
 

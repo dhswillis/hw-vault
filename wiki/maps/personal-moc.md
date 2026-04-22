@@ -1,6 +1,6 @@
 ---
 created: 2026-04-12
-updated: 2026-04-21
+updated: 2026-04-22
 type: moc
 tags: [moc, personal, life]
 related:
@@ -25,6 +25,10 @@ Four mediation-related documents imported 2026-04-11. These are sensitive person
 ## Security & Accounts
 
 - `raw-sources/imports/2026-04-11/Downloads/proton-recovery-kit.pdf` — Proton Mail recovery kit. **Sensitive.** Keep in vault but do not summarize content publicly.
+
+## Personal projects
+
+- [[wiki/maps/home-manager-moc|Home Manager]] — Personal-business project kicked off 2026-04-20. Household-concierge service + Claude-Code DIY kit. Customer Zero = Harrison's own house; operational repo lives at `~/home/`.
 
 ## Trading as a personal project
 

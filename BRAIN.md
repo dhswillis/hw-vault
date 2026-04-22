@@ -62,7 +62,7 @@ Create `daily/YYYY-MM-DD.md` from `templates/daily.md` → prefill **Open action
 
 **Trigger:** `/lint` command, or scheduled weekly.
 
-Scan the vault for: orphans (no inbound links), contradictions between pages, stub concepts with no body, stale claims (>90 days), raw sources without summaries, summaries whose sources no longer exist. Write report to `wiki/lint-report.md`.
+Scan the vault for: orphans (no inbound links), contradictions between pages, stub concepts with no body, stale claims (>90 days), raw sources without summaries, summaries whose sources no longer exist. Write report to `wiki/maintenance/lint-report.md`.
 
 ## Automation
 
@@ -72,7 +72,7 @@ The following scheduled tasks run without user intervention.
 |---|---|---|
 | **Daily note** | Mon–Fri 7:00 local | Creates today's daily note from template, prefills open actions. |
 | **Weekly rollup** | Sun 17:00 local | Summarizes the week into `weekly/YYYY-Www.md`; aggregates decisions, open actions, new summaries/concepts added. |
-| **Lint sweep** | Sat 20:00 local | Runs `/lint` and writes `wiki/lint-report.md`. If there are orphans or suspect-results tags added since last run, flags them at the top of the report. |
+| **Lint sweep** | Sat 20:00 local | Runs `/lint` and writes `wiki/maintenance/lint-report.md`. If there are orphans or suspect-results tags added since last run, flags them at the top of the report. |
 | **Inbox triage** | Tue + Fri 18:00 local | Scans `inbox/` for anything older than 3 days; routes or escalates. |
 
 Tasks are managed via the Scheduled Tasks system. See `wiki/maps/automation.md` for the current live tasks, their IDs, and how to edit them.
@@ -96,6 +96,6 @@ When Claude Code (or any agent) opens this vault for the first time in a session
 2. `CLAUDE.md` — operating manual. Naming, frontmatter, operations.
 3. `wiki/maps/root.md` — current state of the brain.
 4. `log.md` (tail) — what's happened recently.
-5. `wiki/lint-report.md` if it exists — known issues.
+5. `wiki/maintenance/lint-report.md` if it exists — known issues.
 
 After that, follow the root MOC into whatever domain the task is in.
