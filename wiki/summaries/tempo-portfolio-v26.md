@@ -1,6 +1,6 @@
 ---
 created: 2026-04-16
-updated: 2026-04-16
+updated: 2026-04-21
 type: summary
 sources:
   - /Users/harrisonwillis/Documents/strategies/tempo/TempoPortfoliov26.cs
@@ -93,7 +93,7 @@ Critical architectural shift at **v24**: abandoned session-partials / B/E in fav
 
 ## How v26 differs from my 2026-04-12 backtest
 
-The autonomous [[ifvg-two-leg-portfolio-2026-04-12|2026-04-12 research]] tested v14 logic with post-hoc splits by `counter_trend_1h × body_over_gap`. That was the **wrong baseline** — v26 had already:
+The autonomous 2026-04-12 research (since pruned — see [[ifvg-composite-audit-20260329|canonical March audit]] for the current reference) tested v14 logic with post-hoc splits by `counter_trend_1h × body_over_gap`. That was the **wrong baseline** — v26 had already:
 
 1. Replaced body/gap post-hoc filter with a canonical `ReactionScore ≥ 3` entry gate
 2. Split by LTF timeframe (15S/30S/1M) not 1H-trend
@@ -128,7 +128,7 @@ v26 C# configs match `composite_strategy.py` OPTIMIZED_RULES exactly. v26 adds d
 - [[mtf-alignment]] — v26 uses completed-bar only (Rule 2 compliant at code-level, but MTF cascade across 15S→30S→1M would benefit from an alignment audit)
 - [[invalidation-rules]] — Rule 9 (NT8 `OnEachTick` accumulator bug) applies if v26 has any accumulators; v26 uses `Calculate.OnBarClose` which avoids this
 - [[tempo-portfolio-v15]] — previous documented version
-- [[ifvg-two-leg-portfolio-2026-04-12]] — 2026-04-12 autonomous research that tested the WRONG version (v14 logic); needs re-running on v26
+- [[ifvg-composite-audit-20260329]] — canonical validated audit (supersedes the pruned 2026-04-12 autonomous research, which tested the wrong baseline)
 
 ## File location
 `/Users/harrisonwillis/Documents/strategies/tempo/TempoPortfoliov26.cs` (Apr 10, 2026, 69629 bytes)

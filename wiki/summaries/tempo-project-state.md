@@ -1,6 +1,6 @@
 ---
 created: 2026-04-11
-updated: 2026-04-11
+updated: 2026-04-21
 type: summary
 sources:
   - raw-sources/trading/tempo/TEMPO_PROJECT_STATE.md
@@ -90,6 +90,13 @@ The project state doc warns against collapsing these layers. A monolithic QC alg
 - [[tempo-cluster]] — master cluster summary
 - [[tempo-three-layers]] — how this project state doc fits into the three-layer framework (it's the closest thing to a Layer 1 / Layer 3 bridge — it describes canonical methodology and implementation architecture in one place)
 - [[tempo-trading-system]] — the Mac-side directory this doc orients new sessions toward
+
+### Architecture & infrastructure (related docs)
+
+- [[option4-hybrid-architecture]] — The "Option 4" master architecture document referenced in the four warnings above. Spec for Claude → API wrapper → OpenClaw → Quantower.
+- [[video-ingestion-pipeline-guide]] — How the 324 trade recap videos are transcribed (Twelve Labs + Whisper).
+- [[infrastructure-boilerplate-cluster]] — 33 operational docs (CLAUDE.md, skills, prompts, configs) that back the implementation layer.
+- [[trading-system-operations-cluster]] — Operational backbone: onboarding, session logs, repo inventory.
 
 ## Source documents
 

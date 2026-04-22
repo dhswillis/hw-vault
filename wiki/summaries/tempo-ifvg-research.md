@@ -1,6 +1,6 @@
 ---
 created: 2026-04-11
-updated: 2026-04-11
+updated: 2026-04-21
 type: summary
 sources:
   - raw-sources/trading/tempo/TEMPO_IFVG_RESEARCH.md
@@ -82,6 +82,12 @@ The in-sample caveats still apply: 269 trades is modest, no walk-forward validat
 - [[tempo-rules-v3]] — the Layer 1 methodology this research is implementing
 - [[bar-sim-trailing-bug]] — why this doc's results are not invalidated by the 2026-04-10 audit
 - [[tempo-three-layers]] — this is the canonical Layer 2 doc, the one that took Layer 1's rules and tested them correctly
+
+### Companion IFVG research docs
+
+- [[fvg-entry-timing-analysis]] — FVG passive-fill vs momentum-inversion entry regimes; extends this doc's entry-mechanics section.
+- [[tempo-ifvg-build-spec]] — NinjaTrader IFVG build specification; the L3 implementation side of this L2 research.
+- [[ifvg-full-year-verification]] — 244-day tick-level IFVG cascade verification. 1 moderate bug found + fixed. R4.0 LIMIT_MID best risk-adjusted.
 
 ## Source documents
 

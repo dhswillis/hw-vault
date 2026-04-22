@@ -1,6 +1,6 @@
 ---
 created: 2026-04-11
-updated: 2026-04-11
+updated: 2026-04-21
 type: moc
 topic: Tempo Strategy Research Arc
 tags: [moc, tempo, trading, canonical]
@@ -63,6 +63,7 @@ Tempo is an NQ futures trading methodology created by educator "Tempo" (@tony31 
 - [[wiki/summaries/v8-v9-audit-reports]] — V8/V9 phase audits. Suspect (pre-V10o).
 - [[wiki/summaries/bos-fvg-failure-consolidated]] — **2026-04-10.** The canonical failure report that killed BOS_FVG.
 - [[wiki/summaries/bos-fvg-10pt-audit]] — 2026-03-08. Tick-level static audit. +0.015 avgR baseline.
+- [[wiki/summaries/tempo-strategy-analysis-2026-02-16]] — Feb 16 multivariate analysis. Pre-Unified-Brain era. Suspect (variant of V10-era mining).
 
 ### Orderflow methodology (reference material)
 - [[wiki/summaries/transcript-mining-findings]] — Orderflow synthesis from 7 educators, 30 transcripts. CLC framework, volume cluster pullbacks, POC reversal.
@@ -109,6 +110,15 @@ Apr 2026    HW vault created → everything ingested, rules codified
 - Are vol_spike_FVG, ORB_breakout, pre_gap_fill worth re-testing at tick resolution?
 - Can the wick-fade family compound with IFVG for a diversified portfolio?
 - Will Nova or Sable discover something entirely new from the tick data?
+
+## Infrastructure & pipeline
+
+- [[wiki/summaries/batch-runner-cluster]] — Batch backtesting infrastructure (6 operational docs). VPS + QC orchestration layer.
+- [[wiki/summaries/tempo-pipeline-cluster]] — Tempo extraction → QC implementation pipeline docs. End-to-end data path.
+
+## Deployment
+
+- [[wiki/summaries/tempo-ibkr-migration-plan]] — Migration plan from QuantConnect to IBKR Python execution.
 
 ## Related MOCs
 

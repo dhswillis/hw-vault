@@ -1,6 +1,6 @@
 ---
 created: 2026-04-11
-updated: 2026-04-11
+updated: 2026-04-21
 type: summary
 sources:
   - raw-sources/trading/sweep/SWEEP_FADE_RESEARCH.md
@@ -93,3 +93,4 @@ These two docs need `textutil -convert txt` to become readable. Until then, trea
 - [[ifvg]] — the Tempo canonical version of a sweep-reaction strategy (fade into close-through FVG)
 - [[nq-playbook]] — the V10 flagship consolidation that references several of these variants
 - [[tempo-three-layers]] — Layer 2 framework; most of this cluster is Layer 2 suspect
+- [[keylevel-sweep-cluster]] — NinjaTrader keylevel-sweep build (spec, log, audit); the implementation side of the sweep family.

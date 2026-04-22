@@ -1,6 +1,6 @@
 ---
 created: 2026-04-11
-updated: 2026-04-11
+updated: 2026-04-21
 type: synthesis
 sources:
   - raw-sources/trading/RESEARCH_JOURNAL.md
@@ -168,3 +168,9 @@ If a claim can't pass this check, cite it as *methodology* ("what was tested") n
 - [[unified-brain-architecture]] — Phase 5 direction
 - [[look-ahead-audit]], [[v8-v9-audit-reports]], [[bos-fvg-10pt-audit]] — the audit history
 - [[tempo-cluster]] — the master cluster summary for all Tempo raw-sources
+
+### Signal-research branch docs (explored, not canonical)
+
+- [[big-ride-research]] — HOD/LOD capture research, U-shaped timing distribution. Phase 3-era exploration.
+- [[daily-range-research]] — Daily range capture with pyramiding (+11.3 pts/day). Phase 3-era.
+- [[new-signal-classes-research]] — 7 new signal classes from V7 studies (suspect — contaminated by V10i era).

@@ -1,6 +1,6 @@
 ---
 created: 2026-04-12
-updated: 2026-04-12
+updated: 2026-04-21
 type: summary
 sources:
   - raw-sources/imports/2026-04-11/Documents/strategies/tempo/results/IFVG_Optimization_Report_v2.docx
@@ -29,3 +29,7 @@ Three major discoveries from the 30-day IFVG optimization sample (Jan–Feb 2026
 ## Status / caveats
 
 30-day sample only — needs full-year validation with hard stop enabled. The pipeline diagnostic is valuable for understanding trade frequency tuning across all IFVG configs.
+
+## Supersedes
+
+- [[ifvg-optimization-report]] — v1 of this report (Mar 9-10). V2 extends it with the hard-stop discovery and pipeline diagnostic. Retain v1 for historical provenance; cite v2 for current claims.

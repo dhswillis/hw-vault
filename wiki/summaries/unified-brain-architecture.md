@@ -1,6 +1,6 @@
 ---
 created: 2026-04-11
-updated: 2026-04-11
+updated: 2026-04-21
 type: summary
 sources:
   - raw-sources/trading/tempo/The_Unified_Brain_Architecture.docx
@@ -238,6 +238,14 @@ Notable: the `research/` directory and `memory/corrections.py` are what make the
 - [[bayesian-belief-engine]] — the Context Engine referenced as "already built and working"
 - [[tempo-cluster]] — master cluster
 - `~/Documents/trading-system/CLAUDE.md` — the project-side directive consistent with this doc
+
+### Pre-pivot / predecessor docs
+
+- [[autonomous-trading-system-progress-summary]] — Pre-Unified-Brain progress snapshot; captures the state that made the pivot necessary.
+- [[conglomerate-ceo]] — The "Conglomerate" vision (11 AI divisions) that preceded the Unified Brain naming; context for why the pivot collapsed scope.
+- [[brain-architecture]] — Ralph Loop + OpenClaw + Berman Trifecta earlier brain spec. Superseded by this doc but still informs the execution substrate.
+- [[willis-holdings-strategy-audit]] — March 2026 strategy audit that fed the pivot narrative; "4H fakeout is best single strategy" finding.
+- [[unified-brain-options-and-growth]] — Deployment tiers ($180–$600+/mo) for running this architecture at various scales.
 
 ## Source documents
 

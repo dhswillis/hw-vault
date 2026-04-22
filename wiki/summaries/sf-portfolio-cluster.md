@@ -1,6 +1,6 @@
 ---
 created: 2026-04-11
-updated: 2026-04-11
+updated: 2026-04-21
 type: summary
 sources:
   - raw-sources/trading/sf-portfolio/FINAL_PORTFOLIO_SPEC.md
@@ -197,3 +197,10 @@ Useful for:
 - Has the 2026-03-21 +3.34 R/day headline been cross-validated against NinjaTrader's engine-native execution? V5 audit suggests it hasn't (VWAP bug alone would move the number).
 - What is the tick-level performance of each leg independently? The +3.34 R/day is a bar-level sim, and while fixed targets are bar-sim-safe, fill-bar behavior (did the bar's low hit the stop before the high hit the target?) still requires careful handling.
 - How does the SF portfolio perform OOS beyond the 260-day window? Walk-forward was reported on V8 but not explicitly on the 12-leg or 13-leg portfolios.
+
+## Component docs (per-phase)
+
+- [[final-portfolio-spec]] — NQ+ES final 12-leg spec: +3.34 R/day, Calmar 53.1, zero look-ahead. The canonical source for the headline number.
+- [[sf-portfolio-state]] — March 2026 portfolio state: 12-leg, +2.26 R/Day (superseded by final spec).
+- [[nq-portfolio-trading-system]] — 9-strategy NQ portfolio: ~987R/year, zero losing weeks.
+- [[deep-mine-findings]] — Fib retracement 96K-trade deep mine; strategy DEAD across all parameters.

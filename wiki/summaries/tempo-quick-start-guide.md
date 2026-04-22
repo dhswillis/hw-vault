@@ -1,6 +1,6 @@
 ---
 created: 2026-04-10
-updated: 2026-04-10
+updated: 2026-04-21
 type: summary
 sources: [raw-sources/Tempo_Quick_Start_Guide.docx]
 related:
@@ -58,7 +58,7 @@ Claude Code auto-reads `CLAUDE.md` → `START_HERE.md` → `CLAUDE_BOOTSTRAP.md`
 | `~/batch3_costmodel.log` | Current batch progress |
 
 ### On GitHub
-Source of truth: **`dhswillis/trading-system`** (explains the [[tempo-trading-system|Tempo repo]]'s ownership — connects to the known [[|github_ssh_identity]] fact that local SSH authenticates as `dhswillis`).
+Source of truth: **`dhswillis/trading-system`** (explains the [[tempo-trading-system|Tempo repo]]'s ownership — connects to the known github-SSH-identity fact that local SSH authenticates as `dhswillis`; see the `github_ssh_identity.md` note in auto-memory).
 
 PAT token expires **2026-05-15**.
 
