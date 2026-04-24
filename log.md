@@ -234,3 +234,9 @@ grep "^## \[" log.md | tail -20
 ## [2026-04-22 15:17] lint | 153 issues found (0 orphans, 8 broken, 0 stale, 93 dupes; +52 missing summaries, 4 superseded)
 
 ## [2026-04-22 15:19] dedup | 1 exact, 1 near, 4 superseded, 5 splits (wiki/maintenance/dedup-report.md)
+
+## [2026-04-23 22:03] decision-backfill | 3 decisions created to close W17 stale item: work/decisions/2026-04-14-lumi-promotion.md (EXCLUDED→LIVE, V15 V2 +19.8 pts/day, Calmar 23.1, with fill-quality autokill at <+0.15R over 20-trade rolling), work/decisions/2026-04-15-wick-fade-demotion.md (VALIDATED→UNPROVEN after flip-leg sweep 0/216 profitable), work/decisions/2026-04-20-home-manager-positioning.md (retainer tier + broker-vs-W2 + single-metro, with gas-orders IN, fitness-equipment IN-as-brokered). Pattern established for the decision log.
+
+## [2026-04-23 22:03] entity-create | wiki/entities/harrison-haven-park.md — Haven Park day-job context roster (previously referenced by 3 pages per lint-report, never authored). Context-pointer only, no confidential data.
+
+## [2026-04-23 22:03] lint-resolve | W17 stale review items closed: (a) tempo-portfolio-v26 "broken link" was already fixed (references point to ifvg-composite-audit-20260329); (b) decision log empty — backfilled (see above); (c) 3-of-3 dangling harrison-haven-park refs now resolve.
